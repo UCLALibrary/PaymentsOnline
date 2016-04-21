@@ -1,6 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
 import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
+import edu.ucla.library.libservices.invoicing.webservices.logging.db.procs.AddCashnetLogProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.LoggingClient;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
@@ -47,6 +50,13 @@ public class LoggingServlet
 
     log = Logger.getLogger( LoggingServlet.class );
 
+    log.info( "logging payment result for invoice " +
+              request.getParameter( "UCLA_REF_NO" ) + "; result: " +
+              ( request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
+                "Paid ": "Failed " ) +
+              ( !request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
+                "Reason:{" + request.getParameter( "respmessage" ) + "}":
+                "" ) );
     if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
          ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) )
     {
@@ -54,15 +64,16 @@ public class LoggingServlet
       prepCashnetLog( request, data );
       logCashnetMessage( data, log );
       log.info( "<p>logged</p>" );
-      
+
       if ( request.getParameter( "result" ).equalsIgnoreCase( "0" ) )
-        request.getRequestDispatcher( "paymentservlet" ).forward( request, response );
+        request.getRequestDispatcher( "paymentservlet" ).forward( request,
+                                                                  response );
     }
     else
     {
       log.info( "ecommerce.LoggingServlet: invalid logging/payment call from ".concat( request.getRemoteAddr() ) );
     }
-    
+
   }
 
   private void prepCashnetLog( HttpServletRequest request,
@@ -93,17 +104,31 @@ public class LoggingServlet
 
   private void logCashnetMessage( CashnetLog data, Logger log )
   {
-    LoggingClient client;
+    AddCashnetLogProcedure proc;
+
+    proc = new AddCashnetLogProcedure();
+    proc.setData( data );
+    proc.setDbName( getServletContext().getInitParameter( "datasource.invoice" ) );
+    proc.setUser( getServletContext().getInitParameter( "user.logging.cashnet" ) );
+    try
+    {
+      proc.addLog();
+    }
+    catch ( Exception e )
+    {
+      log.info( "Log-entry creation failed: ".concat( e.getMessage() ) );
+    }
+    //LoggingClient client;
 
     //log("ecommerce.LoggingServlet: logCashnetMessage()");
 
-    client = new LoggingClient();
+    /*client = new LoggingClient();
     client.setCrypt( getServletContext().getInitParameter( "key.two" ) );
     client.setResourceURI( getServletContext().getInitParameter( "uri.logging" ) );
     client.setUriBase( getServletContext().getInitParameter( "uri.base" ) );
     client.setUser( getServletContext().getInitParameter( "key.one" ) );
     client.setData( data );
-    
-    log.info( client.doLogging() );
+
+    log.info( client.doLogging() );*/
   }
 }
