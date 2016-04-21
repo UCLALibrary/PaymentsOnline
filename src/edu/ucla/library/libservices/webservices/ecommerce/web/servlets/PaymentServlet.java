@@ -13,7 +13,7 @@ import javax.servlet.http.*;
 
 import javax.sql.DataSource;
 
-import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
@@ -28,6 +28,10 @@ public class PaymentServlet
     "SELECT count(aeon_request_id) FROM invoice_aeon_request_vw WHERE invoice_number = ?";
   private static final String ID_QUERY =
     "SELECT aeon_request_id FROM invoice_aeon_request_vw WHERE invoice_number = ?";
+  private static final String UPDATE_QUERY =
+    "update fine_fee_transactions set trans_note = to_char(sysdate, 'MM/DD/YY')" +
+    " || ' Paid in LibBill               ' || substr(trans_note, 40) where " +
+    "trans_note like '%Invoiced in LibBill           ' || ? || '%'";
 
   public void init( ServletConfig config )
     throws ServletException
@@ -50,10 +54,13 @@ public class PaymentServlet
     Logger log;
     log = Logger.getLogger( LoggingServlet.class );
 
-    log.info( "ecommerce.PaymentServlet: doPost()" );
+    //log.info( "ecommerce.PaymentServlet: doPost()" );
 
     handlePayment( request, log );
-    //checkAeon( request, log );
+    if ( request.getParameter( "UCLA_REF_NO" ).startsWith( "CS" ) )
+      updateVoyager( request, log );
+    else
+      checkAeon( request, log );
   }
 
   private void handlePayment( HttpServletRequest request, Logger log )
@@ -73,13 +80,13 @@ public class PaymentServlet
     log.info( "ecommerce.PaymentServlet: response code = " +
               client.doPayment() );*/
     ApplyFullPaymentProcedure proc;
-    
+
     proc = new ApplyFullPaymentProcedure();
     proc.setDbName( getServletContext().getInitParameter( "datasource.invoice" ) );
     proc.setUserName( getServletContext().getInitParameter( "user.logging.cashnet" ) );
     proc.setInvoiceNumber( request.getParameter( "UCLA_REF_NO" ) );
     proc.setPaymentType( request.getParameter( "pmtcode" ).equalsIgnoreCase( "CC" ) ?
-                               3: 2 );
+                         3: 2 );
     try
     {
       proc.addPayment();
@@ -88,13 +95,14 @@ public class PaymentServlet
     {
       log.fatal( "Payment failed: ".concat( e.getMessage() ) );
     }
-    
+
   }
 
   /*
    * check if invoice number linked to aeon request
    * if so, write payment file and upload to sftp
    */
+
   private void checkAeon( HttpServletRequest request, Logger log )
   {
     String invoice;
@@ -103,25 +111,27 @@ public class PaymentServlet
     invoice = request.getParameter( "UCLA_REF_NO" );
     ds =
         DataSourceFactory.createDataSource( getServletContext().getInitParameter( "datasource.invoice" ) );
-    if ( new JdbcTemplate(ds).queryForInt( COUNT_QUERY, new Object[]{invoice} ) > 0 )
+    if ( new JdbcTemplate( ds ).queryForInt( COUNT_QUERY, new Object[]
+        { invoice } ) > 0 )
     {
       int aeonID;
 
-      aeonID = new JdbcTemplate(ds).queryForInt( ID_QUERY, new Object[]{invoice} );
-      writeUpload(invoice, aeonID);
-      uploadFile(aeonID);
+      aeonID = new JdbcTemplate( ds ).queryForInt( ID_QUERY, new Object[]
+            { invoice } );
+      writeUpload( invoice, aeonID );
+      uploadFile( aeonID );
     }
   }
 
-  private void writeUpload(String invoice, int aeon)
+  private void writeUpload( String invoice, int aeon )
   {
     UploadWriter writer;
-    
+
     writer = new UploadWriter();
     writer.setAeonID( aeon );
     writer.setInvoiceNumber( invoice );
     writer.setDirectory( getServletContext().getRealPath( getServletContext().getInitParameter( "upload.local" ) ) );
-    
+
     writer.writeFile();
   }
 
@@ -136,8 +146,24 @@ public class PaymentServlet
     sftp.setLocalDir( getServletContext().getRealPath( getServletContext().getInitParameter( "upload.local" ) ) );
     sftp.setRemoteDir( getServletContext().getInitParameter( "upload.remotel" ) );
     sftp.setUser( getServletContext().getInitParameter( "sftp.user" ) );
-    
+
     sftp.getSftpConnect();
     sftp.uploadFile();
+  }
+
+  private void updateVoyager( HttpServletRequest request, Logger log )
+  {
+    int updates;
+    DataSource ds;
+
+    updates = 0;
+    ds =
+        DataSourceFactory.createDataSource( getServletContext().getInitParameter( "datasource.ucladb" ) );
+
+    updates = new JdbcTemplate( ds ).update( UPDATE_QUERY, new Object[]
+          { request.getParameter( "UCLA_REF_NO" ) } );
+    if ( updates != 0 )
+      log.info( "Voyager-LibBill update: no matches found for invoice " +
+                request.getParameter( "UCLA_REF_NO" ) );
   }
 }
