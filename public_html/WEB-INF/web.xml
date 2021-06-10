@@ -46,6 +46,18 @@
     <!--param-value>/invoicing-test/invoices/display_invoice/</param-value-->
   </context-param>
   <context-param>
+    <param-name>alma.key</param-name>
+    <param-value>l8xx8cb982c2d4b04ef79375f5c776dbae71</param-value>
+  </context-param>
+  <context-param>
+    <param-name>alma.base.fees</param-name>
+    <param-value>https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/</param-value>
+  </context-param>
+  <context-param>
+    <param-name>alma.resource.fees</param-name>
+    <param-value>/fees?status=ACTIVE&amp;apikey=</param-value>
+  </context-param>
+  <context-param>
     <param-name>uri.cashnet</param-name>
     <param-value>/invoicing/invoices/cashnet_invoice/</param-value>
     <!--param-value>/invoicing-dev/invoices/cashnet_invoice/</param-value-->

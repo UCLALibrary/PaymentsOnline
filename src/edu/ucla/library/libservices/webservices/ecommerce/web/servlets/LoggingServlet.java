@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
+
+import javax.servlet.http.HttpSession;
 
 import javax.ws.rs.core.Response;
 
@@ -43,6 +46,7 @@ public class LoggingServlet
                       HttpServletResponse response )
     throws ServletException, IOException
   {
+    Cookie[] cookies;
     response.setContentType( CONTENT_TYPE );
 
     CashnetLog data;
@@ -57,6 +61,18 @@ public class LoggingServlet
               ( !request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
                 "Reason:{" + request.getParameter( "respmessage" ) + "}":
                 "" ) );
+    cookies = request.getCookies();
+    if( cookies != null ) {
+      for (Cookie cookie : cookies) {
+          log.info("Cookie Name : " + cookie.getName( ) + ",  ");
+          log.info("Cookie Value: " + cookie.getValue( )+" <br/>");
+       }
+    } else {
+       log.info("<h2>No cookies founds</h2>");
+    }
+    HttpSession session = request.getSession();
+    log.info( "alma user = " + session.getAttribute("almaUser") );
+    
     if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
          ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) )
     {

@@ -4,40 +4,61 @@
       <value n="oracle.adfdt.controller.adfc.source.migration.AdfControllerSchemaMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdt.controller.common.migrator.ProjectMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdt.controller.jsf2.diagram.migrate.JsfNodeMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.adfdt.controller.migrate.TrinidadDatabindingsProjectMigrator" v="11.1.2.0.0"/>
       <value n="oracle.adfdt.controller.struts.addin.db.ADFStrutsProjectMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdt.controller.struts.addin.StrutsProjectMigrator" v="11.1.1.1.0"/>
-      <value n="oracle.adfdtinternal.dvt.datapresdt.migration.DVTDataMapMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.adfdtinternal.dvt.datapresdt.migration.DVTDataMapMigrator" v="11.1.1.1.0;11.1.1.1.0.3"/>
+      <value n="oracle.adfdtinternal.dvt.datapresdt.migration.DVTWebAppConfigurationMigrator" v="12.1.3.0.0"/>
       <value n="oracle.adfdtinternal.model.ide.migration.ProjectMigrator" v="11.1.1.1.0.11.1.1"/>
+      <value n="oracle.adfdtinternal.model.ide.placeholderdc.migrator.PlaceholderProjectMigrator" v="12.1.4.0.0"/>
       <value n="oracle.adfdtinternal.model.ide.security.wizard.FormPageMigrator" v="11.1.1.0.0"/>
       <value n="oracle.adfdtinternal.model.ide.security.wizard.JpsFilterMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdtinternal.model.ide.xmled.migration.ADFNodeMigrator" v="11.1.1.1.0.5"/>
       <value n="oracle.adfdtinternal.model.ide.xmled.migration.PageDefinitionParameterValueMigrator" v="11.1.1.1.0.5"/>
+      <value n="oracle.adfdtinternal.model.ide.xmled.migration.RestDataControlMigrator" v="12.1.4.0.0"/>
       <value n="oracle.adfdtinternal.model.ide.xmled.migration.WebXmlMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdtinternal.view.common.migration.wizards.MigrationHelper" v="11.1.1.1.0.3"/>
       <value n="oracle.adfdtinternal.view.rich.binding.migration.JarResourceMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdtinternal.view.rich.migration.ComponentIdNodeMigratorHelper" v="11.1.1.1.0.01"/>
+      <value n="oracle.adfdtinternal.view.rich.migration.FacesLibraryVersionMigrator" v="11.1.1.1.0.1"/>
       <value n="oracle.adfdtinternal.view.rich.migration.LibraryVersionMigrator" v="11.1.1.1.0"/>
       <value n="oracle.bm.commonIde.ProjectUpgrader" v="11.1.1.1.0"/>
       <value n="oracle.bm.migration.project.MigratorRegistryProjectUpgradeAdapter" v="11.1.1.1.0"/>
-      <value n="oracle.ide.model.Project" v="11.1.1.1.0"/>
+      <value n="oracle.ide.model.Project" v="11.1.1.1.0;12.2.1.4.0"/>
       <value n="oracle.ide.model.ResourcePathsMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.ideimpl.model.TechnologyScopeUpdateMigrator" v="11.1.2.0.0.6"/>
       <value n="oracle.jbo.dt.jclient.migrator.JCProjectMigrator" v="11.1.1.1.0"/>
-      <value n="oracle.jbo.dt.jdevx.deployment.JbdProjectMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jbo.dt.jdevx.deployment.JbdProjectMigrator" v="11.1.1.1.0;11.1.2.0.0"/>
+      <value n="oracle.jbo.dt.jdevx.ui.appnav.APAdfConfigMigrator" v="11.1.2.0.0"/>
       <value n="oracle.jbo.dt.jdevx.ui.appnav.APProjectMigrator" v="11.1.1.0.1.5"/>
       <value n="oracle.jbo.dt.migrate.ResourceBundlePathMigrator" v="11.1.1.1.0.5"/>
       <value n="oracle.jbo.dt.migration.ServiceInterfaceMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdeveloper.dbmodeler.Migration" v="12.1.1.0.0"/>
       <value n="oracle.jdeveloper.ejb.EjbMigrator" v="11.1.1.1.0"/>
       <value n="oracle.jdeveloper.library.ProjectLibraryMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdeveloper.maven.migrator.POMNodeMigrator" v="12.2.1.0.0"/>
       <value n="oracle.jdeveloper.model.OutputDirectoryMigrator" v="11.1.1.1.0"/>
       <value n="oracle.jdevimpl.deploy.DeploymentProfilesMigrator" v="11.1.1.1.0"/>
       <value n="oracle.jdevimpl.deploy.jps.JpsDataMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.deploy.migrators.DeploymentMigrator" v="12.1.2.0.1"/>
       <value n="oracle.jdevimpl.jsp.JspMigrator" v="11.1.1"/>
-      <value n="oracle.jdevimpl.offlinedb.migration.OfflineDBProjectMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.offlinedb.migration.OfflineDBProjectMigrator" v="11.1.1.1.0;12.1.1.0.0"/>
       <value n="oracle.jdevimpl.offlinedb.migration.OfflineTransferMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.offlinedb.migration.SXMLOfflineDBProjectMigrator" v="12.1.4.0.0"/>
       <value n="oracle.jdevimpl.resourcebundle.XliffAddin$XliffMigratorHelper" v="11.1.1.1.0"/>
-      <value n="oracle.jdevimpl.webapp.jsp.libraries.JspLibraryMigrator" v="11.1.1.1.4"/>
+      <value n="oracle.jdevimpl.webapp.facelets.libraries.FaceletsLibraryMigrator" v="12.2.1.0.0"/>
+      <value n="oracle.jdevimpl.webapp.jsp.libraries.JspLibraryMigrator" v="11.1.1.1.4;12.1.4.0.0"/>
+      <value n="oracle.jdevimpl.webapp.jsp.taglibraries.trinidad.migration.TrinidadLibraryVersionMigrator" v="11.1.1.1.0.1"/>
       <value n="oracle.jdevimpl.webapp.WebAppContentSetNodeMigratorHelper" v="11.1.1"/>
       <value n="oracle.jdevimpl.webapp.WebAppNodeMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.webapp.WebAppProjectNodeMigratorHelper" v="12.2.1.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestAppClassMigrator" v="12.1.3.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestJerseyLibMigrator" v="12.1.3.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestLibraryMigrator" v="12.1.1.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestOwsmPolicyMigrator" v="12.1.3.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestPathMigrator" v="11.1.2.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestWebAppMigrator" v="12.1.3.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestWeblogicWebAppMigrator" v="12.1.3.0.0"/>
       <value n="oracle.jdevimpl.webservices.WebServicesMigratorHelper" v="11.1.1.1.0"/>
       <value n="oracle.jdevimpl.xml.wl.WeblogicMigratorHelper" v="11.1.1.1.0"/>
       <value n="oracle.modeler.bmmigrate.management.Migration" v="11.1.1.1.0"/>
@@ -53,6 +74,7 @@
       <string v="oracle.mds.internal.dt.ide.MDSLibraryCustCSProvider/mdsContentSet"/>
       <string v="oracle.adfdtinternal.model.ide.settings.ADFMSettings/adfmContentSet"/>
       <string v="oracle.toplink.workbench.addin/toplinkContentSet"/>
+      <string v="oracle.mds.internal.dt.ide.MDSADFLibVirtualNodeCSProvider/mdsLibVirtualNodeContentSet"/>
    </list>
    <value n="defaultPackage" v="edu.ucla.library.libservices.webservices.ecommerce"/>
    <hash n="oracle.ide.model.ResourcePaths">
@@ -77,10 +99,12 @@
    </hash>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
+         <string v="JAVASCRIPT"/>
          <string v="JSP"/>
+         <string v="WSDL"/>
+         <string v="WSPolicy"/>
          <string v="XML"/>
          <string v="WebServices"/>
-         <string v="JavaBeans"/>
          <string v="HTML"/>
          <string v="Java"/>
       </list>
@@ -125,7 +149,12 @@
                      </list>
                      <value n="displayName" v="Web Files"/>
                      <hash n="filters">
-                        <list n="rules"/>
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
                      </hash>
                      <value n="internalName" v="web-files"/>
                      <value n="type" v="1"/>
@@ -141,7 +170,12 @@
                      </list>
                      <value n="displayName" v="WEB-INF/classes"/>
                      <hash n="filters">
-                        <list n="rules"/>
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
                      </hash>
                      <value n="internalName" v="project-output"/>
                      <value n="targetWithinJar" v="WEB-INF/classes"/>
@@ -158,7 +192,7 @@
                      </hash>
                      <value n="internalName" v="libraries"/>
                      <list n="selectedLibraries">
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
                         <string v="JSTL 1.2"/>
                         <string v="JSTL 1.2 Tags"/>
                      </list>
@@ -168,9 +202,7 @@
                </list>
             </hash>
             <url n="jarURL" path="deploy/ecommerce-dev.war"/>
-            <hash n="libraryDependencies">
-               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
-            </hash>
+            <hash n="libraryDependencies"/>
             <value n="profileClass" v="oracle.jdeveloper.deploy.war.WarProfile"/>
             <value n="profileName" v="ecommerce-dev"/>
          </hash>
@@ -198,7 +230,12 @@
                      </list>
                      <value n="displayName" v="Web Files"/>
                      <hash n="filters">
-                        <list n="rules"/>
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
                      </hash>
                      <value n="internalName" v="web-files"/>
                      <value n="type" v="1"/>
@@ -214,7 +251,12 @@
                      </list>
                      <value n="displayName" v="WEB-INF/classes"/>
                      <hash n="filters">
-                        <list n="rules"/>
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
                      </hash>
                      <value n="internalName" v="project-output"/>
                      <value n="targetWithinJar" v="WEB-INF/classes"/>
@@ -231,7 +273,7 @@
                      </hash>
                      <value n="internalName" v="libraries"/>
                      <list n="selectedLibraries">
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
                         <string v="JSTL 1.2"/>
                         <string v="JSTL 1.2 Tags"/>
                      </list>
@@ -241,9 +283,7 @@
                </list>
             </hash>
             <url n="jarURL" path="deploy/ecommerce-test.war"/>
-            <hash n="libraryDependencies">
-               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
-            </hash>
+            <hash n="libraryDependencies"/>
             <value n="profileClass" v="oracle.jdeveloper.deploy.war.WarProfile"/>
             <value n="profileName" v="ecommerce-test"/>
          </hash>
@@ -367,7 +407,12 @@
                      </list>
                      <value n="displayName" v="WEB-INF/classes"/>
                      <hash n="filters">
-                        <list n="rules"/>
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
                      </hash>
                      <value n="internalName" v="project-output"/>
                      <value n="targetWithinJar" v="WEB-INF/classes"/>
@@ -384,13 +429,13 @@
                      </hash>
                      <value n="internalName" v="libraries"/>
                      <list n="selectedLibraries">
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
                         <string v="JSTL 1.2"/>
                         <string v="JSTL 1.2 Tags"/>
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Log4J.library"/>
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Spring.library"/>
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/JSCH.library"/>
-                        <url path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/AeonCommons.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Log4J.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Spring.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/JSCH.library"/>
+                        <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/AeonCommons.library"/>
                      </list>
                      <value n="targetWithinJar" v="WEB-INF/lib"/>
                      <value n="type" v="3"/>
@@ -399,7 +444,6 @@
             </hash>
             <url n="jarURL" path="deploy/lpo.war"/>
             <hash n="libraryDependencies">
-               <value n="IncludeLibrariesFromOtherContainers" v="true"/>
                <list n="unselectedLibraries">
                   <string v="Oracle JDBC"/>
                </list>
@@ -410,8 +454,8 @@
       </hash>
       <list n="profileList">
          <string v="ecommerce-dev"/>
-         <string v="ecommerce-test"/>
          <string v="lpo"/>
+         <string v="ecommerce-test"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
@@ -436,10 +480,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="JSTL 1.2"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -448,27 +488,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Mimepull.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Servlet Runtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Log4J.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Spring.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/JSCH.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/AeonCommons.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -476,7 +496,31 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Invoices.jar"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Jersey 1.2.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Log4J.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Spring.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/JSCH.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Aeon Commons.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Mimepull.jar1"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Invoices.jar1"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -484,20 +528,20 @@
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url path="../../../../unzipped/JAXWS2.2-20091203/jaxws-ri/lib/mimepull.jar" jar-entry=""/>
+                  <url path="../../jars/mimepull.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Mimepull.jar"/>
-               <value n="id" v="Mimepull.jar"/>
+               <value n="description" v="Mimepull.jar1"/>
+               <value n="id" v="Mimepull.jar1"/>
                <value n="locked" v="true"/>
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../Invoicing/deploy/invoices.jar" jar-entry=""/>
+                  <url path="../../jars/lpo/invoices.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Invoices.jar"/>
-               <value n="id" v="Invoices.jar"/>
+               <value n="description" v="Invoices.jar1"/>
+               <value n="id" v="Invoices.jar1"/>
                <value n="locked" v="true"/>
             </hash>
          </list>
@@ -508,10 +552,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Jersey 1.2.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="JSTL 1.2"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -520,27 +560,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Mimepull.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Servlet Runtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Log4J.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Spring.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/JSCH.library"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <url n="id" path="../../../../Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/AeonCommons.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -548,7 +568,31 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Invoices.jar"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Jersey 1.2.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Log4J.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Spring.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/JSCH.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Aeon Commons.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Mimepull.jar1"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Invoices.jar1"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -565,30 +609,8 @@
             </hash>
             <value n="jspVersion" v="2.1"/>
             <value n="name" v="JSTL Functions"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/fn.tld"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/fn.tld"/>
             <value n="URI" v="http://java.sun.com/jsp/jstl/functions"/>
-            <value n="version" v="1.2"/>
-         </hash>
-         <hash>
-            <hash n="baseLibrary">
-               <value n="name" v="JSTL Permitted Taglibs"/>
-               <value n="version" v="1.2"/>
-            </hash>
-            <value n="jspVersion" v="2.1"/>
-            <value n="name" v="JSTL Permitted Taglibs"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/permittedTaglibs.tld"/>
-            <value n="URI" v="http://jakarta.apache.org/taglibs/standard/permittedTaglibs"/>
-            <value n="version" v="1.2"/>
-         </hash>
-         <hash>
-            <hash n="baseLibrary">
-               <value n="name" v="JSTL SQL"/>
-               <value n="version" v="1.2"/>
-            </hash>
-            <value n="jspVersion" v="2.1"/>
-            <value n="name" v="JSTL SQL"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/sql.tld"/>
-            <value n="URI" v="http://java.sun.com/jsp/jstl/sql"/>
             <value n="version" v="1.2"/>
          </hash>
          <hash>
@@ -598,7 +620,7 @@
             </hash>
             <value n="jspVersion" v="2.1"/>
             <value n="name" v="JSTL Core"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/c.tld"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/c.tld"/>
             <value n="URI" v="http://java.sun.com/jsp/jstl/core"/>
             <value n="version" v="1.2"/>
          </hash>
@@ -609,19 +631,19 @@
             </hash>
             <value n="jspVersion" v="2.1"/>
             <value n="name" v="JSTL Format"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/fmt.tld"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/fmt.tld"/>
             <value n="URI" v="http://java.sun.com/jsp/jstl/fmt"/>
             <value n="version" v="1.2"/>
          </hash>
          <hash>
             <hash n="baseLibrary">
-               <value n="name" v="JSTL Script Free"/>
+               <value n="name" v="JSTL SQL"/>
                <value n="version" v="1.2"/>
             </hash>
             <value n="jspVersion" v="2.1"/>
-            <value n="name" v="JSTL Script Free"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/scriptfree.tld"/>
-            <value n="URI" v="http://jakarta.apache.org/taglibs/standard/scriptfree"/>
+            <value n="name" v="JSTL SQL"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/sql.tld"/>
+            <value n="URI" v="http://java.sun.com/jsp/jstl/sql"/>
             <value n="version" v="1.2"/>
          </hash>
          <hash>
@@ -631,8 +653,30 @@
             </hash>
             <value n="jspVersion" v="2.1"/>
             <value n="name" v="JSTL XML"/>
-            <value n="tldURL" v="@oracle.home@../modules/glassfish.jstl_1.2.0.1.jar!/META-INF/x.tld"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/x.tld"/>
             <value n="URI" v="http://java.sun.com/jsp/jstl/xml"/>
+            <value n="version" v="1.2"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSTL Permitted Taglibs"/>
+               <value n="version" v="1.2"/>
+            </hash>
+            <value n="jspVersion" v="2.1"/>
+            <value n="name" v="JSTL Permitted Taglibs"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/permittedTaglibs.tld"/>
+            <value n="URI" v="http://jakarta.apache.org/taglibs/standard/permittedTaglibs"/>
+            <value n="version" v="1.2"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSTL Script Free"/>
+               <value n="version" v="1.2"/>
+            </hash>
+            <value n="jspVersion" v="2.1"/>
+            <value n="name" v="JSTL Script Free"/>
+            <value n="tldURL" v="@oracle.home@../wlserver/modules/org.glassfish.web.javax.servlet.jsp.jstl.jar!/META-INF/scriptfree.tld"/>
+            <value n="URI" v="http://jakarta.apache.org/taglibs/standard/scriptfree"/>
             <value n="version" v="1.2"/>
          </hash>
       </list>

@@ -13,15 +13,23 @@
   <jsp:setProperty name="idSource" property="shibName" value="${header.SHIBEDUPERSONPRINCIPALNAME}"/>
 </jsp:useBean>
 
-<jsp:useBean id="patronSource"
+<jsp:useBean id="libBillInvoices"
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.PatronClient">
-  <jsp:setProperty property="userID" name="patronSource" value="${idSource.userID}"/>
-  <%--jsp:setProperty property="UID" name="patronSource" value="${idSource.userID}"/>
-  <jsp:setProperty property="logonID" name="patronSource" value="${idSource.userID}"/--%>
-  <jsp:setProperty property="uriBase" name="patronSource" value='<%= application.getInitParameter("uri.base") %>'/>
-  <jsp:setProperty property="resourceURI" name="patronSource" value='<%= application.getInitParameter("uri.patron") %>'/>
-  <jsp:setProperty property="user" name="patronSource" value='<%= application.getInitParameter("key.one") %>'/>
-  <jsp:setProperty property="crypt" name="patronSource" value='<%= application.getInitParameter("key.two") %>'/>
+  <jsp:setProperty property="userID" name="libBillInvoices" value="${idSource.userID}"/>
+  <%--jsp:setProperty property="UID" name="libBillInvoices" value="${idSource.userID}"/>
+  <jsp:setProperty property="logonID" name="libBillInvoices" value="${idSource.userID}"/--%>
+  <jsp:setProperty property="uriBase" name="libBillInvoices" value='<%= application.getInitParameter("uri.base") %>'/>
+  <jsp:setProperty property="resourceURI" name="libBillInvoices" value='<%= application.getInitParameter("uri.patron") %>'/>
+  <jsp:setProperty property="user" name="libBillInvoices" value='<%= application.getInitParameter("key.one") %>'/>
+  <jsp:setProperty property="crypt" name="libBillInvoices" value='<%= application.getInitParameter("key.two") %>'/>
+</jsp:useBean>
+
+<jsp:useBean id="almaSource"
+             class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient">
+  <jsp:setProperty property="userID" name="almaSource" value="${idSource.userID}"/>
+  <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
+  <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
+  <jsp:setProperty property="key" name="almaSource" value='<%= application.getInitParameter("alma.key") %>'/>
 </jsp:useBean>
 
 <%--jsp:useBean id="invoiceSource"
@@ -58,7 +66,7 @@
     </table>
 
     <c:choose>
-      <c:when test="${empty patronSource.thePatron.lastName}">
+      <c:when test="${empty almaSource.thePatron.lastName}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr>
@@ -78,7 +86,7 @@
           <tr><td></td><td>&nbsp;</td></tr>
           <tr>
             <td>
-              <h3>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h3>
+              <h3>${almaSource.thePatron.firstName}&nbsp;${almaSource.thePatron.lastName}</h3>
             </td>
             <td align="right">
               <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
@@ -111,7 +119,7 @@
             </tr>
             <c:set var="index" value="0"/>
             <c:set var="first" value="true"/>
-            <c:forEach var="theInvoice" items="${patronSource.thePatron.invoices}">
+            <c:forEach var="theInvoice" items="${libBillInvoices.thePatron.invoices}">
               <%--jsp:setProperty property="invoiceID" name="invoiceSource"
                                value="${theID}"/--%>
               <tr>
@@ -126,8 +134,27 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.balanceDue}" pattern="$###,###.##"/>
-                  <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${patronSource.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>--%>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${patronSource.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
+                  <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>--%>
+                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
+                </td>
+              </tr>
+              <c:set var="index" value="${index + 1}"/>
+              <c:set var="first" value="false"/>
+            </c:forEach>
+            <c:forEach var="theAlmaInvoice" items="${almaSource.theFees.fees}">
+              <tr>
+                <td>
+                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
+                </td>
+                <td>
+                  ${theAlmaInvoice.feeDate}
+                </td>
+                <td>
+                  ${theAlmaInvoice.owner}
+                </td>
+                <td align="right">
+                  <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
+                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theAlmaInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -146,6 +173,7 @@
               </td>
             </tr>
           </table>
+          <input type="hidden" name="patronID" value="${idSource.userID}"/>
         </form>
         <br/>&nbsp;<br/>
         <table align="center" width="960" border="0" cellpadding="3">
