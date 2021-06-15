@@ -9,6 +9,10 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
+
+import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,8 @@ public class AlmaClient
   private String resourceURI;
   private String uriBase;
   private String key;
+  private String dbName;
+  private String feeType;
 
   public AlmaClient()
   {
@@ -78,7 +84,7 @@ public class AlmaClient
 
   public void setFineID(String fineID)
   {
-    this.fineID = fineID.replace("alma", "");
+    this.fineID = StringHandler.extractInvoiceID(fineID);
   }
 
   private String getFineID()
@@ -114,6 +120,26 @@ public class AlmaClient
   private String getTransNo()
   {
     return transNo;
+  }
+
+  public void setDbName(String dbName)
+  {
+    this.dbName = dbName;
+  }
+
+  private String getDbName()
+  {
+    return dbName;
+  }
+
+  public void setFeeType(String feeType)
+  {
+    this.feeType = StringHandler.extractFeeType(feeType);
+  }
+
+  private String getFeeType()
+  {
+    return feeType;
   }
 
   public AlmaUser getThePatron()
@@ -157,7 +183,7 @@ public class AlmaClient
       theLine = new CashNetLine();
       theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
       theLine.setTotalPrice(theInvoice.getBalance());
-      theLine.setItemCode("add method to get item code");
+      theLine.setItemCode(DataHandler.getfeeData(getDbName(), getFeeType()));
       lines = new ArrayList<>();
       lines.add(theLine);
       theInvoice.setLineItems(lines);

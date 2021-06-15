@@ -144,7 +144,7 @@
             <c:forEach var="theAlmaInvoice" items="${almaSource.theFees.fees}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
+                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}~${theAlmaInvoice.type.value}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
                 </td>
                 <td>
                   ${theAlmaInvoice.feeDate}

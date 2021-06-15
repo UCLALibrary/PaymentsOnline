@@ -2,6 +2,7 @@ package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
 import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.sftp.SftpClient;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.writer.UploadWriter;
 //import edu.ucla.library.libservices.webservices.ecommerce.web.clients.PaymentClient;
@@ -177,6 +178,9 @@ public class PaymentServlet
      * using the fine ID, look up patron ID
      * delete row from table
      */
-    return null;
+    DataHandler handler = new DataHandler();
+    handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
+    handler.setInvoiceID(fine);
+    return handler.getPatronData();
   }
 }
