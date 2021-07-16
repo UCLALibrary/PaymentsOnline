@@ -8,16 +8,17 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-
-import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
-
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class AlmaClient
 {
+  private static final Logger LOGGER = Logger.getLogger(AlmaClient.class);
+
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
   private AlmaUser thePatron;
@@ -32,7 +33,7 @@ public class AlmaClient
   private String uriBase;
   private String key;
   private String dbName;
-  private String feeType;
+  //private String feeType;
 
   public AlmaClient()
   {
@@ -127,7 +128,7 @@ public class AlmaClient
     this.dbName = dbName;
   }
 
-  private String getDbName()
+  /*private String getDbName()
   {
     return dbName;
   }
@@ -140,7 +141,7 @@ public class AlmaClient
   private String getFeeType()
   {
     return feeType;
-  }
+  }*/
 
   public AlmaUser getThePatron()
   {
@@ -148,7 +149,7 @@ public class AlmaClient
     {
       client = Client.create();
       webResource = client.resource(getUriBase().concat(getUserID()).concat("?apikey=").concat(getKey()));
-      thePatron = webResource.get(AlmaUser.class);
+      thePatron = webResource.accept("application/json").get(AlmaUser.class);
     }
     return thePatron;
   }
@@ -183,7 +184,8 @@ public class AlmaClient
       theLine = new CashNetLine();
       theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
       theLine.setTotalPrice(theInvoice.getBalance());
-      theLine.setItemCode(DataHandler.getfeeData(getDbName(), getFeeType()));
+      //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getDescription()));
+      theLine.setItemCode("45400-BKPR-A");
       lines = new ArrayList<>();
       lines.add(theLine);
       theInvoice.setLineItems(lines);
@@ -206,6 +208,7 @@ public class AlmaClient
                                               .concat(getTransNo())
                                               .concat("&apikey=")
                                               .concat(getKey()));
+    LOGGER.info(webResource.getURI());
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();
   }

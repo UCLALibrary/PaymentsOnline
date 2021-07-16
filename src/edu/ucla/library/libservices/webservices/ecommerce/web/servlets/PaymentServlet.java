@@ -4,6 +4,7 @@ import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.sftp.SftpClient;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.writer.UploadWriter;
 //import edu.ucla.library.libservices.webservices.ecommerce.web.clients.PaymentClient;
 
@@ -60,13 +61,15 @@ public class PaymentServlet
     {
       updateVoyager(request, log);
     }
-    else
+    else if (!request.getParameter("UCLA_REF_NO").startsWith("alma"))
+    {
       checkAeon(request, log);
+    }
   }
 
   private void handlePayment(HttpServletRequest request, Logger log)
   {
-    if (request.getParameter("UCLA_REF_NO").startsWith("ALMA"))
+    if (request.getParameter("UCLA_REF_NO").startsWith("alma"))
     {
       doAlmaPayment(request, log);
     }
@@ -142,15 +145,26 @@ public class PaymentServlet
   private void doAlmaPayment(HttpServletRequest request, Logger log)
   {
     AlmaClient payClient;
+    String invoiceNo;
+    int responseCode;
+    
+    invoiceNo = StringHandler.extractInvoiceID(request.getParameter("UCLA_REF_NO"));
+    log.info("working with invoice " + invoiceNo);
+    
     payClient = new AlmaClient();
-    payClient.setAmount(request.getParameter("amount0"));
-    payClient.setFineID(request.getParameter("UCLA_REF_NO"));
+    //log.info("payment amount " + getPaymentAmount(request) );
+    payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
+    payClient.setFineID(invoiceNo);
     payClient.setKey(getServletContext().getInitParameter("alma.key"));
     payClient.setPayMethod(request.getParameter("pmtcode").equalsIgnoreCase("CC")? "CREDIT_CARD": "ONLINE");
-    payClient.setTransNo(request.getParameter("Tx"));
+    log.info("transaction number " + request.getParameter("tx") );
+    payClient.setTransNo(request.getParameter("tx"));
     payClient.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
-    payClient.setUserID(getUser(request.getParameter("UCLA_REF_NO")));
-    payClient.postPayment();
+    ///log.info("calling getUser with invoice number " + invoiceNo);
+    payClient.setUserID(getUser(invoiceNo, log));
+    responseCode = payClient.postPayment();
+    log.info("payment POST response = " + responseCode);
+    //clearRecord(invoiceNo);
   }
 
   private void doLibBillPayment(HttpServletRequest request, Logger log)
@@ -172,15 +186,34 @@ public class PaymentServlet
     }
  }
 
-  private String getUser(String fine)
+  private String getUser(String fine, Logger log)
   {
-    /*
-     * using the fine ID, look up patron ID
-     * delete row from table
-     */
+    log.info("in getUser with invoice number " + fine);
     DataHandler handler = new DataHandler();
     handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
     handler.setInvoiceID(fine);
+    //log.info("returning user" + handler.getPatronData());
     return handler.getPatronData();
   }
+
+  private double getPaymentAmount(HttpServletRequest request)
+  {
+    double total = 0.0d;
+    for ( int index = 1;
+          index <= Integer.parseInt( request.getParameter( "itemcnt" ) );
+          index++ )
+    {
+      double amount = Double.parseDouble( request.getParameter( "amount".concat( String.valueOf( index )) ) );
+      total += amount;
+    }
+    
+    return total;
+  }
+  /*private void clearRecord(String fine)
+  {
+    DataHandler handler = new DataHandler();
+    handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
+    handler.setInvoiceID(fine);
+    handler.deleteInvoiceData();
+  }*/
 }

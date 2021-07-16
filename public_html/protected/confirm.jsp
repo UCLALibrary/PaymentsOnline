@@ -3,10 +3,17 @@
 <%@ page contentType="text/html;charset=windows-1252" errorPage="errors.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+
+<c:set var="invoiceNo" value="${fn:replace(param.UCLA_REF_NO, 'alma', '')}"/>
 
 <jsp:useBean id="receiptSource"
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.ReceiptClient">
   <jsp:setProperty property="invoiceNumber" name="receiptSource" value="${param.UCLA_REF_NO}"/>
+  <jsp:setProperty property="almaUriBase" name="receiptSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
+  <jsp:setProperty property="apiKey" name="receiptSource" value='<%= application.getInitParameter("alma.key") %>'/>
+  <jsp:setProperty property="vgerName" name="receiptSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
+  <jsp:setProperty property="libBillName" name="receiptSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
   <jsp:setProperty property="uriBase" name="receiptSource" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
   <jsp:setProperty property="user" name="receiptSource" value='<%= application.getInitParameter("key.one") %>'/>
@@ -56,7 +63,7 @@
           <tr>
             <td>&nbsp;</td>
             <td>
-              <h3>Payment received for invoice ${param.UCLA_REF_NO} on <fmt:formatDate value="${now}" pattern="MMMM dd, yyyy"/></h3>
+              <h3>Payment received for invoice ${invoiceNo} on <fmt:formatDate value="${now}" pattern="MMMM dd, yyyy"/></h3>
             </td>
           </tr>
           <tr>
@@ -74,7 +81,7 @@
                 }
                 out.print( "A payment of " + new java.text.DecimalFormat( "$###########0.00" ).format( total ) 
                 + " by " + ( request.getParameter( "pmtcode" ).equalsIgnoreCase( "CC" ) ? "credit card" : "e-check" ) 
-                + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ) + ".<br/>" );
+                + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ).replace("alma", "") + ".<br/>" );
               %>
               Payment transaction number: ${param.tx}
             </td>
@@ -120,7 +127,7 @@
           <tr>
             <td>&nbsp;</td>
             <td>
-              <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${param.UCLA_REF_NO} was not successful.</h3>
+              <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${invoiceNo} was not successful.</h3>
             </td>
           </tr>
           <tr>

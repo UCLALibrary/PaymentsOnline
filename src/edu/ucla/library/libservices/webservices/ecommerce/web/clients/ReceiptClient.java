@@ -5,14 +5,21 @@ import com.sun.jersey.api.client.WebResource;
 
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+//import org.apache.log4j.Logger;
 
 public class ReceiptClient
 {
+  //private static final Logger LOGGER = Logger.getLogger( ReceiptClient.class );
   private ReceiptInfo theReceipt;
-  private Client client;
-  private WebResource webResource;
   private String resourceURI;
+  private String vgerName;
+  private String libBillName;
+  private String apiKey;
   private String uriBase;
+  private String almaUriBase;
   private String user;
   private String crypt;
   private String invoiceNumber;
@@ -24,24 +31,26 @@ public class ReceiptClient
 
   public ReceiptInfo getTheReceipt()
   {
-    client = Client.create();
-    //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
-    webResource =
-        client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoiceNumber() ) );
-    theReceipt =
-        webResource.header( "Authorization", makeAuthorization( getResourceURI().concat( getInvoiceNumber() ) ) ).get( ReceiptInfo.class );
-
+    if (theReceipt == null)
+    {
+      if (getInvoiceNumber().startsWith("alma"))
+      {
+        theReceipt = buildAlmaReceipt();
+      }
+      else
+      {
+        theReceipt = buildLibBillReceipt();
+      }
+    }
     return theReceipt;
   }
 
-  private String makeAuthorization( String request )
+  private String makeAuthorization(String request)
   {
-    return SignatureBuilder.computeAuth( SignatureBuilder.buildSimpleSignature( "GET",
-                                                                                request ),
-                                         getUser(), getCrypt() );
+    return SignatureBuilder.computeAuth(SignatureBuilder.buildSimpleSignature("GET", request), getUser(), getCrypt());
   }
 
-  public void setResourceURI( String resourceURI )
+  public void setResourceURI(String resourceURI)
   {
     this.resourceURI = resourceURI;
   }
@@ -51,7 +60,7 @@ public class ReceiptClient
     return resourceURI;
   }
 
-  public void setUriBase( String uriBase )
+  public void setUriBase(String uriBase)
   {
     this.uriBase = uriBase;
   }
@@ -61,7 +70,7 @@ public class ReceiptClient
     return uriBase;
   }
 
-  public void setUser( String user )
+  public void setUser(String user)
   {
     this.user = user;
   }
@@ -71,7 +80,7 @@ public class ReceiptClient
     return user;
   }
 
-  public void setCrypt( String crypt )
+  public void setCrypt(String crypt)
   {
     this.crypt = crypt;
   }
@@ -81,7 +90,7 @@ public class ReceiptClient
     return crypt;
   }
 
-  public void setInvoiceNumber( String invoiceNumber )
+  public void setInvoiceNumber(String invoiceNumber)
   {
     this.invoiceNumber = invoiceNumber;
   }
@@ -89,5 +98,113 @@ public class ReceiptClient
   private String getInvoiceNumber()
   {
     return invoiceNumber;
+  }
+
+  public void setVgerName(String vgerName)
+  {
+    this.vgerName = vgerName;
+  }
+
+  private String getVgerName()
+  {
+    return vgerName;
+  }
+
+  public void setLibBillName(String libBillName)
+  {
+    this.libBillName = libBillName;
+  }
+
+  private String getLibBillName()
+  {
+    return libBillName;
+  }
+
+  public void setApiKey(String apiKey)
+  {
+    this.apiKey = apiKey;
+  }
+
+  private String getApiKey()
+  {
+    return apiKey;
+  }
+
+  public void setAlmaUriBase(String almaUriBase)
+  {
+    this.almaUriBase = almaUriBase;
+  }
+
+  private String getAlmaUriBase()
+  {
+    return almaUriBase;
+  }
+
+  private ReceiptInfo buildAlmaReceipt()
+  {
+    AlmaClient client;
+    AlmaUser user;
+    DataHandler handler;
+    ReceiptInfo almaReceipt;
+    String patronID;
+    String cleanInvoiceNo;
+
+    cleanInvoiceNo = StringHandler.extractInvoiceID(getInvoiceNumber());
+
+    handler = new DataHandler();
+    handler.setDbName(getVgerName());
+    handler.setInvoiceID(cleanInvoiceNo);
+    
+    //LOGGER.info("calling DataHandler.getPatronData");
+    patronID = handler.getPatronData();
+    handler.setPatronID(patronID);
+
+    client = new AlmaClient();
+    prepAlmaClient(client, patronID, cleanInvoiceNo);
+    user = client.getThePatron();
+
+    almaReceipt = new ReceiptInfo();
+    almaReceipt.setUid(patronID);
+    almaReceipt.setStatus(client.getTheInvoice().getStatus());
+    almaReceipt.setUserName(user.getFirstName() + " " + user.getLastName());
+    handler.setDbName(getLibBillName());
+    almaReceipt.setUnpaid(client.getTheFees()
+                                .getFees()
+                                .size() + handler.getUnpaidCount());
+
+    return almaReceipt;
+  }
+
+  private ReceiptInfo buildLibBillReceipt()
+  {
+    AlmaClient almaClient;
+    Client client;
+    ReceiptInfo libBillReceipt;
+    WebResource webResource;
+
+    client = Client.create();
+    //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
+    webResource = client.resource(getUriBase().concat(getResourceURI()).concat(getInvoiceNumber()));
+    libBillReceipt =
+      webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
+      .get(ReceiptInfo.class);
+
+    almaClient = new AlmaClient();
+    prepAlmaClient(almaClient, libBillReceipt.getUid(), getInvoiceNumber());
+    libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees()
+                                                                    .getFees()
+                                                                    .size());
+
+    return libBillReceipt;
+  }
+
+  private void prepAlmaClient(AlmaClient theClient, String patronID, String invoice)
+  {
+    theClient.setDbName(getVgerName());
+    theClient.setFineID(invoice);
+    theClient.setKey(getApiKey());
+    theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
+    theClient.setUriBase(getAlmaUriBase());
+    theClient.setUserID(patronID);
   }
 }

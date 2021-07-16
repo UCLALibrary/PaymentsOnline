@@ -28,6 +28,8 @@ public class AlmaInvoice
   private String feeDate;
   @XmlElement(name = "owner")
   private String owner;
+  @XmlElement(name = "status")
+  private String status;
   @XmlElement(name = "lines")
   private List<CashNetLine> lineItems;
 
@@ -104,6 +106,27 @@ public class AlmaInvoice
   public String getOwner()
   {
     return owner;
+  }
+
+  public void setStatus(String statusIn)
+  {
+    this.status = statusIn;
+  }
+
+  public String getStatus()
+  {
+    if ( status.equalsIgnoreCase("ACTIVE") )
+    {
+      return "Unpaid";
+    }
+    else if ( status.equalsIgnoreCase("CLOSED") )
+    {
+      return "Paid";
+    }
+    else
+    {
+      return Character.toUpperCase(status.charAt(0)) + status.substring(1);
+    }
   }
 
   public void setLineItems(List<CashNetLine> lineItems)

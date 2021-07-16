@@ -15,7 +15,9 @@ public class AlmaUser
   private String firstName;
   @XmlElement( name = "last_name" ) 
   private String lastName;
-  
+  @XmlElement( name = "contact_info" )
+  private ContactInfo contactInfo;
+ 
   public AlmaUser()
   {
     super();
@@ -49,5 +51,15 @@ public class AlmaUser
   public String getLastName()
   {
     return lastName;
+  }
+
+  public void setContactInfo(ContactInfo contactInfo)
+  {
+    this.contactInfo = contactInfo;
+  }
+
+  public ContactInfo getContactInfo()
+  {
+    return contactInfo;
   }
 }

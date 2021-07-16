@@ -1,15 +1,26 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.db;
 
 import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+
+import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+//import org.apache.log4j.Logger;
 
 public class DataHandler
 {
+  //private static final Logger LOGGER = Logger.getLogger( DataHandler.class );
+
+  private static final String COUNT = "SELECT count(*) FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
+  private static final String DELETE = "DELETE FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
   private static final String INSERT = "INSERT INTO vger_support.alma_invoice_patron(invoice_id,patron_id) VALUES(?,?)";
+  private static final String SELECT_FEE = "SELECT item_code FROM location_service_vw WHERE service_name = ?";
   private static final String SELECT_PATRON = "SELECT patron_id FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
-  private static final String SELECT_FEE = "SELECT item_code FROM some_table WHERE fee_type = ?";
+  private static final String UNPAID =
+    "SELECT COUNT(invoice_number) FROM invoice_vw i INNER JOIN patron_vw p ON i.patron_id = p.patron_id WHERE " 
+    + "institution_id = ? AND status IN ('Partially Paid','Unpaid','Deposit Due','Final Payment Due')";
   
   private DataSource ds;
   private String dbName;
@@ -57,36 +68,53 @@ public class DataHandler
     this.feeType = feeType;
   }
 
-  private String getFeeType()
+  /*private String getFeeType()
   {
     return feeType;
-  }
+  }*/
 
   private void makeConnection()
   {
-    //ds = DataSourceFactory.createDataSource( getDbName() );
-    ds = DataSourceFactory.createVgerSource();
+    ds = DataSourceFactory.createDataSource( getDbName() );
+    //ds = DataSourceFactory.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
   {
-    //DataSource source = DataSourceFactory.createDataSource( dbName );
-    DataSource source = DataSourceFactory.createVgerSource();
-    new JdbcTemplate( source ).update(INSERT, new Object[]{invoiceID, patronID});
+    DataSource source = DataSourceFactory.createDataSource( dbName );
+    //DataSource source = DataSourceFactory.createVgerSource();
+    String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
+    if (new JdbcTemplate(source).queryForInt(COUNT, new Object[]{cleanInvoice}) == 0)
+    {
+      new JdbcTemplate( source ).update(INSERT, new Object[]{cleanInvoice, patronID});      
+    }
+  }
+  
+  public void deleteInvoiceData()
+  {
+    makeConnection();
+    new JdbcTemplate( ds ).update(DELETE, new Object[]{getInvoiceID()});
   }
   
   public String getPatronData()
   {
     String theID = null;
     makeConnection();
+    //LOGGER.info(SELECT_PATRON.replace("?", "'" + getInvoiceID() + "'"));
     theID = new JdbcTemplate( ds ).queryForObject(SELECT_PATRON, new Object[]{getInvoiceID()}, String.class).toString();
     return theID;
   }
   
   public static String getfeeData(String dbName, String feeType)
   {
-    //DataSource source = DataSourceFactory.createDataSource( dbName );
-    DataSource source = DataSourceFactory.createVgerSource();
+    DataSource source = DataSourceFactory.createDataSource( dbName );
+    //DataSource source = DataSourceFactory.createBillSource();
     return new JdbcTemplate( source ).queryForObject(SELECT_FEE, new Object[]{feeType}, String.class).toString();
+  }
+  
+  public int getUnpaidCount()
+  {
+    makeConnection();
+    return new JdbcTemplate(ds).queryForInt(UNPAID, new Object[]{getPatronID()});
   }
 }

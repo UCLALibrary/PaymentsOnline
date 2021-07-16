@@ -144,7 +144,7 @@
             <c:forEach var="theAlmaInvoice" items="${almaSource.theFees.fees}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}~${theAlmaInvoice.type.value}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
+                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
                 </td>
                 <td>
                   ${theAlmaInvoice.feeDate}
@@ -154,7 +154,7 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theAlmaInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<a href="/pdfs/display_invoice/${theAlmaInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
