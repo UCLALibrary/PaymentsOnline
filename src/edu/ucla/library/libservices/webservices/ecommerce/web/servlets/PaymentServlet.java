@@ -3,9 +3,9 @@ package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.sftp.SftpClient;
+//import edu.ucla.library.libservices.webservices.ecommerce.utility.sftp.SftpClient;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.writer.UploadWriter;
+//import edu.ucla.library.libservices.webservices.ecommerce.utility.writer.UploadWriter;
 //import edu.ucla.library.libservices.webservices.ecommerce.web.clients.PaymentClient;
 
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
@@ -26,10 +26,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class PaymentServlet
   extends HttpServlet
 {
+  @SuppressWarnings("compatibility:-306225955054470783")
+  private static final long serialVersionUID = -5089517672925799118L;
   private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
-  private static final String COUNT_QUERY =
-    "SELECT count(aeon_request_id) FROM invoice_aeon_request_vw WHERE invoice_number = ?";
-  private static final String ID_QUERY = "SELECT aeon_request_id FROM invoice_aeon_request_vw WHERE invoice_number = ?";
+  //private static final String COUNT_QUERY =
+    //"SELECT count(aeon_request_id) FROM invoice_aeon_request_vw WHERE invoice_number = ?";
+  //private static final String ID_QUERY = "SELECT aeon_request_id FROM invoice_aeon_request_vw WHERE invoice_number = ?";
   private static final String UPDATE_QUERY =
     "update fine_fee_transactions set trans_note = to_char(sysdate, 'MM/DD/YY')" +
     " || ' Paid in LibBill               ' || substr(trans_note, 40) where " +
@@ -61,10 +63,10 @@ public class PaymentServlet
     {
       updateVoyager(request, log);
     }
-    else if (!request.getParameter("UCLA_REF_NO").startsWith("alma"))
-    {
-      checkAeon(request, log);
-    }
+    //else if (!request.getParameter("UCLA_REF_NO").startsWith("alma"))
+    //{
+      //checkAeon(request, log);
+    //}
   }
 
   private void handlePayment(HttpServletRequest request, Logger log)
@@ -75,6 +77,7 @@ public class PaymentServlet
     }
     else
     {
+      log.info("going to libbill payments");
       doLibBillPayment(request, log);
     }
   }
@@ -84,7 +87,7 @@ public class PaymentServlet
    * if so, write payment file and upload to sftp
    */
 
-  private void checkAeon(HttpServletRequest request, Logger log)
+  /*private void checkAeon(HttpServletRequest request, Logger log)
   {
     String invoice;
     DataSource ds;
@@ -127,7 +130,7 @@ public class PaymentServlet
 
     sftp.getSftpConnect();
     sftp.uploadFile();
-  }
+  }*/
 
   private void updateVoyager(HttpServletRequest request, Logger log)
   {

@@ -115,17 +115,24 @@ public class AlmaInvoice
 
   public String getStatus()
   {
-    if ( status.equalsIgnoreCase("ACTIVE") )
+    if ( status != null )
     {
-      return "Unpaid";
-    }
-    else if ( status.equalsIgnoreCase("CLOSED") )
-    {
-      return "Paid";
+      if ( status.equalsIgnoreCase("ACTIVE") )
+      {
+        return "Unpaid";
+      }
+      else if ( status.equalsIgnoreCase("CLOSED") )
+      {
+        return "Paid";
+      }
+      else
+      {
+        return Character.toUpperCase(status.charAt(0)) + status.substring(1);
+      }
     }
     else
     {
-      return Character.toUpperCase(status.charAt(0)) + status.substring(1);
+      return new String();
     }
   }
 

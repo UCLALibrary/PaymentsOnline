@@ -8,6 +8,7 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ public class AlmaClient
   private String uriBase;
   private String key;
   private String dbName;
-  //private String feeType;
 
   public AlmaClient()
   {
@@ -128,28 +128,29 @@ public class AlmaClient
     this.dbName = dbName;
   }
 
-  /*private String getDbName()
+  private String getDbName()
   {
     return dbName;
   }
-
-  public void setFeeType(String feeType)
-  {
-    this.feeType = StringHandler.extractFeeType(feeType);
-  }
-
-  private String getFeeType()
-  {
-    return feeType;
-  }*/
 
   public AlmaUser getThePatron()
   {
     if (thePatron == null)
     {
+      ClientResponse response;
       client = Client.create();
-      webResource = client.resource(getUriBase().concat(getUserID()).concat("?apikey=").concat(getKey()));
-      thePatron = webResource.accept("application/json").get(AlmaUser.class);
+      webResource = client.resource(getUriBase().concat(getUserID())
+                                                .concat("?apikey=")
+                                                .concat(getKey()));
+      response = webResource.type("application/json").get(ClientResponse.class);
+      if (response.getStatus() == 200)
+      {
+        thePatron = response.getEntity(AlmaUser.class);
+      }
+      else
+      {
+        thePatron = new AlmaUser();
+      }
     }
     return thePatron;
   }
@@ -158,11 +159,20 @@ public class AlmaClient
   {
     if (theFees == null)
     {
+      ClientResponse response;
       client = Client.create();
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat(getResourceURI())
                                                 .concat(getKey()));
-      theFees = webResource.get(AlmaFees.class);
+      response = webResource.type("application/json").get(ClientResponse.class);
+      if (response.getStatus() == 200)
+      {
+        theFees = response.getEntity(AlmaFees.class);
+      }
+      else
+      {
+        theFees = new AlmaFees();
+      }
     }
     return theFees;
   }
@@ -171,21 +181,30 @@ public class AlmaClient
   {
     if (theInvoice == null)
     {
+      ClientResponse response;
       CashNetLine theLine;
       List<CashNetLine> lines;
-      
+
+      theLine = new CashNetLine();
       client = Client.create();
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())
                                                 .concat("?apikey=")
                                                 .concat(getKey()));
-      theInvoice = webResource.get(AlmaInvoice.class);
-      theLine = new CashNetLine();
-      theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
-      theLine.setTotalPrice(theInvoice.getBalance());
-      //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getDescription()));
-      theLine.setItemCode("45400-BKPR-A");
+      response = webResource.type("application/json").get(ClientResponse.class);
+      if (response.getStatus() == 200)
+      {
+        theInvoice = response.getEntity(AlmaInvoice.class);
+        theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
+        theLine.setTotalPrice(theInvoice.getBalance());
+        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(),
+                                                   theInvoice.getOwner().equalsIgnoreCase("Law")));
+      }
+      else
+      {
+        theInvoice = new AlmaInvoice();
+      }
       lines = new ArrayList<>();
       lines.add(theLine);
       theInvoice.setLineItems(lines);

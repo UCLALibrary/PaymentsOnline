@@ -7,21 +7,24 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.String
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 public class DataHandler
 {
-  //private static final Logger LOGGER = Logger.getLogger( DataHandler.class );
+  private static final Logger LOGGER = Logger.getLogger( DataHandler.class );
 
   private static final String COUNT = "SELECT count(*) FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
   private static final String DELETE = "DELETE FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
   private static final String INSERT = "INSERT INTO vger_support.alma_invoice_patron(invoice_id,patron_id) VALUES(?,?)";
-  private static final String SELECT_FEE = "SELECT item_code FROM location_service_vw WHERE service_name = ?";
-  private static final String SELECT_PATRON = "SELECT patron_id FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
+  private static final String SELECT_FEE = "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ?";
+  private static final String SELECT_FEE_LAW =
+    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' LAW'";
+  private static final String SELECT_PATRON =
+    "SELECT patron_id FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
   private static final String UNPAID =
-    "SELECT COUNT(invoice_number) FROM invoice_vw i INNER JOIN patron_vw p ON i.patron_id = p.patron_id WHERE " 
-    + "institution_id = ? AND status IN ('Partially Paid','Unpaid','Deposit Due','Final Payment Due')";
-  
+    "SELECT COUNT(invoice_number) FROM invoice_owner.invoice_vw i INNER JOIN invoice_owner.patron_vw p ON i.patron_id = p.patron_id WHERE " +
+    "institution_id = ? AND status IN ('Partially Paid','Unpaid','Deposit Due','Final Payment Due')";
+
   private DataSource ds;
   private String dbName;
   private String invoiceID;
@@ -75,46 +78,49 @@ public class DataHandler
 
   private void makeConnection()
   {
-    ds = DataSourceFactory.createDataSource( getDbName() );
+    ds = DataSourceFactory.createDataSource(getDbName());
     //ds = DataSourceFactory.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
   {
-    DataSource source = DataSourceFactory.createDataSource( dbName );
+    DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createVgerSource();
     String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
-    if (new JdbcTemplate(source).queryForInt(COUNT, new Object[]{cleanInvoice}) == 0)
+    if (new JdbcTemplate(source).queryForInt(COUNT, new Object[] { cleanInvoice }) == 0)
     {
-      new JdbcTemplate( source ).update(INSERT, new Object[]{cleanInvoice, patronID});      
+      new JdbcTemplate(source).update(INSERT, new Object[] { cleanInvoice, patronID });
     }
   }
-  
+
   public void deleteInvoiceData()
   {
     makeConnection();
-    new JdbcTemplate( ds ).update(DELETE, new Object[]{getInvoiceID()});
+    new JdbcTemplate(ds).update(DELETE, new Object[] { getInvoiceID() });
   }
-  
+
   public String getPatronData()
   {
     String theID = null;
     makeConnection();
     //LOGGER.info(SELECT_PATRON.replace("?", "'" + getInvoiceID() + "'"));
-    theID = new JdbcTemplate( ds ).queryForObject(SELECT_PATRON, new Object[]{getInvoiceID()}, String.class).toString();
+    theID =
+      new JdbcTemplate(ds).queryForObject(SELECT_PATRON, new Object[] { getInvoiceID() }, String.class).toString();
     return theID;
   }
-  
-  public static String getfeeData(String dbName, String feeType)
+
+  public static String getfeeData(String dbName, String feeType, boolean isLaw)
   {
-    DataSource source = DataSourceFactory.createDataSource( dbName );
+    String query = ( isLaw ? SELECT_FEE_LAW : SELECT_FEE );
+    DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createBillSource();
-    return new JdbcTemplate( source ).queryForObject(SELECT_FEE, new Object[]{feeType}, String.class).toString();
+    LOGGER.info(query.replace("?", feeType));
+    return new JdbcTemplate(source).queryForObject(query, new Object[] { feeType }, String.class).toString();
   }
-  
+
   public int getUnpaidCount()
   {
     makeConnection();
-    return new JdbcTemplate(ds).queryForInt(UNPAID, new Object[]{getPatronID()});
+    return new JdbcTemplate(ds).queryForInt(UNPAID, new Object[] { getPatronID() });
   }
 }

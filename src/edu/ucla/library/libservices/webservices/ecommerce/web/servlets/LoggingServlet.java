@@ -56,8 +56,8 @@ public class LoggingServlet
                 "Reason:{" + request.getParameter( "respmessage" ) + "}":
                 "" ) );
     
-    //if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
-      //   ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) )
+    if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
+         ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) )
     {
       data = new CashnetLog();
       prepCashnetLog( request, data );
@@ -68,10 +68,10 @@ public class LoggingServlet
         request.getRequestDispatcher( "paymentservlet" ).forward( request,
                                                                   response );
     }
-    /*else
+    else
     {
       log.info( "ecommerce.LoggingServlet: invalid logging/payment call from ".concat( request.getRemoteAddr() ) );
-    }*/
+    }
 
   }
 
