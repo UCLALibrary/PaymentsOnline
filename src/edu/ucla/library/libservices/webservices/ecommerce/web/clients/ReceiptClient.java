@@ -191,9 +191,7 @@ public class ReceiptClient
 
     almaClient = new AlmaClient();
     prepAlmaClient(almaClient, libBillReceipt.getUid(), getInvoiceNumber());
-    libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees()
-                                                                    .getFees()
-                                                                    .size());
+    libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
 
     return libBillReceipt;
   }

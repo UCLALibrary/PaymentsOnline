@@ -135,7 +135,7 @@
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.balanceDue}" pattern="$###,###.##"/>
                   <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>--%>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -154,7 +154,7 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
-                  &nbsp;<a href="/pdfs/display_invoice/${theAlmaInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/alma/${theAlmaInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>

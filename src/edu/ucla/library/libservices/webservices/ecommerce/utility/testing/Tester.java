@@ -34,11 +34,12 @@ public class Tester
   {
     AlmaClient theClient = new AlmaClient();
     theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
-    //theClient.setResourceURI("/fees/");
+    theClient.setResourceURI("/fees/");
     //theClient.setFineID("2563469710006533");
     theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
     theClient.setUserID("603513612");
-    AlmaUser theUser = theClient.getThePatron();
+    AlmaFees theFees = theClient.getTheFees();
+    System.out.println("record count = " + theFees.getRecordCount());
     //AlmaInvoice theInvoice = theClient.getTheInvoice();
     //System.out.println("invoice " + theInvoice.getInvoiceNumber() + " is for type " +
       //                 theInvoice.getType().getDescription() + " and has balance " + theInvoice.getBalance() );
