@@ -198,8 +198,8 @@ public class AlmaClient
         theInvoice = response.getEntity(AlmaInvoice.class);
         theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
         theLine.setTotalPrice(theInvoice.getBalance());
-        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(),
-                                                   theInvoice.getOwner().equalsIgnoreCase("Law")));
+        //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(),
+          //                                         theInvoice.getOwner().equalsIgnoreCase("Law")));
       }
       else
       {

@@ -22,8 +22,8 @@ public class DataHandler
   private static final String SELECT_PATRON =
     "SELECT patron_id FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
   private static final String UNPAID =
-    "SELECT COUNT(invoice_number) FROM invoice_owner.invoice_vw i INNER JOIN invoice_owner.patron_vw p ON i.patron_id = p.patron_id WHERE " +
-    "institution_id = ? AND status IN ('Partially Paid','Unpaid','Deposit Due','Final Payment Due')";
+    "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid'," 
+    + "'Deposit Due','Final Payment Due')";
 
   private DataSource ds;
   private String dbName;
@@ -78,8 +78,8 @@ public class DataHandler
 
   private void makeConnection()
   {
-    ds = DataSourceFactory.createDataSource(getDbName());
-    //ds = DataSourceFactory.createVgerSource();
+    //ds = DataSourceFactory.createDataSource(getDbName());
+    ds = DataSourceFactory.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)

@@ -6,22 +6,35 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Errors Have Occurred</title>
-    <style type="text/css">
+    <!--style type="text/css">
       body {
       background-color: #ff0000; 
 }
-    </style>
+    </style-->
   </head>
   <body>An error occured:<br/><pre>
+    We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
+    the Library Help Desk for assistance; please report when you accessed Payments Online and what you were attempting to do (e.g., 
+    logging in, viewing an invoice, submitting payment) when the error occurred.
     <%
       if (exception != null) 
       { 
+        out.println("Please include the following error message when you contact the Help Desk: ");
         out.println(exception.getMessage());
-        CharArrayWriter charArrayWriter = new CharArrayWriter(); 
+        /*CharArrayWriter charArrayWriter = new CharArrayWriter(); 
         PrintWriter printWriter = new PrintWriter(charArrayWriter, true); 
         exception.printStackTrace(printWriter); 
-        out.println(charArrayWriter.toString()); 
+        out.println(charArrayWriter.toString()); */
       } 
     %>
-    </pre></body>
+    <br/><br/>
+    You can report this error via the <a href="https://jira.library.ucla.edu/servicedesk/customer/portals">Service Portal</a>, 
+    or by email to <a href="mailto:techhelp@library.ucla.edu">techhelp@library.ucla.edu</a>
+    </pre>
+    To leave Payments Online, click here: 
+    <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
+      <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
+      <input type="submit" value="Logout">
+    </form>
+  </body>
 </html>

@@ -45,7 +45,7 @@ public class PdfService
       generator = new PdfGenerator();
       generator.setInvoiceNumber(invoiceNo);
       generator.setPatronID(uid);
-      generator.setDbName(config.getServletContext().getInitParameter("datasource.oracle"));
+      generator.setDbName(config.getServletContext().getInitParameter("datasource.invoice"));
       generator.setApiKey(config.getServletContext().getInitParameter("alma.key"));
       generator.setUriBase(config.getServletContext().getInitParameter("alma.base.fees"));
 

@@ -1,8 +1,10 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.clients;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
@@ -154,7 +156,7 @@ public class ReceiptClient
     handler = new DataHandler();
     handler.setDbName(getVgerName());
     handler.setInvoiceID(cleanInvoiceNo);
-    
+
     //LOGGER.info("calling DataHandler.getPatronData");
     patronID = handler.getPatronData();
     handler.setPatronID(patronID);
@@ -181,17 +183,33 @@ public class ReceiptClient
     Client client;
     ReceiptInfo libBillReceipt;
     WebResource webResource;
+    ClientResponse response;
 
     client = Client.create();
     //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
     webResource = client.resource(getUriBase().concat(getResourceURI()).concat(getInvoiceNumber()));
-    libBillReceipt =
-      webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
-      .get(ReceiptInfo.class);
+    response = webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
+                          .type("application/json")
+                          .get(ClientResponse.class);
+    if (response.getStatus() == 200)
+    {
+      libBillReceipt = response.getEntity(ReceiptInfo.class);
+    }
+    else
+    {
+      libBillReceipt = new ReceiptInfo();
+    }
+    //libBillReceipt =
+    //webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
+    //.get(ReceiptInfo.class);
 
     almaClient = new AlmaClient();
-    prepAlmaClient(almaClient, libBillReceipt.getUid(), getInvoiceNumber());
-    libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
+    //check that invoice number is not empty
+    if (!ContentTests.isEmpty(getInvoiceNumber()))
+    {
+      prepAlmaClient(almaClient, libBillReceipt.getPatronID(), getInvoiceNumber());
+      libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
+    }
 
     return libBillReceipt;
   }

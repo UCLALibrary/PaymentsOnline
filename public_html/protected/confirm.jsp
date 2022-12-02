@@ -47,8 +47,7 @@
       </tr>
     </table>
     <c:choose>
-      <c:when test="${param.result eq 0}">
-        <!-- success output -->
+      <c:when test="${empty param.UCLA_REF_NO}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr>
@@ -61,120 +60,152 @@
             </td>
           </tr>
           <tr>
-            <td>&nbsp;</td>
             <td>
-              <h3>Payment received for invoice ${invoiceNo} on <fmt:formatDate value="${now}" pattern="MMMM dd, yyyy"/></h3>
+              We're sorry, Library Payments Online failed to receive an invoice number from the payment processing
+              system. You should receive an email from UCLA Finance (finance.ucla.edu) confirming your 
+              payment, or explaining any errors in processing your payment. Also, if you were paying a Library 
+              fine/fee, you should receive a second email from Library Buisiness Services confirming the payment.
+              <br/><br/>
+              If you do not receive these emails, or have other questions/concerns, please contact Library Business 
+              Services at 310-825-8416 between 9:00 a.m. and 5:00 p.m. Pacific Time Monday through Friday or 
+              <a href="mailto:lbs-billing@library.ucla.edu">lbs-billing@library.ucla.edu</a>. Please be patient; we will 
+              respond during regular business hours. We apoligize for the inconvenience.
             </td>
           </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              Thank you, ${receiptSource.theReceipt.userName}.<br/>
-              <%
-                double total = 0.0d;
-                for ( int index = 1;
-                      index <= Integer.parseInt( request.getParameter( "itemcnt" ) );
-                      index++ )
-                {
-                  double amount = Double.parseDouble( request.getParameter( "amount".concat( String.valueOf( index )) ) );
-                  total += amount;
-                }
-                out.print( "A payment of " + new java.text.DecimalFormat( "$###########0.00" ).format( total ) 
-                + " by " + ( request.getParameter( "pmtcode" ).equalsIgnoreCase( "CC" ) ? "credit card" : "e-check" ) 
-                + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ).replace("alma", "") + ".<br/>" );
-              %>
-              Payment transaction number: ${param.tx}
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <c:choose>
-                <c:when test="${receiptSource.theReceipt.status eq 'Paid'}">
-                  This invoice has been paid in full.
-                </c:when>
-                <c:when test="${receiptSource.theReceipt.status eq 'Deposit Paid'}">
-                  The deposit on this invoice has been paid.
-                </c:when>
-                <c:otherwise>
-                  Other invoice status reported: ${receiptSource.theReceipt.status}.
-                </c:otherwise>
-              </c:choose>
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>A receipt has also been emailed to the address you entered on the payment screen.</td>
-          </tr>
-          <c:if test="${receiptSource.theReceipt.unpaid gt 0}">
-            <tr>
-              <td>&nbsp;</td>
-              <td>
-                <!--a href="invoices.jsp">Pay another invoice</a-->
-                <form action="invoices.jsp">
-                  <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
-                  <input type="submit" value="Pay another invoice">
-                </form>
-              </td>
-            </tr>
-          </c:if>
         </table>
       </c:when>
       <c:otherwise>
-        <!-- failure output -->
-        <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
-          <tr><td colspan="2">&nbsp;</td></tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${invoiceNo} was not successful.</h3>
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <h3>The payment system returned this message:<br/>
-              ${param.respmessage}</h3>              
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <h3>Failed Transaction #${param.failedtx}.</h3>
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              If you need help and wish to contact the UCLA Library, please 
-              include:  transaction number listed above, your name, invoice 
-              number, email address or telephone number, date and approximate 
-              time of the failed transaction. 
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <em>Technical problem?</em>&nbsp;<a href="mailto:helpdesk@library.ucla.edu">helpdesk@library.ucla.edu</a>.
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              <em>Not a technical problem or unsure?</em>&nbsp;
-              <a href="lbs-billing@library.ucla.edu">lbs-billing@library.ucla.edu</a>.
-              Please be patient; we will respond during regular business hours.  
-              Or between 9:00 a.m. and 5:00 p.m. Pacific Time Monday through 
-              Friday, 310-825-8416.
-            </td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>
-              Thank you. 
-            </td>
-          </tr>
-        </table>
+        <c:choose>
+          <c:when test="${param.result eq 0}">
+            <!-- success output -->
+            <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td align="right">
+                  <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
+                    <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
+                    <input type="submit" value="Logout">
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <h3>Payment received for invoice ${invoiceNo} on <fmt:formatDate value="${now}" pattern="MMMM dd, yyyy"/></h3>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  Thank you, ${receiptSource.theReceipt.userName}.<br/>
+                  <%
+                    double total = 0.0d;
+                    for ( int index = 1;
+                          index <= Integer.parseInt( request.getParameter( "itemcnt" ) );
+                          index++ )
+                    {
+                      double amount = Double.parseDouble( request.getParameter( "amount".concat( String.valueOf( index )) ) );
+                      total += amount;
+                    }
+                    out.print( "A payment of " + new java.text.DecimalFormat( "$###########0.00" ).format( total ) 
+                    + " by " + ( request.getParameter( "pmtcode" ).equalsIgnoreCase( "CC" ) ? "credit card" : "e-check" ) 
+                    + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ).replace("alma", "") + ".<br/>" );
+                  %>
+                  Payment transaction number: ${param.tx}
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <c:choose>
+                    <c:when test="${receiptSource.theReceipt.status eq 'Paid'}">
+                      This invoice has been paid in full.
+                    </c:when>
+                    <c:when test="${receiptSource.theReceipt.status eq 'Deposit Paid'}">
+                      The deposit on this invoice has been paid.
+                    </c:when>
+                    <c:otherwise>
+                      Other invoice status reported: ${receiptSource.theReceipt.status}.
+                    </c:otherwise>
+                  </c:choose>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>A receipt has also been emailed to the address you entered on the payment screen.</td>
+              </tr>
+              <c:if test="${receiptSource.theReceipt.unpaid gt 0}">
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>
+                    <!--a href="invoices.jsp">Pay another invoice</a-->
+                    <form action="invoices.jsp">
+                      <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
+                      <input type="submit" value="Pay another invoice">
+                    </form>
+                  </td>
+                </tr>
+              </c:if>
+            </table>
+          </c:when>
+          <c:otherwise>
+            <!-- failure output -->
+            <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${invoiceNo} was not successful.</h3>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <h3>The payment system returned this message:<br/>
+                  ${param.respmessage}</h3>              
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <h3>Failed Transaction #${param.failedtx}.</h3>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  If you need help and wish to contact the UCLA Library, please 
+                  include:  transaction number listed above, your name, invoice 
+                  number, email address or telephone number, date and approximate 
+                  time of the failed transaction. 
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <em>Technical problem?</em>&nbsp;<a href="mailto:helpdesk@library.ucla.edu">helpdesk@library.ucla.edu</a>.
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <em>Not a technical problem or unsure?</em>&nbsp;
+                  <a href="lbs-billing@library.ucla.edu">lbs-billing@library.ucla.edu</a>.
+                  Please be patient; we will respond during regular business hours.  
+                  Or between 9:00 a.m. and 5:00 p.m. Pacific Time Monday through 
+                  Friday, 310-825-8416.
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  Thank you. 
+                </td>
+              </tr>
+            </table>
+          </c:otherwise>
+        </c:choose>
       </c:otherwise>
     </c:choose>
   </body>

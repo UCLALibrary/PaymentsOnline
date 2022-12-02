@@ -520,11 +520,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Invoices.jar1"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
+            <value n="id" v="Invoices.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -541,11 +541,11 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/lpo/invoices.jar" jar-entry=""/>
+                  <url path="../../Projects/LibBill/middleware/deploy/invoices.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Invoices.jar1"/>
-               <value n="id" v="Invoices.jar1"/>
+               <value n="description" v="Invoices.jar"/>
+               <value n="id" v="Invoices.jar"/>
                <value n="locked" v="true"/>
             </hash>
          </list>
@@ -596,11 +596,11 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Invoices.jar1"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
+            <value n="id" v="Invoices.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

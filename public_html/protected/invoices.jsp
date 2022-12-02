@@ -76,7 +76,9 @@
           </tr>
           <tr>
             <td colspan="2">
-              No patron record was found for the entered UID ${param.uid}.
+              We're sorry: No patron record was found matching your login. Please contact UCLA Library Access 
+              Services at <a href="mailto:AskUs@library.ucla.edu">AskUs@library.ucla.edu</a> and tell them Payments Online 
+              reported that the logon/UCLA ID ${param.uid} did not match a patron record.
             </td>
           </tr>
         </table>
@@ -163,7 +165,9 @@
             <c:if test="${index eq 0}">
               <tr>
                 <td colspan="0">
-                  No unpaid invoices found.
+                  No unpaid invoices found. If you believe you should have invoices to pay, please contact 
+                  UCLA Library Business Services at 310-825-8416 or 
+                  <a href="mailto:mailto:lbs-billing@library.ucla.edu">lbs-billing@library.ucla.edu</a>.
                 </td>
               </tr>
             </c:if>
