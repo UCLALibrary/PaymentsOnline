@@ -116,12 +116,15 @@ public class PdfGenerator
     prepAlmaClient();
     theInvoice = invoiceClient.getTheInvoice();
     thePatron = invoiceClient.getThePatron();
+    System.out.println(thePatron.getPatronID() + "\t" + thePatron.getContactInfo().getAddresses().size());
     thePatronAddress = thePatron.getContactInfo()
                                 .getAddresses()
                                 .stream()
                                 .filter(e -> e.isPreferred())
                                 .findFirst()
                                 .get();
+    System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity() 
+                       + "\t" + thePatronAddress.getZipCode());
 
     try
     {
@@ -518,7 +521,7 @@ public class PdfGenerator
     if (!ContentTests.isEmpty(thePatronAddress.getZipCode()))
       buffer.append(" ").append(thePatronAddress.getZipCode().trim());
     if (!ContentTests.isEmpty(thePatronAddress.getCountry()))
-      buffer.append(" ").append(thePatronAddress.getCountry().trim());
+      buffer.append(" ").append(thePatronAddress.getCountry().getValue().trim());
 
     return buffer.toString().trim();
   }

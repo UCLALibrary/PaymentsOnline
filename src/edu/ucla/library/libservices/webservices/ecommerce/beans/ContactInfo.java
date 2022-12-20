@@ -13,6 +13,10 @@ public class ContactInfo
 {
   @XmlElement(name = "address")
   private List<Address> addresses;
+  @XmlElement(name = "email")
+  private List<Email> emails;
+  @XmlElement(name = "phone")
+  private List<Phone> phones;
   
   public ContactInfo()
   {
@@ -27,5 +31,25 @@ public class ContactInfo
   public List<Address> getAddresses()
   {
     return addresses;
+  }
+
+  public void setEmails(List<Email> emails)
+  {
+    this.emails = emails;
+  }
+
+  public List<Email> getEmails()
+  {
+    return emails;
+  }
+
+  public void setPhones(List<Phone> phones)
+  {
+    this.phones = phones;
+  }
+
+  public List<Phone> getPhones()
+  {
+    return phones;
   }
 }

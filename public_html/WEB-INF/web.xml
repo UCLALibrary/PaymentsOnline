@@ -14,6 +14,10 @@
     <servlet-name>TestServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.TestServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PdfServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.PdfServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
     <url-pattern>/loggingservlet</url-pattern>
@@ -130,6 +134,10 @@
   <servlet-mapping>
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/testservlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PdfServlet</servlet-name>
+    <url-pattern>/pdfservlet</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>

@@ -78,8 +78,8 @@ public class DataHandler
 
   private void makeConnection()
   {
-    //ds = DataSourceFactory.createDataSource(getDbName());
-    ds = DataSourceFactory.createVgerSource();
+    ds = DataSourceFactory.createDataSource(getDbName());
+    //ds = DataSourceFactory.createBillSource(); //.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
@@ -115,6 +115,7 @@ public class DataHandler
     DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createBillSource();
     LOGGER.info(query.replace("?", feeType));
+    System.out.println(query.replace("?", feeType));
     return new JdbcTemplate(source).queryForObject(query, new Object[] { feeType }, String.class).toString();
   }
 

@@ -24,6 +24,7 @@ public class AlmaInvoice
   private String barcode;
   @XmlElement(name = "type")
   private FeeType type;
+  //private String type;
   @XmlElement(name = "creation_time")
   private String feeDate;
   @XmlElement(name = "owner")

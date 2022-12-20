@@ -142,7 +142,7 @@ public class AlmaClient
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("?apikey=")
                                                 .concat(getKey()));
-      response = webResource.type("application/json").get(ClientResponse.class);
+      response = webResource.accept("application/json").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
         thePatron = response.getEntity(AlmaUser.class);
@@ -164,7 +164,7 @@ public class AlmaClient
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat(getResourceURI())
                                                 .concat(getKey()));
-      response = webResource.type("application/json").get(ClientResponse.class);
+      response = webResource.accept("application/json").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
         theFees = response.getEntity(AlmaFees.class);
@@ -187,19 +187,24 @@ public class AlmaClient
 
       theLine = new CashNetLine();
       client = Client.create();
+      System.out.println(getUriBase().concat(getUserID())
+                                                .concat("/fees/")
+                                                .concat(getFineID())
+                                                .concat("?apikey=")
+                                                .concat(getKey()));
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())
                                                 .concat("?apikey=")
                                                 .concat(getKey()));
-      response = webResource.type("application/json").get(ClientResponse.class);
+      response = webResource.accept("application/xml").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
         theInvoice = response.getEntity(AlmaInvoice.class);
         theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
         theLine.setTotalPrice(theInvoice.getBalance());
-        //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(),
-          //                                         theInvoice.getOwner().equalsIgnoreCase("Law")));
+        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue() ,
+                                                   theInvoice.getOwner().equalsIgnoreCase("Law")));
       }
       else
       {

@@ -1,5 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+import edu.ucla.library.libservices.invoicing.webservices.patrons.beans.Country;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -28,7 +30,7 @@ public class Address
   @XmlElement(name = "postal_code")
   private String zipCode;
   @XmlElement(name = "country")
-  private String country;
+  private Country country;
 
   public Address()
   {
@@ -125,12 +127,12 @@ public class Address
     return zipCode;
   }
 
-  public void setCountry(String country)
+  public void setCountry(Country country)
   {
     this.country = country;
   }
 
-  public String getCountry()
+  public Country getCountry()
   {
     return country;
   }

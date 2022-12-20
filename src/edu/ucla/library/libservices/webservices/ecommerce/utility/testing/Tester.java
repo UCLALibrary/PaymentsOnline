@@ -24,6 +24,8 @@ import com.itextpdf.text.PageSize;
 
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 
+import java.util.List;
+
 public class Tester
 {
   public Tester()
@@ -34,22 +36,52 @@ public class Tester
   public static void main(String[] args)
     throws Exception
   {
-    AlmaClient theClient = new AlmaClient();
+    Document document;
+    PdfGenerator generator;
+
+    document = new Document(PageSize.LETTER);
+    generator = new PdfGenerator();
+    generator.setInvoiceNumber("6670233180006533");
+    generator.setPatronID("603513612");
+    generator.setDbName("dbname");
+    generator.setApiKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
+    generator.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
+    generator.populatePdf(document);
+    
+
+    /*AlmaClient theClient = new AlmaClient();
     theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
     theClient.setResourceURI("/fees/");
-    theClient.setFineID("7477476890006533");
+    theClient.setFineID("6670223160006533");
     theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    theClient.setUserID("405239099");
+    theClient.setUserID("603513612");
+    AlmaUser thePatron = theClient.getThePatron();
+    System.out.println(thePatron.getFirstName() + "\t" + thePatron.getLastName());
+    List<Address> addresses = thePatron.getContactInfo()
+                                .getAddresses();
+    if (addresses != null)
+    {
+      for (Address theAddress : addresses)
+      {
+        System.out.println(theAddress.getLine1() + "\n" + theAddress.getCity() + "\n" + 
+                           theAddress.getState() + "\t" + theAddress.getZipCode() + 
+                           "\n" + theAddress.isPreferred());
+      }
+    }
+    else
+    {
+      System.out.println("No addresses?");
+    }
     AlmaFees theFees = theClient.getTheFees();
     System.out.println("record count = " + theFees.getRecordCount());
     AlmaInvoice theInvoice = theClient.getTheInvoice();
     System.out.println("invoice " + theInvoice.getInvoiceNumber() + " is for type " +
-                       theInvoice.getType().getValue() + " fro unit " + theInvoice.getOwner()
+                       theInvoice.getType().getValue() + " from unit " + theInvoice.getOwner()
                        + " and has balance " + theInvoice.getBalance() );
     for (CashNetLine theLine : theInvoice.getLineItems() )
     {
       System.out.println(theLine.getItemCode() + "\t" + theLine.getTotalPrice());
-    }
+    }*/
     /*ApplyFullPaymentProcedure proc;
 
     proc = new ApplyFullPaymentProcedure();
