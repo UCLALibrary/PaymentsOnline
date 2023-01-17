@@ -59,10 +59,10 @@ public class PaymentServlet
     //log.info( "ecommerce.PaymentServlet: doPost()" );
 
     handlePayment(request, log);
-    if (request.getParameter("UCLA_REF_NO").startsWith("CS"))
+    /*if (request.getParameter("UCLA_REF_NO").startsWith("CS"))
     {
       updateVoyager(request, log);
-    }
+    }*/
     //else if (!request.getParameter("UCLA_REF_NO").startsWith("alma"))
     //{
       //checkAeon(request, log);

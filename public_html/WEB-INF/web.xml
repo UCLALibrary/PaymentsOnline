@@ -18,6 +18,10 @@
     <servlet-name>PdfServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.PdfServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.AuthServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
     <url-pattern>/loggingservlet</url-pattern>
@@ -138,6 +142,10 @@
   <servlet-mapping>
     <servlet-name>PdfServlet</servlet-name>
     <url-pattern>/pdfservlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/authservlet</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>

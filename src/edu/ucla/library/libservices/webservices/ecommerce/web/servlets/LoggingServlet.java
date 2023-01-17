@@ -57,7 +57,8 @@ public class LoggingServlet
                 "" ) );
     
     if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
-         ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) )
+         ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) ||
+         ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.three" ) ) ) )
     {
       data = new CashnetLog();
       prepCashnetLog( request, data );
