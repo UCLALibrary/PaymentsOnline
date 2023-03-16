@@ -3,15 +3,17 @@ package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AuthClient;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class AuthServlet
   extends HttpServlet
 {
-  private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
 
   public void init(ServletConfig config)
     throws ServletException
@@ -40,12 +42,20 @@ public class AuthServlet
     theClient.setUserID(request.getParameter("userID"));
     if (theClient.isValidPatron())
     {
-      //store userID in shib header
-      //redirect to invoices.jsp
+      //response.addHeader("SHIBUCLAUNIVERSITYID", request.getParameter("userID"));
+      Cookie authCookie = new Cookie( "almaID", 
+                                      request.getParameter("userID") );
+      authCookie.setHttpOnly(true);
+      authCookie.setMaxAge(300);
+      authCookie.setSecure(true);
+      response.addCookie( authCookie );
+      response.sendRedirect("protected/invoices.jsp");
     }
     else
     {
-      //redirect to error page with "unsuccessful login" message
+      response.addCookie( new Cookie( "logonError", 
+                                      "user name or password not recognized" ) );
+      response.sendRedirect("protected/errors.jsp");
     }
   }
 }

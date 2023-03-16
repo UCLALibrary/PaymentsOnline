@@ -24,6 +24,8 @@ import com.itextpdf.text.PageSize;
 
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AuthClient;
+
 import java.util.List;
 
 public class Tester
@@ -41,31 +43,58 @@ public class Tester
 
     document = new Document(PageSize.LETTER);
     generator = new PdfGenerator();
-    generator.setInvoiceNumber("6670233180006533");
-    generator.setPatronID("603513612");
+    generator.setInvoiceNumber("12754967580006533");
+    generator.setPatronID("P0002817983");
     generator.setDbName("dbname");
     generator.setApiKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
     generator.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
     generator.populatePdf(document);
     
-
-    /*AlmaClient theClient = new AlmaClient();
-    theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
-    theClient.setResourceURI("/fees/");
-    theClient.setFineID("6670223160006533");
+    /*AuthClient theClient = new AuthClient();
+    theClient.setKey("l8xx9b4188ba3ad44d70a17cf3500ba0962f");
     theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    theClient.setUserID("603513612");
+    theClient.setUserID("P0002817983");
+    theClient.setPassword("bear1234");
+    
+    if (theClient.isValidPatron())
+    {
+      System.out.println("good login");
+    }
+    else
+    {
+      System.out.println("bad login");
+    }*/
+
+    AlmaClient theClient = new AlmaClient();
+    theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
+    theClient.setResourceURI("/fees");
+    //theClient.setFineID("6670223160006533");
+    theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
+    theClient.setUserID("P0002817983");
     AlmaUser thePatron = theClient.getThePatron();
     System.out.println(thePatron.getFirstName() + "\t" + thePatron.getLastName());
     List<Address> addresses = thePatron.getContactInfo()
                                 .getAddresses();
     if (addresses != null)
     {
-      for (Address theAddress : addresses)
+      if (!addresses.isEmpty())
       {
-        System.out.println(theAddress.getLine1() + "\n" + theAddress.getCity() + "\n" + 
-                           theAddress.getState() + "\t" + theAddress.getZipCode() + 
-                           "\n" + theAddress.isPreferred());
+        if (addresses.size() != 0)
+        {
+          if ( thePatron.getContactInfo()
+                                      .getAddresses()
+                                      .stream()
+                                      .filter(e -> e.isPreferred())
+                                      .count() > 0 )
+          {
+            for (Address theAddress : addresses)
+            {
+              System.out.println(theAddress.getLine1() + "\n" + theAddress.getCity() + "\n" + 
+                                 theAddress.getState() + "\t" + theAddress.getZipCode() + 
+                                 "\n" + theAddress.isPreferred());
+            }
+          }
+        }
       }
     }
     else
@@ -74,7 +103,7 @@ public class Tester
     }
     AlmaFees theFees = theClient.getTheFees();
     System.out.println("record count = " + theFees.getRecordCount());
-    AlmaInvoice theInvoice = theClient.getTheInvoice();
+    /*AlmaInvoice theInvoice = theClient.getTheInvoice();
     System.out.println("invoice " + theInvoice.getInvoiceNumber() + " is for type " +
                        theInvoice.getType().getValue() + " from unit " + theInvoice.getOwner()
                        + " and has balance " + theInvoice.getBalance() );

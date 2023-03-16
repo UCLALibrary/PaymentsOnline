@@ -1,0 +1,109 @@
+<html lang="en-US">
+  <head>
+    <meta http-equiv="Pragma" content="no-cache" />
+    <title>Payments Online-UCLA Library Login</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <link
+      rel="shortcut icon"
+      href="css/images/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/mobile.css"
+      media="only screen and (max-device-width: 480px)"
+    />
+    <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+  </head>
+  <body id="type-a">
+    <div id="header" role="heading" aria-label="Search">
+      <!-- Start of custom code -->
+      <div class="primary-navbar">
+        <div class="navbar-wrap">
+          <div class="logo-block">
+            <a href="https://library.ucla.edu/"
+              ><img
+                src="css/images/ucla_library_logo_wht.svg"
+                alt="UCLA Library Logo"
+            /></a>
+            <span class="navbar-pipe"></span>
+            <p class="speccoll-title">Library Payments Online</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- End of custom code -->
+    </div>
+
+    <div id="wrap">
+      <div id="content-wrap">
+        <div id="content" role="heading" aria-label="Content">
+          <form action="authservlet" method="post" name="Logon" class="f-wrap-1">
+            <div id="logonform">
+              <fieldset>
+                <legend>
+                  Payments Online Login for Non-UCLA Affiliated Users
+                </legend>
+                <hr class="hr-blue" />
+                <div class="req" style="margin-bottom: 20px;">
+                  <span class="bold">*</span> Indicates required field
+                </div>
+                <label for="userID">
+                  <span class="field">
+                    <span class="req">*</span>
+                    <span class="field-title">Username</span>
+                  </span>
+                  <input
+                    id="userID"
+                    name="userID"
+                    type="text"
+                    class="f-name"
+                    tabindex="0"
+                  /><br />
+                </label>
+                <label for="password">
+                  <span class="field">
+                    <span class="req">*</span>
+                    <span class="field-title">Password</span>
+                  </span>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="f-name"
+                    tabindex="0"
+                  /><br />
+                </label>
+
+                <div class="f-submit-wrap">
+                  <input
+                    type="submit"
+                    name="SubmitButton"
+                    value="Login to LPO"
+                    class="f-submit"
+                    tabindex="0"
+                  /><br />
+                </div>
+              </fieldset>
+            </div>
+          </form>
+          <hr class="hr-blue" />
+          <div class="login-repeat">
+            <p>Forgot Password? First Time User?</p>
+            <a href="https://search.library.ucla.edu/view/resetPw?institutionCode=01UCS_LAL" target="_blank">Click here to create or reset.</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

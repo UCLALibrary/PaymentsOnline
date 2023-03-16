@@ -67,11 +67,11 @@ public class AuthClient
     ClientResponse response;
     client = Client.create();
     webResource = client.resource(getUriBase().concat(getUserID())
-                                              .concat("??op=auth&amp;apikey=")
+                                              .concat("??op=auth&apikey=")
                                               .concat(getKey()));
     System.out.println(webResource.getURI().toString());
     response = webResource.header("Exl-User-Pw", getPassword())
-                          .header("Content-Type", "application/x-www-form-urlencoded")
+                          //.header("Content-Type", "application/x-www-form-urlencoded")
                           //.accept("application/json")
                           .post(ClientResponse.class);
     if (response.getStatus() == 204)

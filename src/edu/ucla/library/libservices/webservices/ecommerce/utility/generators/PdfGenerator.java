@@ -116,15 +116,25 @@ public class PdfGenerator
     prepAlmaClient();
     theInvoice = invoiceClient.getTheInvoice();
     thePatron = invoiceClient.getThePatron();
-    System.out.println(thePatron.getPatronID() + "\t" + thePatron.getContactInfo().getAddresses().size());
-    thePatronAddress = thePatron.getContactInfo()
-                                .getAddresses()
-                                .stream()
-                                .filter(e -> e.isPreferred())
-                                .findFirst()
-                                .get();
-    System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity() 
-                       + "\t" + thePatronAddress.getZipCode());
+    //System.out.println(thePatron.getPatronID() + "\t" + thePatron.getContactInfo().getAddresses().size());
+    if (!thePatron.getContactInfo().getAddresses().isEmpty()) 
+    {
+      if ( thePatron.getContactInfo()
+                                  .getAddresses()
+                                  .stream()
+                                  .filter(e -> e.isPreferred())
+                                  .count() > 0 )
+      {
+        thePatronAddress = thePatron.getContactInfo()
+                                    .getAddresses()
+                                    .stream()
+                                    .filter(e -> e.isPreferred())
+                                    .findFirst()
+                                    .get();
+      }
+    }
+    //System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity() 
+      //                 + "\t" + thePatronAddress.getZipCode());
 
     try
     {
@@ -499,29 +509,36 @@ public class PdfGenerator
 
   private String getStreetAddress()
   {
-    buffer = new StringBuffer(thePatronAddress.getLine1().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getLine2()))
-      buffer.append(" ").append(thePatronAddress.getLine2().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getLine3()))
-      buffer.append(" ").append(thePatronAddress.getLine3().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getLine4()))
-      buffer.append(" ").append(thePatronAddress.getLine4().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getLine5()))
-      buffer.append(" ").append(thePatronAddress.getLine5().trim());
+    buffer = new StringBuffer();
+    if (!ContentTests.isEmpty(thePatronAddress))
+    {
+      buffer.append(thePatronAddress.getLine1().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getLine2()))
+        buffer.append(" ").append(thePatronAddress.getLine2().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getLine3()))
+        buffer.append(" ").append(thePatronAddress.getLine3().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getLine4()))
+        buffer.append(" ").append(thePatronAddress.getLine4().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getLine5()))
+        buffer.append(" ").append(thePatronAddress.getLine5().trim());
+    }
     return buffer.toString().trim();
   }
 
   private String getCityStateZip()
   {
     buffer = new StringBuffer();
-    if (!ContentTests.isEmpty(thePatronAddress.getCity()))
-      buffer = new StringBuffer(thePatronAddress.getCity().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getState()))
-      buffer.append(" ").append(thePatronAddress.getState().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getZipCode()))
-      buffer.append(" ").append(thePatronAddress.getZipCode().trim());
-    if (!ContentTests.isEmpty(thePatronAddress.getCountry()))
-      buffer.append(" ").append(thePatronAddress.getCountry().getValue().trim());
+    if (!ContentTests.isEmpty(thePatronAddress))
+    {
+      if (!ContentTests.isEmpty(thePatronAddress.getCity()))
+        buffer.append(thePatronAddress.getCity().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getState()))
+        buffer.append(" ").append(thePatronAddress.getState().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getZipCode()))
+        buffer.append(" ").append(thePatronAddress.getZipCode().trim());
+      if (!ContentTests.isEmpty(thePatronAddress.getCountry()))
+        buffer.append(" ").append(thePatronAddress.getCountry().getValue().trim());
+    }
 
     return buffer.toString().trim();
   }

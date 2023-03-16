@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <title>UCLA Library Payments Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+    <link rel="shortcut icon" href="https://speccoll.library.ucla.edu/nonshib/css/images/favicon.ico"
+          type="image/x-icon"/>
+    <link rel="icon" href="https://speccoll.library.ucla.edu/nonshib/css/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/print.css" media="print"/>
+    <style>
+      .ucla_alert
+      {
+        background-color: #f9f9f9;
+        width: 900px;
+        border: 1px #f9f9f9;
+        padding: 20px;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <div class="primary-navbar">
+        <div class="navbar-wrap">
+          <div class="logo-block">
+            <a href="https://library.ucla.edu/">
+              <img src="images/ucla_library_logo_wht.svg"
+                   alt="UCLA Library Logo"/></a>
+             
+            <span class="navbar-pipe"></span>
+            <p class="speccoll-title">Library Payments Online System</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="wrap">
+      <div id="authportalFrame">
+        <h2>Welcome to UCLA Library's Payments Online System.</h2>
+        <p class="login-option-cta">To log into your UCLA Login or UC Library Search user account, please click one of
+                                    the options below.</p>
+        <div class="login-row">
+          <form method="get" action='https://webservices-test.library.ucla.edu/Shibboleth.sso/Login?target=https%3A%2F%2Fwebservices-test.library.ucla.edu%2Flpo%2Fprotected%2Finvoices.jsp'>
+            <button type="submit" value="login" class="option-boxes">
+              UCLA Affiliated Users<br/>
+              Any user with a valid UCLA Logon ID.
+            </button>
+          </form>
+           If you experience any issues with logging in, send us an email at AskUs@library.ucla.edu with your name and library card number.If you experience any issues with logging in, send us an email at AskUs@library.ucla.edu with your name and library card number.
+          <form method="get" action='logon.html'>
+            <button type="submit" value="login" class="option-boxes">
+              Non-Affiliated Users<br/>
+              Any user without a valid UCLA Logon ID.
+            </button>
+          </form>
+        </div>
+        <div class="banner">
+          <p>
+            If you experience any issues with logging in, send us an email at 
+            <a href="mailto:AskUs@library.ucla.edu">AskUs@library.ucla.edu</a> with your name and library card number. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

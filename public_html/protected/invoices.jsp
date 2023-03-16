@@ -3,6 +3,11 @@
 <%@ page contentType="text/html;charset=windows-1252" errorPage="errors.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<c:if test="${empty param.uid and empty header.SHIBUCLAUNIVERSITYID and empty header.SHIBEDUPERSONPRINCIPALNAME and empty cookie.almaID}">
+  <c:redirect url="https://webservices-test.library.ucla.edu/lpo/landing.html"/>
+</c:if>
+
 <c:set var="fakeUID" value="800328433"/>
 <c:set var="fakeLogon" value=""/>
 

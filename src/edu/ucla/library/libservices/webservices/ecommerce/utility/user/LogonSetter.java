@@ -10,6 +10,7 @@ public class LogonSetter
   private String uidParam;
   private String shibUID;
   private String shibName;
+  private String almaID;
   private static final String BAD_CREDENTIAL = "000000000";
   private Logger log;
 
@@ -52,6 +53,11 @@ public class LogonSetter
         userID = getShibName();
       }
     }
+    else if (!ContentTests.isEmpty( getAlmaID() ))
+    {
+      log.info( "using alma ID" );
+      userID = getAlmaID();
+    }
     else
     {
       log.info( "no valid param or shib attribute" );
@@ -90,5 +96,15 @@ public class LogonSetter
   private String getShibName()
   {
     return shibName;
+  }
+
+  public void setAlmaID(String almaID)
+  {
+    this.almaID = almaID;
+  }
+
+  private String getAlmaID()
+  {
+    return almaID;
   }
 }

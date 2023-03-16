@@ -25,7 +25,17 @@
         PrintWriter printWriter = new PrintWriter(charArrayWriter, true); 
         exception.printStackTrace(printWriter); 
         out.println(charArrayWriter.toString()); */
-      } 
+      }
+      for (Cookie aCookie : request.getCookies() )
+      {
+        if (aCookie.getName().equals("logonError"))
+        {
+          out.println("Please include the following error message when you contact the Help Desk: ");
+          out.println(aCookie.getValue());
+          out.println("<div class=\"login-repeat\"><p>Forgot Password? First Time User?</p>");
+          out.println("<a href=\"https://search.library.ucla.edu/view/resetPw?institutionCode=01UCS_LAL\" target=\"_blank\">Click here to create or reset.</a></p></div>");
+        }
+      }
     %>
     <br/><br/>
     You can report this error via the <a href="https://jira.library.ucla.edu/servicedesk/customer/portals">Service Portal</a>, 
