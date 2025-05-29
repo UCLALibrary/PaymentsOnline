@@ -16,6 +16,7 @@
   <jsp:setProperty name="idSource" property="uidParam" param="uid"/>
   <jsp:setProperty name="idSource" property="shibUID" value="${header.SHIBUCLAUNIVERSITYID}"/>
   <jsp:setProperty name="idSource" property="shibName" value="${header.SHIBEDUPERSONPRINCIPALNAME}"/>
+  <jsp:setProperty name="idSource" property="almaID" value="${cookie.almaID.value}"/>
 </jsp:useBean>
 
 <jsp:useBean id="libBillInvoices"
