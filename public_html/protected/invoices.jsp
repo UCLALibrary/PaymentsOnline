@@ -3,13 +3,12 @@
 <%@ page contentType="text/html;charset=windows-1252" errorPage="errors.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
-<c:if test="${empty param.uid and empty header.SHIBUCLAUNIVERSITYID and empty header.SHIBEDUPERSONPRINCIPALNAME and empty cookie.almaID}">
-  <c:redirect url="https://webservices-test.library.ucla.edu/lpo/landing.html"/>
-</c:if>
-
 <c:set var="fakeUID" value="800328433"/>
 <c:set var="fakeLogon" value=""/>
+
+<c:if test="${empty param.uid and empty header.SHIBUCLAUNIVERSITYID and empty header.SHIBEDUPERSONPRINCIPALNAME and empty cookie.almaID}">
+  <c:redirect url="https://webservices.library.ucla.edu/lpo/landing.html"/>
+</c:if>
 
 <jsp:useBean id="idSource"
              class="edu.ucla.library.libservices.webservices.ecommerce.utility.user.LogonSetter">
@@ -142,8 +141,8 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.balanceDue}" pattern="$###,###.##"/>
-                  <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>--%>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<!--a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a-->
+<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -162,7 +161,7 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
-                  &nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/alma/${theAlmaInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<a href="https://webservices.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -171,17 +170,19 @@
             <c:if test="${index eq 0}">
               <tr>
                 <td colspan="0">
-                  No unpaid invoices found. If you believe you should have invoices to pay, please contact 
-                  UCLA Library Business Services at 310-825-8416 or 
-                  <a href="mailto:mailto:lbs-billing@library.ucla.edu">lbs-billing@library.ucla.edu</a>.
+                  No unpaid invoices found. If you believe you have an outstanding invoice or need assistance related to an unpaid invoice that is not currently showing here, 
+                  please reach out to the appropriate department you were previously in contact with. If you're unsure which department to contact, 
+                  we recommend reviewing your past communications or documentation related to the service to identify the correct office.
                 </td>
               </tr>
             </c:if>
-            <tr>
-              <td colspan="3"><p>&nbsp;</p>
-                <input type="submit" value="Continue to checkout"></td>
-              </td>
-            </tr>
+            <c:if test="${index ne 0}">
+	      <tr>
+	        <td colspan="3"><p>&nbsp;</p>
+		  <input type="submit" value="Continue to checkout"></td>
+	        </td>
+	      </tr>
+            </c:if>
           </table>
           <input type="hidden" name="patronID" value="${idSource.userID}"/>
         </form>

@@ -17,18 +17,18 @@
     the Library Help Desk for assistance; please report when you accessed Payments Online and what you were attempting to do (e.g., 
     logging in, viewing an invoice, submitting payment) when the error occurred.
     <%
-      if (exception != null) 
+      /*if (exception != null) 
       { 
         out.println("Please include the following error message when you contact the Help Desk: ");
         out.println(exception.getMessage());
-        /*CharArrayWriter charArrayWriter = new CharArrayWriter(); 
+        CharArrayWriter charArrayWriter = new CharArrayWriter(); 
         PrintWriter printWriter = new PrintWriter(charArrayWriter, true); 
         exception.printStackTrace(printWriter); 
-        out.println(charArrayWriter.toString()); */
-      }
+        out.println(charArrayWriter.toString()); 
+      }*/ 
       for (Cookie aCookie : request.getCookies() )
       {
-        if (aCookie.getName().equals("logonError"))
+        if (aCookie.getName() != null && aCookie.getName().equals("logonError"))
         {
           out.println("Please include the following error message when you contact the Help Desk: ");
           out.println(aCookie.getValue());
