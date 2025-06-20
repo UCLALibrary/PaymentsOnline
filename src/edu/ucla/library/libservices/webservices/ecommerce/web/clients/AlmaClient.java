@@ -4,6 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
@@ -203,8 +204,12 @@ public class AlmaClient
         theInvoice = response.getEntity(AlmaInvoice.class);
         theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
         theLine.setTotalPrice(theInvoice.getBalance());
-        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue() ,
-                                                   theInvoice.getOwner().equalsIgnoreCase("Law")));
+        boolean isLaw = theInvoice.getOwner().equalsIgnoreCase("Law");
+        boolean isClicc =
+          theInvoice.getOwner().equalsIgnoreCase("CLICC") ||
+          (!ContentTests.isEmpty(theInvoice.getTitle()) &&
+           theInvoice.getTitle().toUpperCase().contains("CLICC"));
+        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(), isLaw, isClicc));
       }
       else
       {

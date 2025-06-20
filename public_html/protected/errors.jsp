@@ -16,16 +16,10 @@
     We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
     the Library Help Desk for assistance; please report when you accessed Payments Online and what you were attempting to do (e.g., 
     logging in, viewing an invoice, submitting payment) when the error occurred.
+    <c:if test="${not empty pageContext.exception}">
+      ${pageContext.exception.message}<br/>
+    </c:if>
     <%
-      /*if (exception != null) 
-      { 
-        out.println("Please include the following error message when you contact the Help Desk: ");
-        out.println(exception.getMessage());
-        CharArrayWriter charArrayWriter = new CharArrayWriter(); 
-        PrintWriter printWriter = new PrintWriter(charArrayWriter, true); 
-        exception.printStackTrace(printWriter); 
-        out.println(charArrayWriter.toString()); 
-      }*/ 
       for (Cookie aCookie : request.getCookies() )
       {
         if (aCookie.getName() != null && aCookie.getName().equals("logonError"))
