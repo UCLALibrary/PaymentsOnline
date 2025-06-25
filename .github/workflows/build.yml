@@ -8,12 +8,10 @@ on:
   pull_request:
     branches:
       - main
-      - LX-1808
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
