@@ -4,7 +4,7 @@ SFTP_SERVER=appdeploy-sftp.library.ucla.edu
 SFTP_USER=appdeploy
 SFTP_PROJECT=${CI_WEBAPP_NAME}
 SFTP_TARGET_DIR=${SFTP_PROJECT}
-SFTP_FILESPEC=deploy/${SFTP_PROJECT}.war
+SFTP_FILESPEC=${SFTP_PROJECT}.war
 
 JENKINS_HOST=jenkins-devsupport.library.ucla.edu
 
@@ -32,7 +32,7 @@ chmod 0644 ~/.ssh/known_hosts
   # sftp will ignore errors if old file can't be removed (presumably doesn't exist)
   echo "-rm ${SFTP_FILESPEC}"
   # sftp will exit if put fails
-  echo "put target/${SFTP_FILESPEC}"
+  echo "put deploy/${SFTP_FILESPEC}"
   # Show a little extra info for logging
   echo "pwd"
   echo "ls -l"
