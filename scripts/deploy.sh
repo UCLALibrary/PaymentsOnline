@@ -39,4 +39,5 @@ chmod 0644 ~/.ssh/known_hosts
 ) | sftp -b - ${SFTP_USER}@${SFTP_SERVER}
 
 # Webhook to Jenkins server to initiate deploy
-curl "https://${CI_JENKINS_USER_CREDS}@${JENKINS_HOST}/${CI_JENKINS_JOB_URI}/buildWithParameters?token=${CI_JENKINS_DEPLOY_TOKEN}&TOMCAT_HOST=${CI_JENKINS_TOMCAT_HOST}&WEBAPP_NAME=${SFTP_PROJECT}"
+# This doesn't work for some reason, disabling and will switch to manual deployments so this is infrequent
+#curl "https://${CI_JENKINS_USER_CREDS}@${JENKINS_HOST}/${CI_JENKINS_JOB_URI}/buildWithParameters?token=${CI_JENKINS_DEPLOY_TOKEN}&TOMCAT_HOST=${CI_JENKINS_TOMCAT_HOST}&WEBAPP_NAME=${SFTP_PROJECT}"
