@@ -436,6 +436,13 @@
                         <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/Spring.library"/>
                         <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/JSCH.library"/>
                         <url protocol="file" path="/Documents and Settings/drickard1967/Application Data/JDeveloper/system11.1.1.3.37.56.60/o.jdeveloper/AeonCommons.library"/>
+                        <string v="Servlet Runtime"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Jersey 1.2.library"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Log4J.library"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Spring.library"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/JSCH.library"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/Aeon Commons.library"/>
+                        <string v="file:/C:/Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
                      </list>
                      <value n="targetWithinJar" v="WEB-INF/lib"/>
                      <value n="type" v="3"/>
@@ -450,12 +457,15 @@
             </hash>
             <value n="profileClass" v="oracle.jdeveloper.deploy.war.WarProfile"/>
             <value n="profileName" v="lpo"/>
+            <hash n="properties">
+               <value n="" v=""/>
+            </hash>
          </hash>
       </hash>
       <list n="profileList">
          <string v="ecommerce-dev"/>
-         <string v="lpo"/>
          <string v="ecommerce-test"/>
+         <string v="lpo"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
