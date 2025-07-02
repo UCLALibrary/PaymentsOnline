@@ -13,17 +13,20 @@ public class DataHandler
 {
   private static final Logger LOGGER = Logger.getLogger( DataHandler.class );
 
-  private static final String COUNT = "SELECT count(*) FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
-  private static final String DELETE = "DELETE FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
-  private static final String INSERT = "INSERT INTO vger_support.alma_invoice_patron(invoice_id,patron_id) VALUES(?,?)";
+  private static final String COUNT = "SELECT count(*) FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
+  private static final String DELETE = "DELETE FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
+  private static final String INSERT = "INSERT INTO public.\"ALMA_INVOICE_PATRON\"(\"INVOICE_ID\", \"PATRON_ID\") VALUES(?,?)";
   private static final String SELECT_FEE = "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ?";
   private static final String SELECT_FEE_LAW =
     "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' LAW'";
+  private static final String SELECT_FEE_CLICC =
+    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' CLICC'";
   private static final String SELECT_PATRON =
-    "SELECT patron_id FROM vger_support.alma_invoice_patron WHERE invoice_id = ?";
+    "SELECT \"PATRON_ID\" FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String UNPAID =
     "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid'," 
     + "'Deposit Due','Final Payment Due')";
+  private static final String OVERDUEFINE = "OVERDUEFINE";
 
   private DataSource ds;
   private String dbName;
@@ -109,13 +112,26 @@ public class DataHandler
     return theID;
   }
 
-  public static String getfeeData(String dbName, String feeType, boolean isLaw)
+  public static String getfeeData(String dbName, String feeType, boolean isLaw, boolean isClicc)
   {
-    String query = ( isLaw ? SELECT_FEE_LAW : SELECT_FEE );
+    String query;
+    if ( isLaw && !feeType.equals(OVERDUEFINE) ) 
+    {
+      query = SELECT_FEE_LAW;
+    }
+    else if ( isClicc ) 
+    {
+      query = SELECT_FEE_CLICC;
+    }
+    else
+    {
+      query = SELECT_FEE;
+    }
+    //String query = ( isLaw && !feeType.equals(OVERDUEFINE) ? SELECT_FEE_LAW : SELECT_FEE );
     DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createBillSource();
-    LOGGER.info(query.replace("?", feeType));
-    //System.out.println(query.replace("?", feeType));
+    //LOGGER.info(query.replace("?", feeType));
+    System.out.println(query.replace("?", feeType));
     return new JdbcTemplate(source).queryForObject(query, new Object[] { feeType }, String.class).toString();
   }
 
