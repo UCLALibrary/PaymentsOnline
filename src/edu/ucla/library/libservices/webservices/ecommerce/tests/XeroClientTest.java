@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroClient;
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroContactClient;
 
 public class XeroClientTest
 {
@@ -52,12 +52,12 @@ public class XeroClientTest
   }
 
   /**
-   * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroClient#getTheContact()
+   * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroContactClient#getTheContact()
    */
   @Test
   public void testGetTheContact()
   {
-    XeroClient testClient = new XeroClient();
+    XeroContactClient testClient = new XeroContactClient();
     testClient.setAccessToken("arg0");
     testClient.setResourceURI("arg0");
     testClient.setTenantID("arg0");
