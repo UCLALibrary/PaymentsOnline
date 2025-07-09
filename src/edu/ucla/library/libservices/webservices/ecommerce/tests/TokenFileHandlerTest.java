@@ -3,6 +3,8 @@ package edu.ucla.library.libservices.webservices.ecommerce.tests;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -15,9 +17,10 @@ import java.nio.file.Paths;
 
 public class TokenFileHandlerTest
 {
-  private static String JSON = "{\"access_token\":\"eyJhbGciOiJSUzI1Ni\",\"expires_in\":1800,\"token_type\":\"Bearer\",\"refresh_token\":\"wSzpv1rx0k9gCkvGrzXT\",\"scope\":\"accounting.settings accounting.transactions accounting.contacts offline_access\"}";
+  private static String JSON =
+    "{\"access_token\":\"eyJhbGciOiJSUzI1Ni\",\"expires_in\":1800,\"token_type\":\"Bearer\",\"refresh_token\":\"wSzpv1rx0k9gCkvGrzXT\",\"scope\":\"accounting.settings accounting.transactions accounting.contacts offline_access\"}";
   private static String BASE_PATH = System.getProperty("user.dir").concat("\\public_html\\resources");
-  
+
   public TokenFileHandlerTest()
   {
   }
@@ -63,6 +66,7 @@ public class TokenFileHandlerTest
    */
   @Test
   public void testWriteTokensFile()
+    throws IOException
   {
     TokenFileHandler handler;
     String tokensFile;
@@ -72,7 +76,7 @@ public class TokenFileHandlerTest
     handler = new TokenFileHandler();
     handler.setTokensFile(tokensFile);
     handler.writeTokensFile(JSON);
-    assert( Files.exists(Paths.get(tokensFile)) );
+    assert (Files.exists(Paths.get(tokensFile)));
   }
 
   /**
@@ -90,27 +94,26 @@ public class TokenFileHandlerTest
     handler = new TokenFileHandler();
     handler.setTokensFile(tokensFile);
     result = handler.readTokensFile();
-    assert(result.getAccess_token().equals("eyJhbGciOiJSUzI1Ni"));
-    assert(result.getExpires_in().equals("2025-07-08T16:17:53.186"));
-    assert(result.getRefresh_token().equals("wSzpv1rx0k9gCkvGrzXT"));
-    assert(result.getScope().equals("accounting.settings accounting.transactions accounting.contacts offline_access"));
+    assert (result.getAccess_token().equals("eyJhbGciOiJSUzI1Ni"));
+    assert (result.getExpires_in().equals("2025-07-08T16:17:53.186"));
+    assert (result.getRefresh_token().equals("wSzpv1rx0k9gCkvGrzXT"));
+    assert (result.getScope().equals("accounting.settings accounting.transactions accounting.contacts offline_access"));
   }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler#setTokensFile(String)
    */
   @Test
-  public void testSetTokensFile()
+  public void testSetGetTokensFile()
   {
-    fail("Unimplemented");
+    TokenFileHandler handler;
+    String tokensFile;
+
+    tokensFile = BASE_PATH.concat("\\default_secrets.txt");
+
+    handler = new TokenFileHandler();
+    handler.setTokensFile(tokensFile);
+    assert (handler.getTokensFile().equals(tokensFile));
   }
 
-  /**
-   * @see edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler#getTokensFile()
-   */
-  @Test
-  public void testGetTokensFile()
-  {
-    fail("Unimplemented");
-  }
 }
