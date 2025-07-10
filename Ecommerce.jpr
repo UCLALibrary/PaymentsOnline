@@ -99,6 +99,7 @@
    </hash>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
+         <string v="Ant"/>
          <string v="JAVASCRIPT"/>
          <string v="JSP"/>
          <string v="WSDL"/>
