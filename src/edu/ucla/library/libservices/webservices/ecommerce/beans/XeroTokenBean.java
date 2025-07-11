@@ -51,4 +51,17 @@ public class XeroTokenBean
   {
     return scope;
   }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || getClass() != theOther.getClass())
+      return false;
+    XeroTokenBean aBean = (XeroTokenBean) theOther;
+
+    return this.getAccess_token() == aBean.getAccess_token() && this.getExpires_in() == aBean.getExpires_in() &&
+           this.getRefresh_token() == aBean.getRefresh_token() && this.getScope() == aBean.getScope();
+  }
 }
