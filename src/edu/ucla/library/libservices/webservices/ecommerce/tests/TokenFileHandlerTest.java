@@ -10,16 +10,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TokenFileHandlerTest
 {
-  private static String BASE_PATH = System.getProperty("user.dir").concat("\\public_html\\resources");
-  private static String TOKENS_FILE = BASE_PATH.concat("\\default_secrets.txt");
+  private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
+  private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static XeroTokenBean SOURCE_BEAN;
 
   public TokenFileHandlerTest()
@@ -49,24 +46,6 @@ public class TokenFileHandlerTest
     SOURCE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
   }
 
-  @After
-  public void tearDown()
-    throws Exception
-  {
-  }
-
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
-  }
-
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler#writeTokensFile(String)
    */
@@ -79,7 +58,7 @@ public class TokenFileHandlerTest
     Gson gson;
 
     gson = new Gson();
-    outputFile = BASE_PATH.concat("\\test_secrets.txt");
+    outputFile = Paths.get(BASE_PATH, "test_secrets.txt").toString();
 
     handler = new TokenFileHandler();
     handler.setTokensFile(outputFile);

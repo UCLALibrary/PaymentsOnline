@@ -23,7 +23,11 @@ import org.apache.log4j.Logger;
 public class TokenFileHandler
 {
   private static final Logger LOGGER = Logger.getLogger(DataHandler.class);
+  
+  // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+  
+  // File written to local file system, used to store Xero token data
   private String tokensFile;
 
   public TokenFileHandler()
@@ -31,6 +35,11 @@ public class TokenFileHandler
     super();
   }
 
+  /**
+   * Method receives the JSON produced by the Xero token service, converts JSON to 
+   * XeroTokenBean for easier handling, then writes data to file
+   * @param json String representation of JSON returned by Xero token-request service
+   */
   public void writeTokensFile(String json)
   {
     BufferedWriter writer;
@@ -40,6 +49,8 @@ public class TokenFileHandler
 
     gson = new Gson();
     tokens = gson.fromJson(json, XeroTokenBean.class);
+    // 'expires in' is seconds until access token expires, connverted to date/time for 
+    // temporal evaluation when retrieved elsewhere in app
     expireTime = LocalDateTime.now().plusSeconds(Long.parseLong(tokens.getExpires_in()));
 
     try
@@ -67,6 +78,10 @@ public class TokenFileHandler
     }
   }
 
+  /**
+   * Method reads file containing Xero token information and reads fields into XeroTokenBean object
+   * @return XeroTokenBean holding Xero token data
+   */
   public XeroTokenBean readTokensFile()
   {
     BufferedReader reader;
