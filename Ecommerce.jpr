@@ -110,6 +110,16 @@
          <string v="Java"/>
       </list>
    </hash>
+   <hash n="oracle.jdeveloper.compiler.ant.AntConfiguration">
+      <value n="makeTarget" v="all"/>
+      <url n="projectBuildfile" path="build.xml"/>
+      <list n="targetList">
+         <string v="all"/>
+         <string v="clean"/>
+         <string v="compile"/>
+         <string v="copy"/>
+      </list>
+   </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
       <value n="internalEncoding" v="Cp1252"/>
       <list n="Javac.commandline.optionlist">
@@ -529,10 +539,6 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Junit-jupiter-api-5.13.2.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="JUnit 4 Runtime"/>
             <value n="isJDK" v="false"/>
          </hash>
@@ -559,15 +565,6 @@
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Invoices.jar"/>
                <value n="id" v="Invoices.jar"/>
-               <value n="locked" v="true"/>
-            </hash>
-            <hash>
-               <list n="classPath">
-                  <url path="../../jars/lpo/junit-jupiter-api-5.13.2.jar" jar-entry=""/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Junit-jupiter-api-5.13.2.jar"/>
-               <value n="id" v="Junit-jupiter-api-5.13.2.jar"/>
                <value n="locked" v="true"/>
             </hash>
             <hash>
@@ -632,10 +629,6 @@
          </hash>
          <hash>
             <value n="id" v="Invoices.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="Junit-jupiter-api-5.13.2.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>

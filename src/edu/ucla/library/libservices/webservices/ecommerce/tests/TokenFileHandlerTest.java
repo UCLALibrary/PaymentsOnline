@@ -1,64 +1,33 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
+import com.google.gson.Gson;
+
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.junit.Before;
+import org.junit.Test;
+
 public class TokenFileHandlerTest
 {
-  private static String JSON =
-    "{\"access_token\":\"eyJhbGciOiJSUzI1Ni\",\"expires_in\":1800,\"token_type\":\"Bearer\",\"refresh_token\":\"wSzpv1rx0k9gCkvGrzXT\",\"scope\":\"accounting.settings accounting.transactions accounting.contacts offline_access\"}";
-  private static String BASE_PATH = System.getProperty("user.dir").concat("\\public_html\\resources");
-
-  public TokenFileHandlerTest()
-  {
-  }
-
-  public static void main(String[] args)
-  {
-    String[] args2 =
-    {
-      TokenFileHandlerTest.class.getName()
-    };
-    org.junit
-       .runner
-       .JUnitCore
-       .main(args2);
-  }
+  private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
+  private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
+  private static XeroTokenBean SOURCE_BEAN;
 
   @Before
   public void setUp()
     throws Exception
   {
-  }
-
-  @After
-  public void tearDown()
-    throws Exception
-  {
-  }
-
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
+    SOURCE_BEAN = new XeroTokenBean();
+    SOURCE_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
+    SOURCE_BEAN.setExpires_in("1800");
+    SOURCE_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
+    SOURCE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
   }
 
   /**
@@ -69,14 +38,16 @@ public class TokenFileHandlerTest
     throws IOException
   {
     TokenFileHandler handler;
-    String tokensFile;
+    String outputFile;
+    Gson gson;
 
-    tokensFile = BASE_PATH.concat("\\test_secrets.txt");
+    gson = new Gson();
+    outputFile = Paths.get(BASE_PATH, "test_secrets.txt").toString();
 
     handler = new TokenFileHandler();
-    handler.setTokensFile(tokensFile);
-    handler.writeTokensFile(JSON);
-    assert (Files.exists(Paths.get(tokensFile)));
+    handler.setTokensFile(outputFile);
+    handler.writeTokensFile(gson.toJson(SOURCE_BEAN));
+    assert (Files.exists(Paths.get(outputFile)));
   }
 
   /**
@@ -87,17 +58,11 @@ public class TokenFileHandlerTest
   {
     XeroTokenBean result;
     TokenFileHandler handler;
-    String tokensFile;
-
-    tokensFile = BASE_PATH.concat("\\default_secrets.txt");
 
     handler = new TokenFileHandler();
-    handler.setTokensFile(tokensFile);
+    handler.setTokensFile(TOKENS_FILE);
     result = handler.readTokensFile();
-    assert (result.getAccess_token().equals("eyJhbGciOiJSUzI1Ni"));
-    assert (result.getExpires_in().equals("2025-07-08T16:17:53.186"));
-    assert (result.getRefresh_token().equals("wSzpv1rx0k9gCkvGrzXT"));
-    assert (result.getScope().equals("accounting.settings accounting.transactions accounting.contacts offline_access"));
+    assert (result.equals(SOURCE_BEAN));
   }
 
   /**
@@ -107,13 +72,10 @@ public class TokenFileHandlerTest
   public void testSetGetTokensFile()
   {
     TokenFileHandler handler;
-    String tokensFile;
-
-    tokensFile = BASE_PATH.concat("\\default_secrets.txt");
 
     handler = new TokenFileHandler();
-    handler.setTokensFile(tokensFile);
-    assert (handler.getTokensFile().equals(tokensFile));
+    handler.setTokensFile(TOKENS_FILE);
+    assert (handler.getTokensFile().equals(TOKENS_FILE));
   }
 
 }
