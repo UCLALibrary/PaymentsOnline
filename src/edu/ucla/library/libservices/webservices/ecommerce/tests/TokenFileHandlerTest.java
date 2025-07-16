@@ -19,22 +19,6 @@ public class TokenFileHandlerTest
   private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static XeroTokenBean SOURCE_BEAN;
 
-  public TokenFileHandlerTest()
-  {
-  }
-
-  public static void main(String[] args)
-  {
-    String[] args2 =
-    {
-      TokenFileHandlerTest.class.getName()
-    };
-    org.junit
-       .runner
-       .JUnitCore
-       .main(args2);
-  }
-
   @Before
   public void setUp()
     throws Exception
