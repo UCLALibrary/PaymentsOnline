@@ -52,15 +52,22 @@
     <meta http-equiv="cache-control" content="NO-CACHE"> 
     <meta http-equiv="cache-control" content="NO-STORE"> 
     <meta http-equiv="cache-control" content="PRIVATE"> 
-    <link href="http://www.library.ucla.edu/css/wht.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="https://speccoll.library.ucla.edu/nonshib/css/images/favicon.ico"
+          type="image/x-icon"/>
+    <link rel="icon" href="https://speccoll.library.ucla.edu/nonshib/css/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/mobile.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/print.css" media="print"/>
     <title>UCLA Library Payments Online</title>
   </head>
 
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">
+    <div id="authportalFrame">
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
-          <img src="http://www.library.ucla.edu/images/logo_blu_nobar.gif">
+          <img src="../images/ucla_library_logo_wht.svg"
+                   alt="UCLA Library Logo"/>
         </td>
         <td bgcolor="#536895" align="center">
           <font color="#ffffff" class="body"><b>Library Payments Online</b></font>
@@ -199,5 +206,6 @@
         </table>
       </c:otherwise>
     </c:choose>
+    </div>
   </body>
 </html>
