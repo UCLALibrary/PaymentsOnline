@@ -12,8 +12,11 @@ import org.apache.log4j.Logger;
 public class XeroTokenHandler
 {
   private static final Logger LOGGER = Logger.getLogger(XeroTokenHandler.class);
+  // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+  //properties file with URIs and IDs to access Xero API
   private String secretsFile;
+  //file with OAuth tokens to access Xero API
   private String tokensFile;
   
   public XeroTokenHandler()
@@ -40,7 +43,13 @@ public class XeroTokenHandler
   {
     return tokensFile;
   }
-  
+
+  /**
+   * Reads tokens file
+   * Checks if access token has expired
+   * If token has expired, uses XeroTokenClient to retrieve new tokens
+   * @return bean holding OAuth tokens
+   */
   public XeroTokenBean getTokens()
   {
     XeroTokenBean theBean;

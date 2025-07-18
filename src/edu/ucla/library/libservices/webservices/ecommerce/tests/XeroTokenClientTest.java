@@ -4,56 +4,14 @@ import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenC
 
 import java.nio.file.Paths;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
 
 public class XeroTokenClientTest
 {
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
-  private static String SECRETS_FILE = Paths.get(BASE_PATH, "test_secrets.txt").toString();
+  private static String SECRETS_FILE = Paths.get(BASE_PATH, "xero.props").toString();
   private static String DUMMY_REFRESH = "wSzpv1rx0k9gCkvGrzXTc";
-
-  public XeroTokenClientTest()
-  {
-  }
-
-  public static void main(String[] args)
-  {
-    String[] args2 =
-    {
-      XeroTokenClientTest.class.getName()
-    };
-    JUnitCore.main(args2);
-  }
-
-  @Before
-  public void setUp()
-    throws Exception
-  {
-  }
-
-  @After
-  public void tearDown()
-    throws Exception
-  {
-  }
-
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
-  }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenClient#setSecretsFile(String)
@@ -85,6 +43,14 @@ public class XeroTokenClientTest
   @Test
   public void testGetTokens()
   {
-    fail("Unimplemented");
+    String json;
+    XeroTokenClient theClient;
+
+    theClient = new XeroTokenClient();
+    theClient.setRefreshToken("<this needs to be real refresh>");
+    theClient.setSecretsFile(SECRETS_FILE);
+    json = theClient.getTokens();
+    assertNotNull(json);
+    assert(json.contains("access_token") && json.contains("refresh_token") );
   }
 }

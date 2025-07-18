@@ -14,11 +14,17 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Client used to retrieve fresh access/refresh OAuth tokens from Xero token service
+ */
 public class XeroTokenClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroTokenClient.class);
+  // properties file with URIs and IDs to access Xero API
   private Properties secrets;
+  //OAuth token used to access Xero tokens service
   private String refreshToken;
+  // name of the properties file, passed from caller
   private String secretsFile;
 
   public XeroTokenClient()
@@ -39,6 +45,10 @@ public class XeroTokenClient
     }
   }
 
+  /**
+   * Builds the authorization header value passes to Xero tokens service
+   * @return authorization string
+   */
   private String buildAuthString()
   {
     String start = "Basic ";
@@ -50,6 +60,11 @@ public class XeroTokenClient
     return authString;
   }
 
+  /**
+   * Builds authroization header and request body, then calls 
+   * Xero token service
+   * @return JSON representation of fresh OAuth tokens from Xero
+   */
   public String getTokens()
   {
     Client client;
