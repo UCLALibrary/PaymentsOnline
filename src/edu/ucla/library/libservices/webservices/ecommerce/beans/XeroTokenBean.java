@@ -7,13 +7,13 @@ public class XeroTokenBean
 {
   // Xero access token used in Authorization header to verify access to API
   private String access_token;
-  
+
   // Seconds until access token expires
   private String expires_in;
-  
+
   // Token used to request new access token
   private String refresh_token;
-  
+
   // Which Xero API units are accessible with current access token
   private String scope;
 
@@ -74,4 +74,5 @@ public class XeroTokenBean
     return this.getAccess_token() == aBean.getAccess_token() && this.getExpires_in() == aBean.getExpires_in() &&
            this.getRefresh_token() == aBean.getRefresh_token() && this.getScope() == aBean.getScope();
   }
+
 }
