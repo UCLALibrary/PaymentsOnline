@@ -8,6 +8,8 @@ import com.sun.jersey.api.client.WebResource;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContactList;
+
 import org.apache.log4j.Logger;
 
 public class XeroContactClient
@@ -92,8 +94,10 @@ public class XeroContactClient
                 header("xero-tenant-id", getTenantID()).get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
+        XeroContactList theList;
         String json = response.getEntity(String.class);
-        theContact = new Gson().fromJson(json, XeroContact.class);
+        theList = new Gson().fromJson(json, XeroContactList.class);
+        theContact = theList.getContacts().get(0);
       }
       else
       {
