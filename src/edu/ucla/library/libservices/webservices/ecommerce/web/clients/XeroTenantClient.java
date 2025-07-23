@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 /**
  * Client used to retrieve tenant ID from Xero
  * We expect to have only one, unchanging tenant ID... this class is for
- * cases when said tenant ID is rejected 
+ * cases when said tenant ID is rejected
  */
 public class XeroTenantClient
 {

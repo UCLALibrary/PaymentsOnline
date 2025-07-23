@@ -68,6 +68,9 @@ public class TokenFileHandler
       writer.write("scope = " + tokens.getScope());
       writer.newLine();
 
+      writer.write("tenant_id = " + tokens.getTenantID());
+      writer.newLine();
+
       writer.newLine();
       writer.flush();
       writer.close();
@@ -109,6 +112,9 @@ public class TokenFileHandler
             break;
           case "scope":
             tokens.setScope(lineTokens[1]);
+            break;
+          case "tenant_id":
+            tokens.setTenantID(lineTokens[1]);
             break;
           default:
             ;

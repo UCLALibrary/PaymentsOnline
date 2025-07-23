@@ -58,11 +58,6 @@ public class XeroClientTest
   public void testGetTheContact()
   {
     XeroContactClient testClient = new XeroContactClient();
-    testClient.setAccessToken("arg0");
-    testClient.setResourceURI("arg0");
-    testClient.setTenantID("arg0");
-    testClient.setUriBase("arg0");
-    testClient.setUserID("arg0");
     
     fail("Unimplemented");
   }
