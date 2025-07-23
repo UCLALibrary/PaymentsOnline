@@ -10,18 +10,19 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContactList;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroTokenHandler;
+
 import org.apache.log4j.Logger;
 
 public class XeroContactClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
+  //path for properties file with URIs and IDs to access Xero API
+  private String secretsFile;
+  //path for file with OAuth tokens to access Xero API
+  private String tokensFile;
 
-  private Client client;
-  private WebResource webResource;
-  private String accessToken;
-  private String resourceURI;
-  private String tenantID;
-  private String uriBase;
   private String userID;
   private XeroContact theContact;
 
@@ -30,44 +31,34 @@ public class XeroContactClient
     super();
   }
 
-  public void setAccessToken(String accessToken)
+  public void setSecretsFile(String secretsFile)
   {
-    this.accessToken = accessToken;
+    this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile()
+  {
+    return secretsFile;
+  }
+
+  public void setTokensFile(String tokensFile)
+  {
+    this.tokensFile = tokensFile;
+  }
+
+  public String getTokensFile()
+  {
+    return tokensFile;
   }
 
   public String getAccessToken()
   {
-    return accessToken;
-  }
-
-  public void setResourceURI(String resourceURI)
-  {
-    this.resourceURI = resourceURI;
-  }
-
-  public String getResourceURI()
-  {
-    return resourceURI;
-  }
-
-  public void setTenantID(String tenantID)
-  {
-    this.tenantID = tenantID;
-  }
-
-  public String getTenantID()
-  {
-    return tenantID;
-  }
-
-  public void setUriBase(String uriBase)
-  {
-    this.uriBase = uriBase;
-  }
-
-  public String getUriBase()
-  {
-    return uriBase;
+    //utility to retrieve current access/refresh tokens
+    XeroTokenHandler tokenGetter;
+    tokenGetter = new XeroTokenHandler();
+    tokenGetter.setSecretsFile(getSecretsFile());
+    tokenGetter.setTokensFile(getTokensFile());
+    return tokenGetter.getTokens().getAccess_token();
   }
 
   public void setUserID(String userID)
@@ -84,9 +75,11 @@ public class XeroContactClient
   {
     if (theContact == null)
     {
+      Client client;
+      WebResource webResource;
       ClientResponse response;
       client = Client.create();
-      webResource = client.resource(getUriBase().concat(getUserID()));
+      webResource = client.resource(getContactURL().concat(getUserID()));
       
       String authString = "Bearer ".concat(getAccessToken());
 
@@ -101,9 +94,26 @@ public class XeroContactClient
       }
       else
       {
+        LOGGER.error("contact service return code " + response.getStatus());
         theContact = new XeroContact();
       }
     }
     return theContact;
+  }
+  
+  private String getTenantID()
+  {
+    PropertiesHandler secretGetter;
+    secretGetter = new PropertiesHandler();
+    secretGetter.setFileName(getSecretsFile());
+    return secretGetter.loadProperties().getProperty("tenant_id");
+  }
+
+  private String getContactURL()
+  {
+    PropertiesHandler secretGetter;
+    secretGetter = new PropertiesHandler();
+    secretGetter.setFileName(getSecretsFile());
+    return secretGetter.loadProperties().getProperty("contact_url");
   }
 }

@@ -1,35 +1,10 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.testing;
 
-import com.itextpdf.text.Document;
-
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
-
-import edu.ucla.library.libservices.webservices.ecommerce.beans.Address;
-import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
-import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
-import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.generators.PdfGenerator;
-import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
-
-import java.io.ByteArrayOutputStream;
-
-import java.text.SimpleDateFormat;
-
-import javax.ws.rs.core.Response;
-
-import com.itextpdf.text.PageSize;
-
-import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
-
-import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AuthClient;
-
-import java.util.List;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 
 public class Tester
 {
+
   public Tester()
   {
     super();
@@ -38,145 +13,24 @@ public class Tester
   public static void main(String[] args)
     throws Exception
   {
-    Document document;
-    PdfGenerator generator;
+    XeroTokenBean expired;
+    expired = new XeroTokenBean();
+    expired.setAccess_token("eyJhbGciOiJSUzI1Ni");
+    expired.setExpires_in("1800");
+    expired.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
+    expired.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
 
-    document = new Document(PageSize.LETTER);
-    generator = new PdfGenerator();
-    generator.setInvoiceNumber("12754967580006533");
-    generator.setPatronID("P0002817983");
-    generator.setDbName("dbname");
-    generator.setApiKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
-    generator.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    generator.populatePdf(document);
-    
-    /*AuthClient theClient = new AuthClient();
-    theClient.setKey("l8xx9b4188ba3ad44d70a17cf3500ba0962f");
-    theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    theClient.setUserID("P0002817983");
-    theClient.setPassword("bear1234");
-    
-    if (theClient.isValidPatron())
-    {
-      System.out.println("good login");
-    }
-    else
-    {
-      System.out.println("bad login");
-    }*/
-
-    AlmaClient theClient = new AlmaClient();
-    theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
-    theClient.setResourceURI("/fees");
-    //theClient.setFineID("6670223160006533");
-    theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    theClient.setUserID("P0002817983");
-    AlmaUser thePatron = theClient.getThePatron();
-    System.out.println(thePatron.getFirstName() + "\t" + thePatron.getLastName());
-    List<Address> addresses = thePatron.getContactInfo()
-                                .getAddresses();
-    if (addresses != null)
-    {
-      if (!addresses.isEmpty())
-      {
-        if (addresses.size() != 0)
-        {
-          if ( thePatron.getContactInfo()
-                                      .getAddresses()
-                                      .stream()
-                                      .filter(e -> e.isPreferred())
-                                      .count() > 0 )
-          {
-            for (Address theAddress : addresses)
-            {
-              System.out.println(theAddress.getLine1() + "\n" + theAddress.getCity() + "\n" + 
-                                 theAddress.getState() + "\t" + theAddress.getZipCode() + 
-                                 "\n" + theAddress.isPreferred());
-            }
-          }
-        }
-      }
-    }
-    else
-    {
-      System.out.println("No addresses?");
-    }
-    AlmaFees theFees = theClient.getTheFees();
-    System.out.println("record count = " + theFees.getRecordCount());
-    /*AlmaInvoice theInvoice = theClient.getTheInvoice();
-    System.out.println("invoice " + theInvoice.getInvoiceNumber() + " is for type " +
-                       theInvoice.getType().getValue() + " from unit " + theInvoice.getOwner()
-                       + " and has balance " + theInvoice.getBalance() );
-    for (CashNetLine theLine : theInvoice.getLineItems() )
-    {
-      System.out.println(theLine.getItemCode() + "\t" + theLine.getTotalPrice());
-    }*/
-    /*ApplyFullPaymentProcedure proc;
-
-    proc = new ApplyFullPaymentProcedure();
-    proc.setDbName( "" );
-    proc.setUserName( "ecommerce" );
-    proc.setInvoiceNumber( "AS004782" );
-    proc.setPaymentType( 3 );
-    try
-    {
-      proc.addPayment();
-    }
-    catch ( Exception e )
-    {
-      System.out.println( e.getMessage() );
-    }
-    AlmaClient theClient = new AlmaClient();
-    theClient.setKey("l8xx8cb982c2d4b04ef79375f5c776dbae71");
-    //theClient.setResourceURI("/fees/");
-    //theClient.setFineID("2563469710006533");
-    theClient.setUriBase("https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/");
-    theClient.setUserID("603513612");
-    theClient.setFineID("2563469710006533");
-    AlmaInvoice theInvoice = theClient.getTheInvoice();
-    System.out.println("invoice " + theInvoice.getInvoiceNumber() + " has status " + theInvoice.getStatus() );
-
-    AlmaUser david = theClient.getThePatron();
-    System.out.println(david.getFirstName() + " " + david.getLastName());
-    //for ( Address theAddress : david.getContactInfo().getAddresses() )
-    //Address theAddress = david.getContactInfo().getAddresses().get(0);
-    //System.out.println(david.getContactInfo().getAddresses().size());
-    {
-      System.out.print("Preferred? " + theAddress.isPreferred() + "\t");
-      System.out.println(theAddress.getLine1() + " " + theAddress.getLine2() + " " +
-                         theAddress.getCity() + ", " + theAddress.getState() + " " +
-                         theAddress.getZipCode());
-    }
-    Address thePatronAddress;
-    thePatronAddress = david.getContactInfo()
-                            .getAddresses()
-                            .stream()
-                            .filter(e -> e.isPreferred())
-                            .findFirst()
-                            .get();
-    System.out.println(thePatronAddress.getLine1() + " " + thePatronAddress.getLine2() + " " +
-                       thePatronAddress.getCity() + ", " + thePatronAddress.getState() + " " +
-                       thePatronAddress.getZipCode());*/
-
-    /*AlmaInvoice theInvoice = theClient.getTheInvoice();
-    System.out.println(theInvoice.getInvoiceNumber() + "\t (" + theInvoice.getType().getDescription() + " on " +
-                       theInvoice.getBarcode() + ", incurred " + theInvoice.getFeeDate() + " at " +
-                       theInvoice.getOwner() + ") : " + theInvoice.getBalance());
-
-    AlmaFees theFees = theClient.getTheFees();
-    for (AlmaInvoice theInvoice: theFees.getFees())
-    {
-      System.out.println(theInvoice.getId() + "\t (" + theInvoice.getType().getDescription() + " on " +
-                         theInvoice.getBarcode() + ", incurred " + theInvoice.getFeeDate() + " at " +
-                         theInvoice.getOwner() + ") : " + theInvoice.getBalance());
-    }*/
-
-    /*String dateTime = "2021-05-12T01:38:10.489Z";
-    String formatIn = "yyyy-MM-dd";
-    String formatOut = "MMMM dd, yyyy";
-    System.out.println(dateTime.substring(0, dateTime.lastIndexOf("T")));
-    System.out.println(new SimpleDateFormat(formatOut)
-                       .format(new SimpleDateFormat(formatIn).parse(dateTime.substring(0, dateTime.lastIndexOf(":")))));*/
+    String json;
+    StringBuffer edited;
+    String access;
+    json =
+      "{\"access_token\":\"eyJhbGciOiJSUzI1NiIsImt\",\"expires_in\":1800,\"token_type\":\"Bearer\",\"refresh_token\":\"qFpgy6tDeAKr4mAo_3bICSaTfPvOBzkHkba34-0p6-k\",\"scope\":\"accounting.settings accounting.transactions accounting.contacts offline_access\"}";
+    access = json.substring(1, json.indexOf(","));
+    access = access.replaceAll("\"", "").replace(":", "").replace("access_token", "");
+    System.out.println(access);
+    edited = new StringBuffer(json);
+    edited = edited.insert(json.lastIndexOf("}"), ",\"tenant_id\":\"d9e3104a-1995-4ab7-b3f7-c889b9e7338a\"");
+    System.out.println(edited);
   }
 
 }

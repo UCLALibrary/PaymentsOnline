@@ -2,6 +2,7 @@ package edu.ucla.library.libservices.webservices.ecommerce.utility.handlers;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTenantClient;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenClient;
 
 import java.time.LocalDateTime;
@@ -60,11 +61,13 @@ public class XeroTokenHandler
     LocalDateTime expireTime = LocalDateTime.parse(theBean.getExpires_in(), FORMAT);
     if (!LocalDateTime.now().isBefore(expireTime))
     {
+      String json;
       XeroTokenClient tokenClient;
       tokenClient = new XeroTokenClient();
       tokenClient.setRefreshToken(theBean.getRefresh_token());
       tokenClient.setSecretsFile(getSecretsFile());
-      fileHandler.writeTokensFile(tokenClient.getTokens());
+      json = tokenClient.getTokens();
+      fileHandler.writeTokensFile(json);
       theBean = fileHandler.readTokensFile();
     }
     return theBean;
