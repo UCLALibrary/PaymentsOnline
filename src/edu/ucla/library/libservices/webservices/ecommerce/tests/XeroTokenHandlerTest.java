@@ -34,14 +34,14 @@ public class XeroTokenHandlerTest
     PropertiesHandler props;
     String fakeAccessToken;
     TokenFileHandler expiredHandler;
-    
+
     props = new PropertiesHandler();
     // a file specifically to hold a Xero OAuth refresh token
     props.setFileName(Paths.get(BASE_PATH, "refresh.props").toString());
 
     expiredHandler = new TokenFileHandler();
     expiredHandler.setTokensFile(TOKENS_FILE);
-    
+
     fakeAccessToken = expiredHandler.readTokensFile().getAccess_token();
     FUTURE_BEAN = new XeroTokenBean();
     FUTURE_BEAN.setAccess_token(fakeAccessToken);

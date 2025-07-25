@@ -17,9 +17,6 @@ public class XeroTokenBean
   // Which Xero API units are accessible with current access token
   private String scope;
 
-  // TBD
-  private String tenantID;
-
   public XeroTokenBean()
   {
     super();
@@ -63,16 +60,6 @@ public class XeroTokenBean
   public String getScope()
   {
     return scope;
-  }
-
-  public void setTenantID(String tenantID)
-  {
-    this.tenantID = tenantID;
-  }
-
-  public String getTenantID()
-  {
-    return tenantID;
   }
 
   @Override
