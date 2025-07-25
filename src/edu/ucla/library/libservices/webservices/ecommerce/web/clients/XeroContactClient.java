@@ -80,11 +80,13 @@ public class XeroContactClient
       ClientResponse response;
       client = Client.create();
       webResource = client.resource(getContactURL().concat(getUserID()));
-      
+
       String authString = "Bearer ".concat(getAccessToken());
 
-      response = webResource.accept("application/json").header("Authorization", authString).
-                header("xero-tenant-id", getTenantID()).get(ClientResponse.class);
+      response = webResource.accept("application/json")
+                            .header("Authorization", authString)
+                            .header("xero-tenant-id", getTenantID())
+                            .get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
         XeroContactList theList;
@@ -94,13 +96,13 @@ public class XeroContactClient
       }
       else
       {
-        LOGGER.error("contact service return code " + response.getStatus());
+        LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
         theContact = new XeroContact();
       }
     }
     return theContact;
   }
-  
+
   private String getTenantID()
   {
     PropertiesHandler secretGetter;

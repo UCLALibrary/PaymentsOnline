@@ -12,14 +12,14 @@ import com.sun.jersey.api.representation.Form;
 import org.apache.log4j.Logger;
 
 /**
- * Client used to retrieve tenant ID from Xero 
+ * Client used to retrieve tenant ID from Xero
  */
 public class XeroTenantClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroTenantClient.class);
   private String accessToken;
   private String tenantURL;
-  
+
   public XeroTenantClient()
   {
     super();
@@ -72,7 +72,7 @@ public class XeroTenantClient
     }
     else
     {
-      LOGGER.error("tenant service return code " + response.getStatus());
+      LOGGER.error("tenant service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       return null;
     }
   }

@@ -9,6 +9,7 @@ public class XeroContactList
   public XeroContactList()
   {
     super();
+    Contacts = new ArrayList<XeroContact>();
   }
 
   public void setContacts(ArrayList<XeroContact> Contacts)

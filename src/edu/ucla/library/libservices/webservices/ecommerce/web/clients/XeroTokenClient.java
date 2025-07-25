@@ -91,7 +91,7 @@ public class XeroTokenClient
     }
     else
     {
-      LOGGER.error("token service return code " + response.getStatus());
+      LOGGER.error("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       json = null;
     }
     return json;

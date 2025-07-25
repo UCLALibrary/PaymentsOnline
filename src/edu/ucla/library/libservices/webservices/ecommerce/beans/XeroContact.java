@@ -4,9 +4,10 @@ public class XeroContact
 {
   private String ContactID;
   private String ContactNumber;
+  private String Name;
   private String FirstName;
   private String LastName;
-  
+
   public XeroContact()
   {
     super();
@@ -50,5 +51,29 @@ public class XeroContact
   public String getLastName()
   {
     return LastName;
+  }
+
+  public void setName(String Name)
+  {
+    this.Name = Name;
+  }
+
+  public String getName()
+  {
+    return Name;
+  }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || getClass() != theOther.getClass())
+      return false;
+    XeroContact aBean = (XeroContact) theOther;
+
+    return this.getContactID() == aBean.getContactID() && this.getContactNumber() == aBean.getContactNumber() &&
+           this.getFirstName() == aBean.getFirstName() && this.getLastName() == aBean.getLastName() &&
+           this.getName() == aBean.getName();
   }
 }

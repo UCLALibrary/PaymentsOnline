@@ -47,7 +47,7 @@ public class XeroTokenClientTest
     XeroTokenClient theClient;
 
     theClient = new XeroTokenClient();
-    theClient.setRefreshToken("<this needs to be real refresh>");
+    theClient.setRefreshToken("Wa4YwrESWhnaSwVkgTbBmu6rVV_y9kmM9jYFuw73Svs");
     theClient.setSecretsFile(SECRETS_FILE);
     json = theClient.getTokens();
     assertNotNull(json);

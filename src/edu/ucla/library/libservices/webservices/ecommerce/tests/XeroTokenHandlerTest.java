@@ -39,7 +39,7 @@ public class XeroTokenHandlerTest
     EXPIRED_BEAN = new XeroTokenBean();
     EXPIRED_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
     EXPIRED_BEAN.setExpires_in("-1800");
-    EXPIRED_BEAN.setRefresh_token("<this needs to be real refresh token>");
+    EXPIRED_BEAN.setRefresh_token("Wa4YwrESWhnaSwVkgTbBmu6rVV_y9kmM9jYFuw73Svs");
     EXPIRED_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
 
     TokenFileHandler handler;
