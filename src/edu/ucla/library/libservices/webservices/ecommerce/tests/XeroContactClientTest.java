@@ -1,8 +1,11 @@
-package edu.ucla.library.libservices.webservices.ecommerce.web.clients;
+package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroContactClient;
+
 import java.net.HttpURLConnection;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
@@ -24,6 +27,7 @@ import com.google.gson.Gson;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 
 import java.nio.file.Paths;
@@ -36,19 +40,6 @@ public class XeroContactClientTest
   private static String TOKENS_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
   private static String SECRETS_FILE = Paths.get(BASE_PATH, "mock_xero.props").toString();
   private static XeroTokenBean FUTURE_BEAN;
-
-  public XeroContactClientTest()
-  {
-  }
-
-  public static void main(String[] args)
-  {
-    String[] args2 =
-    {
-      XeroContactClientTest.class.getName()
-    };
-    JUnitCore.main(args2);
-  }
 
   @Before
   public void setUp()
@@ -79,24 +70,6 @@ public class XeroContactClientTest
     handler.writeTokensFile(gson.toJson(FUTURE_BEAN));
   }
 
-  @After
-  public void tearDown()
-    throws Exception
-  {
-  }
-
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
-  }
-
   /**
    * @see XeroContactClient#setSecretsFile(String)
    */
@@ -119,17 +92,6 @@ public class XeroContactClientTest
     testClient = new XeroContactClient();
     testClient.setTokensFile(TOKENS_FILE);
     assert(testClient.getTokensFile().equals(TOKENS_FILE));
-  }
-
-  /**
-   * @see XeroContactClient#getAccessToken()
-   */
-  @Test
-  public void testGetAccessToken()
-  {
-    XeroContactClient testClient;
-    testClient = new XeroContactClient();
-    testClient.setTokensFile(TOKENS_FILE);
   }
 
   /**
