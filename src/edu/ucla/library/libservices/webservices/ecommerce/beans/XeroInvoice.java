@@ -1,16 +1,22 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class XeroInvoice
 {
   private String InvoiceID;
   private String InvoiceNumber;
   private String AmountDue;
-  private String ContactID;
+  private XeroContact Contact;
   private String Reference;
+  private ArrayList<XeroLineItem> LineItems;
+  private HashMap<String, Double> itemCodeAmts;
 
   public XeroInvoice()
   {
     super();
+    LineItems = new ArrayList<>();
   }
 
   public void setInvoiceID(String InvoiceID)
@@ -43,16 +49,6 @@ public class XeroInvoice
     return AmountDue;
   }
 
-  public void setContactID(String ContactID)
-  {
-    this.ContactID = ContactID;
-  }
-
-  public String getContactID()
-  {
-    return ContactID;
-  }
-
   public void setReference(String Reference)
   {
     this.Reference = Reference;
@@ -61,5 +57,35 @@ public class XeroInvoice
   public String getReference()
   {
     return Reference;
+  }
+
+  public void setContact(XeroContact Contact)
+  {
+    this.Contact = Contact;
+  }
+
+  public XeroContact getContact()
+  {
+    return Contact;
+  }
+
+  public void setLineItems(ArrayList<XeroLineItem> LineItems)
+  {
+    this.LineItems = LineItems;
+  }
+
+  public ArrayList<XeroLineItem> getLineItems()
+  {
+    return LineItems;
+  }
+
+  public void setItemCodeAmts(HashMap<String, Double> itemCodeAmts)
+  {
+    this.itemCodeAmts = itemCodeAmts;
+  }
+
+  public HashMap<String, Double> getItemCodeAmts()
+  {
+    return itemCodeAmts;
   }
 }
