@@ -13,17 +13,14 @@ import org.apache.log4j.Logger;
 
 /**
  * Client used to retrieve tenant ID from Xero
+ * We expect to have only one, unchanging tenant ID... this class is for
+ * cases when said tenant ID is rejected 
  */
 public class XeroTenantClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroTenantClient.class);
   private String accessToken;
   private String tenantURL;
-
-  public XeroTenantClient()
-  {
-    super();
-  }
 
   public void setAccessToken(String accessToken)
   {
@@ -45,6 +42,10 @@ public class XeroTenantClient
     return tenantURL;
   }
 
+  /**
+   * Connects to Xero API to retrieve tenant ID
+   * @return String representation of a Xero tenant ID
+   */
   public String getTenantID()
   {
     Client client;

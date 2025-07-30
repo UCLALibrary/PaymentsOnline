@@ -1,5 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
+import static org.junit.Assert.*;
+
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -16,13 +18,8 @@ import java.io.IOException;
 
 import java.net.InetSocketAddress;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
 import com.google.gson.Gson;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;

@@ -3,6 +3,7 @@ package edu.ucla.library.libservices.webservices.ecommerce.tests;
 import com.google.gson.Gson;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroTokenHandler;
 
@@ -30,16 +31,28 @@ public class XeroTokenHandlerTest
   public void setUp()
     throws Exception
   {
+    PropertiesHandler props;
+    String fakeAccessToken;
+    TokenFileHandler expiredHandler;
+    
+    props = new PropertiesHandler();
+    // a file specifically to hold a Xero OAuth refresh token
+    props.setFileName(Paths.get(BASE_PATH, "refresh.props").toString());
+
+    expiredHandler = new TokenFileHandler();
+    expiredHandler.setTokensFile(TOKENS_FILE);
+    
+    fakeAccessToken = expiredHandler.readTokensFile().getAccess_token();
     FUTURE_BEAN = new XeroTokenBean();
-    FUTURE_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
+    FUTURE_BEAN.setAccess_token(fakeAccessToken);
     FUTURE_BEAN.setExpires_in("1800");
     FUTURE_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
     FUTURE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
 
     EXPIRED_BEAN = new XeroTokenBean();
-    EXPIRED_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
+    EXPIRED_BEAN.setAccess_token(fakeAccessToken);
     EXPIRED_BEAN.setExpires_in("-1800");
-    EXPIRED_BEAN.setRefresh_token("Wa4YwrESWhnaSwVkgTbBmu6rVV_y9kmM9jYFuw73Svs");
+    EXPIRED_BEAN.setRefresh_token(props.loadProperties().getProperty("refresh_token"));
     EXPIRED_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
 
     TokenFileHandler handler;

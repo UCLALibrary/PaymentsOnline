@@ -8,6 +8,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Utility class to centralize retrieval of app properties
+ */
 public class PropertiesHandler
 {
   private static final Logger LOGGER = Logger.getLogger(PropertiesHandler.class);
@@ -37,7 +40,7 @@ public class PropertiesHandler
     }
     catch (IOException ioe)
     {
-      LOGGER.fatal("problem with props file" + ioe.getMessage());
+      LOGGER.fatal("problem with props file: " + ioe.getMessage());
     }
     return secrets;
   }

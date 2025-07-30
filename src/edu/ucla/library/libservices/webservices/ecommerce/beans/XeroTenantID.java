@@ -1,8 +1,10 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+/**
+ * Java bean to model a tenant access in Xero
+ */
 public class XeroTenantID
 {
-  private String id;
   private String tenantId;
   private String tenantType;
   private String tenantName;
@@ -10,16 +12,6 @@ public class XeroTenantID
   public XeroTenantID()
   {
     super();
-  }
-
-  public void setId(String id)
-  {
-    this.id = id;
-  }
-
-  public String getId()
-  {
-    return id;
   }
 
   public void setTenantId(String tenantId)

@@ -1,8 +1,12 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+/**
+ * Java bean model of a contact (customer/patron) from Xero
+ */
 public class XeroContact
 {
   private String ContactID;
+  // per Xero docs, "used to identify contacts in external systems"
   private String ContactNumber;
   private String Name;
   private String FirstName;

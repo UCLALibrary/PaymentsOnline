@@ -13,22 +13,38 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContactList;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroTokenHandler;
 
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 
+/**
+ * Class that retrieves contact (customer/patron) data from Xero API
+ */
 public class XeroContactClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
-  //path for properties file with URIs and IDs to access Xero API
+  // collection of values needed to access Xero API
+  private Properties secrets;
+  // path for properties file with URIs and IDs to access Xero API
   private String secretsFile;
-  //path for file with OAuth tokens to access Xero API
+  // path for file with OAuth tokens to access Xero API
   private String tokensFile;
 
+  // unique ID for a contact
   private String userID;
+  // XeroContact bean returned from class
   private XeroContact theContact;
 
-  public XeroContactClient()
+  /**
+   * utility method to retrieve the properties needed by class
+   */
+  private void loadProperties()
   {
-    super();
+    // utility to retrieve properties
+    PropertiesHandler secretGetter;
+    secretGetter = new PropertiesHandler();
+    secretGetter.setFileName(getSecretsFile());
+    secrets = secretGetter.loadProperties();
   }
 
   public void setSecretsFile(String secretsFile)
@@ -51,6 +67,9 @@ public class XeroContactClient
     return tokensFile;
   }
 
+  /**
+   * @return String representation of OAuth token used to call Xero API
+   */
   public String getAccessToken()
   {
     //utility to retrieve current access/refresh tokens
@@ -71,9 +90,15 @@ public class XeroContactClient
     return userID;
   }
 
+  /**
+   * Retrieves properties (contact URI etc), calls Xero service, maps json response to
+   * XeroContact bean
+   * @return A Xero contact modeled as a XeroContact bean
+   */
   public XeroContact getTheContact()
   {
-    if (theContact == null)
+    loadProperties();
+    if (this.theContact == null)
     {
       Client client;
       WebResource webResource;
@@ -92,30 +117,24 @@ public class XeroContactClient
         XeroContactList theList;
         String json = response.getEntity(String.class);
         theList = new Gson().fromJson(json, XeroContactList.class);
-        theContact = theList.getContacts().get(0);
+        this.theContact = theList.getContacts().get(0);
       }
       else
       {
         LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
-        theContact = new XeroContact();
+        this.theContact = new XeroContact();
       }
     }
-    return theContact;
+    return this.theContact;
   }
 
   private String getTenantID()
   {
-    PropertiesHandler secretGetter;
-    secretGetter = new PropertiesHandler();
-    secretGetter.setFileName(getSecretsFile());
-    return secretGetter.loadProperties().getProperty("tenant_id");
+    return secrets.getProperty("tenant_id");
   }
 
   private String getContactURL()
   {
-    PropertiesHandler secretGetter;
-    secretGetter = new PropertiesHandler();
-    secretGetter.setFileName(getSecretsFile());
-    return secretGetter.loadProperties().getProperty("contact_url");
+    return secrets.getProperty("contact_url");
   }
 }
