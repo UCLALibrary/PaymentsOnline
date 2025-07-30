@@ -5,6 +5,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,15 +36,11 @@ public class XeroTokenClient
 
   private void loadProperties()
   {
-    secrets = new Properties();
-    try
-    {
-      secrets.load(new FileInputStream(new File(getSecretsFile())));
-    }
-    catch (IOException ioe)
-    {
-      LOGGER.fatal("problem with props file" + ioe.getMessage());
-    }
+    // utility to retrieve properties
+    PropertiesHandler secretGetter;
+    secretGetter = new PropertiesHandler();
+    secretGetter.setFileName(getSecretsFile());
+    secrets = secretGetter.loadProperties();
   }
 
   /**
@@ -93,7 +91,7 @@ public class XeroTokenClient
     }
     else
     {
-      LOGGER.error("token service return code " + response.getStatus());
+      LOGGER.error("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       json = null;
     }
     return json;

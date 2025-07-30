@@ -1,5 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenClient;
 
 import java.nio.file.Paths;
@@ -43,11 +44,16 @@ public class XeroTokenClientTest
   @Test
   public void testGetTokens()
   {
+    PropertiesHandler props;
     String json;
     XeroTokenClient theClient;
 
+    props = new PropertiesHandler();
+    // a file specifically to hold a Xero OAuth refresh token
+    props.setFileName(Paths.get(BASE_PATH, "refresh.props").toString());
+
     theClient = new XeroTokenClient();
-    theClient.setRefreshToken("<this needs to be real refresh>");
+    theClient.setRefreshToken(props.loadProperties().getProperty("refresh_token"));
     theClient.setSecretsFile(SECRETS_FILE);
     json = theClient.getTokens();
     assertNotNull(json);
