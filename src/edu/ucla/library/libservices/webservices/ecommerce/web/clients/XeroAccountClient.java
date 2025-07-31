@@ -6,10 +6,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
-
-import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContactList;
-
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroAccountList;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroTokenHandler;
 
@@ -17,12 +14,9 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-/**
- * Class that retrieves contact (customer/patron) data from Xero API
- */
-public class XeroContactClient
+public class XeroAccountClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
+  private static final Logger LOGGER = Logger.getLogger(XeroAccountClient.class);
   // collection of values needed to access Xero API
   private Properties secrets;
   // path for properties file with URIs and IDs to access Xero API
@@ -31,9 +25,14 @@ public class XeroContactClient
   private String tokensFile;
 
   // unique ID for a contact
-  private String userID;
+  private String accountID;
   // XeroContact bean returned from class
-  private XeroContact theContact;
+  private String itemCode;
+
+  public XeroAccountClient()
+  {
+    super();
+  }
 
   /**
    * utility method to retrieve the properties needed by class
@@ -67,6 +66,16 @@ public class XeroContactClient
     return tokensFile;
   }
 
+  public void setAccountID(String accountID)
+  {
+    this.accountID = accountID;
+  }
+
+  public String getAccountID()
+  {
+    return accountID;
+  }
+
   /**
    * @return String representation of OAuth token used to call Xero API
    */
@@ -80,61 +89,47 @@ public class XeroContactClient
     return tokenGetter.getTokens().getAccess_token();
   }
 
-  public void setUserID(String userID)
-  {
-    this.userID = userID;
-  }
-
-  public String getUserID()
-  {
-    return userID;
-  }
-
-  /**
-   * Retrieves properties (contact URI etc), calls Xero service, maps json response to
-   * XeroContact bean
-   * @return A Xero contact modeled as a XeroContact bean
-   */
-  public XeroContact getTheContact()
-  {
-    loadProperties();
-    if (this.theContact == null)
-    {
-      Client client;
-      WebResource webResource;
-      ClientResponse response;
-      client = Client.create();
-      webResource = client.resource(getContactURL().concat(getUserID()));
-
-      String authString = "Bearer ".concat(getAccessToken());
-
-      response = webResource.accept("application/json")
-                            .header("Authorization", authString)
-                            .header("xero-tenant-id", getTenantID())
-                            .get(ClientResponse.class);
-      if (response.getStatus() == 200)
-      {
-        XeroContactList theList;
-        String json = response.getEntity(String.class);
-        theList = new Gson().fromJson(json, XeroContactList.class);
-        this.theContact = theList.getContacts().get(0);
-      }
-      else
-      {
-        LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
-        this.theContact = new XeroContact();
-      }
-    }
-    return this.theContact;
-  }
-
   private String getTenantID()
   {
     return secrets.getProperty("tenant_id");
   }
 
-  private String getContactURL()
+  private String getAccountURL()
   {
-    return secrets.getProperty("contact_url");
+    return secrets.getProperty("account_url");
+  }
+
+  public String getItemCode()
+  {
+    Client client;
+    ClientResponse response;
+    String authString;
+    WebResource webResource;
+
+    loadProperties();
+    client = Client.create();
+    webResource = client.resource(getAccountURL().concat(getAccountID()));
+
+    authString = "Bearer ".concat(getAccessToken());
+    response = webResource.accept("application/json")
+                          .header("Authorization", authString)
+                          .header("xero-tenant-id", getTenantID())
+                          .get(ClientResponse.class);
+    if (response.getStatus() == 200)
+    {
+      XeroAccountList theList;
+      String json = response.getEntity(String.class);
+      theList = new Gson().fromJson(json, XeroAccountList.class);
+      itemCode = theList.getAccounts()
+                        .get(0)
+                        .getName();
+    }
+    else
+    {
+      LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
+      itemCode = new String();
+    }
+
+    return itemCode;
   }
 }

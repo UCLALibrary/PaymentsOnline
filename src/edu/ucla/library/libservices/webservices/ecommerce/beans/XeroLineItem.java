@@ -6,6 +6,7 @@ public class XeroLineItem
   private String Description;
   private double LineAmount;
   private String AccountCode;
+  private String transactItemCode;
 
   public XeroLineItem()
   {
@@ -50,5 +51,15 @@ public class XeroLineItem
   public String getAccountCode()
   {
     return AccountCode;
+  }
+
+  public void setTransactItemCode(String transactItemCode)
+  {
+    this.transactItemCode = transactItemCode;
+  }
+
+  public String getTransactItemCode()
+  {
+    return transactItemCode;
   }
 }

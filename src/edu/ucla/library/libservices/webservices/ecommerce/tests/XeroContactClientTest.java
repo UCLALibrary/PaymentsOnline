@@ -1,10 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
-<<<<<<< HEAD
 import static org.junit.Assert.*;
 
-=======
->>>>>>> [SYS-1877] test tweaks, moving test to correct namespace
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -21,18 +18,8 @@ import java.io.IOException;
 
 import java.net.InetSocketAddress;
 
-<<<<<<< HEAD
 import org.junit.Before;
 import org.junit.Test;
-=======
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.JUnitCore;
->>>>>>> [SYS-1877] test tweaks, moving test to correct namespace
 import com.google.gson.Gson;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
