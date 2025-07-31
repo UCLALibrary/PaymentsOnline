@@ -7,7 +7,7 @@ public class XeroInvoice
 {
   private String InvoiceID;
   private String InvoiceNumber;
-  private String AmountDue;
+  private Double AmountDue;
   private XeroContact Contact;
   private String Reference;
   private ArrayList<XeroLineItem> LineItems;
@@ -17,6 +17,7 @@ public class XeroInvoice
   {
     super();
     LineItems = new ArrayList<>();
+    itemCodeAmts = new HashMap<>();
   }
 
   public void setInvoiceID(String InvoiceID)
@@ -39,12 +40,12 @@ public class XeroInvoice
     return InvoiceNumber;
   }
 
-  public void setAmountDue(String AmountDue)
+  public void setAmountDue(Double AmountDue)
   {
     this.AmountDue = AmountDue;
   }
 
-  public String getAmountDue()
+  public Double getAmountDue()
   {
     return AmountDue;
   }
