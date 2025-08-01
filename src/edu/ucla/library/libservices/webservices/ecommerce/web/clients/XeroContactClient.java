@@ -70,7 +70,7 @@ public class XeroContactClient
   /**
    * @return String representation of OAuth token used to call Xero API
    */
-  private String getAccessToken()
+  public String getAccessToken()
   {
     //utility to retrieve current access/refresh tokens
     XeroTokenHandler tokenGetter;
