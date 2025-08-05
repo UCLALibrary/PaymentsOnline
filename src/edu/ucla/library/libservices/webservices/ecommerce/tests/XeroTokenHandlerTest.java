@@ -9,16 +9,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroT
 
 import java.nio.file.Paths;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class XeroTokenHandlerTest
 {
-  private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
   private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static String SECRETS_FILE = Paths.get(BASE_PATH, "xero.props").toString();

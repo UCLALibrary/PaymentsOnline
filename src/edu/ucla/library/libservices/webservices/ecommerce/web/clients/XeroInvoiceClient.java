@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-public class XeroInvoiceService
+public class XeroInvoiceClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroInvoiceService.class);
+  private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
   // collection of values needed to access Xero API
   private Properties secrets;
   // path for properties file with URIs and IDs to access Xero API
@@ -36,7 +36,7 @@ public class XeroInvoiceService
   private XeroInvoice singleInvoice;
   private XeroInvoiceList allUnpaid;
 
-  public XeroInvoiceService()
+  public XeroInvoiceClient()
   {
     super();
   }
@@ -137,7 +137,7 @@ public class XeroInvoiceService
       singleInvoice = new Gson().fromJson(json, XeroInvoiceList.class).getInvoices().get(0);
       for (XeroLineItem theLine : singleInvoice.getLineItems() )
       {
-        theLine.setItemCode(getItemCode(theLine.getAccountCode()));
+        theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
       }
       singleInvoice.setItemCodeAmts(groupdAndSumCodes(singleInvoice.getLineItems()));
     }
@@ -193,6 +193,6 @@ public class XeroInvoiceService
   {
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
-                                          Collectors.summingDouble(XeroLineItem::getLineAmount)));
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
   }
 }
