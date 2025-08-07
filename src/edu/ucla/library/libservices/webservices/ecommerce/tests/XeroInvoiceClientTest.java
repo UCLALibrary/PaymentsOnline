@@ -1,15 +1,55 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpExchange;
+
+import java.net.HttpURLConnection;
+
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient;
+
+import java.net.HttpURLConnection;
+
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
+
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoiceList;
+
+import java.io.IOException;
+
+import java.net.InetSocketAddress;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.gson.Gson;
+
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroLineItem;
+
+import java.nio.file.Paths;
+
+import java.util.ArrayList;
+
 public class XeroInvoiceClientTest
 {
+  private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
+  private static String TOKENS_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
+  private static String SECRETS_FILE = Paths.get(BASE_PATH, "mock_xero.props").toString();
+  private static XeroContact mockContact;
+  private static XeroInvoice mockInvoice;
+  private static XeroInvoiceList mockInvoiceList;
+  private static XeroLineItem mockLine;
+  private static ArrayList<XeroLineItem> mockLineList;
+  private static HttpServer mockServer;
+  private static InetSocketAddress mockAddress;
+
   public XeroInvoiceClientTest()
   {
   }
@@ -27,60 +67,88 @@ public class XeroInvoiceClientTest
   public void setUp()
     throws Exception
   {
-  }
+    mockContact = new XeroContact();
+    mockContact.setContactID("1234");
+    mockContact.setContactNumber("5678");
+    mockContact.setFirstName("Joe");
+    mockContact.setLastName("Bruin");
+    mockContact.setName("Joe Bruin, esq");
 
-  @After
-  public void tearDown()
-    throws Exception
-  {
-  }
+    mockLine = new XeroLineItem();
+    mockLine.setAccountCode("PRESERV#01");
+    mockLine.setAccountID("ad4e5b15-3583");
+    mockLine.setDescription("Labor: Principle Scientist");
+    mockLine.setItemCode("PRSVLBR - SC");
+    mockLine.setLineAmount(56.58);
+    mockLine.setTaxAmount(5.52);
+    mockLineList = new ArrayList<>();
+    mockLineList.add(mockLine);
 
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
+    mockInvoice = new XeroInvoice();
+    mockInvoice.setAmountDue(100.00d);
+    mockInvoice.setInvoiceID("123-456");
+    mockInvoice.setInvoiceNumber("SR00125");
+    mockInvoice.setReference("SRLF");
+    mockInvoice.setContact(mockContact);
+    mockInvoice.setLineItems(mockLineList);
 
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
+    mockInvoiceList = new XeroInvoiceList();
+    mockInvoiceList.getInvoices().add(mockInvoice);
+
+    mockAddress = new InetSocketAddress(8000);
+    mockServer = HttpServer.create(mockAddress, 0);
   }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient#setSecretsFile(String)
    */
   @Test
-  public void testSetSecretsFile()
+  public void testSetGetSecretsFile()
   {
-    fail("Unimplemented");
+    XeroInvoiceClient testClient;
+    testClient = new XeroInvoiceClient();
+    testClient.setSecretsFile(SECRETS_FILE);
+    assert (testClient.getSecretsFile().equals(SECRETS_FILE));
   }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient#setTokensFile(String)
    */
   @Test
-  public void testSetTokensFile()
+  public void testSetGetTokensFile()
   {
-    fail("Unimplemented");
+    XeroInvoiceClient testClient;
+    testClient = new XeroInvoiceClient();
+    testClient.setTokensFile(TOKENS_FILE);
+    assert (testClient.getTokensFile().equals(TOKENS_FILE));
   }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient#setContactID(String)
    */
   @Test
-  public void testSetContactID()
+  public void testSetGetContactID()
   {
-    fail("Unimplemented");
+    String dummyID;
+    XeroInvoiceClient testClient;
+    dummyID = "1234";
+    testClient = new XeroInvoiceClient();
+    testClient.setContactID(dummyID);
+    assert (testClient.getContactID().equals(dummyID));
   }
 
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient#setInvoiceID(String)
    */
   @Test
-  public void testSetInvoiceID()
+  public void testSetGetInvoiceID()
   {
-    fail("Unimplemented");
+    String dummyID;
+    XeroInvoiceClient testClient;
+    dummyID = "1234";
+    testClient = new XeroInvoiceClient();
+    testClient.setInvoiceID(dummyID);
+    assert (testClient.getInvoiceID().equals(dummyID));
   }
 
   /**
@@ -98,6 +166,36 @@ public class XeroInvoiceClientTest
   @Test
   public void testGetAllUnpaid()
   {
-    fail("Unimplemented");
+    XeroInvoiceClient testClient;
+    XeroInvoiceList testList;
+    Gson gson;
+    HttpHandler handler;
+    String mockJson;
+    
+    gson = new Gson();
+    mockJson = gson.toJson(mockInvoiceList);
+    handler = new HttpHandler()
+    {
+      public void handle(HttpExchange exchange)
+        throws IOException
+      {
+        byte[] response = mockJson.getBytes();
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+        exchange.getResponseBody().write(response);
+        exchange.close();
+      }
+    };
+    mockServer.createContext("/api.xro/2.0/Invoices?Statuses=AUTHORISED&ContactIDs=1234", handler);
+    mockServer.start();
+    
+    testClient = new XeroInvoiceClient();
+    testClient.setContactID("1234");
+    testClient.setSecretsFile(SECRETS_FILE);
+    testClient.setTokensFile(TOKENS_FILE);
+    
+    testList = testClient.getAllUnpaid();
+    assert(testList.equals(mockInvoiceList));
+    
+    mockServer.stop(0);
   }
 }

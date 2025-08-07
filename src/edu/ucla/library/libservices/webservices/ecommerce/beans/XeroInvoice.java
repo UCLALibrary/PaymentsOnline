@@ -2,8 +2,9 @@ package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collections;
 
-public class XeroInvoice
+public class XeroInvoice implements Comparable<XeroInvoice>
 {
   private String InvoiceID;
   private String InvoiceNumber;
@@ -88,5 +89,30 @@ public class XeroInvoice
   public HashMap<String, Double> getItemCodeAmts()
   {
     return itemCodeAmts;
+  }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || getClass() != theOther.getClass())
+      return false;
+    XeroInvoice aBean = (XeroInvoice) theOther;
+
+    boolean simpleCompare = this.getInvoiceID() == aBean.getInvoiceID() && this.getInvoiceNumber() == aBean.getInvoiceNumber() &&
+           this.getAmountDue() == aBean.getAmountDue() && this.getContact().equals(aBean.getContact()) &&
+           this.getReference() == aBean.getReference();
+    Collections.sort(this.getLineItems());
+    Collections.sort(aBean.getLineItems());
+    boolean lineCompare = this.getLineItems().equals(aBean.getLineItems());
+    boolean amountsCompare = this.getItemCodeAmts().equals(aBean.getItemCodeAmts());
+    return simpleCompare && lineCompare && amountsCompare;
+  }
+
+  @Override
+  public int compareTo(XeroInvoice other)
+  {
+    return this.getInvoiceID().compareTo(other.getInvoiceID());
   }
 }

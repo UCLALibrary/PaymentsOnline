@@ -1,7 +1,12 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
-public class XeroLineItem
+/**
+ * Represents a charged item/service in an invoice
+ */
+public class XeroLineItem implements Comparable<XeroLineItem>
 {
+  // needed for compareTo method
+  private String LineItemID;
   private String ItemCode;
   private String Description;
   private double LineAmount;
@@ -13,6 +18,16 @@ public class XeroLineItem
   public XeroLineItem()
   {
     super();
+  }
+
+  public void setLineItemID(String LineItemID)
+  {
+    this.LineItemID = LineItemID;
+  }
+
+  public String getLineItemID()
+  {
+    return LineItemID;
   }
 
   public void setItemCode(String ItemCode)
@@ -88,5 +103,26 @@ public class XeroLineItem
   public double getLineTotal()
   {
     return (getLineAmount() + getTaxAmount()) * 100d;
+  }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || getClass() != theOther.getClass())
+      return false;
+    XeroLineItem aBean = (XeroLineItem) theOther;
+
+    return this.getItemCode() == aBean.getItemCode() && this.getDescription() == aBean.getDescription() &&
+           this.getLineAmount() == aBean.getLineAmount() && this.getTaxAmount() == aBean.getTaxAmount() &&
+           this.getAccountCode() == aBean.getAccountCode() && this.getAccountID() == aBean.getAccountID() &&
+           this.getTransactItemCode() == aBean.getTransactItemCode();
+  }
+
+  @Override
+  public int compareTo(XeroLineItem otherLine)
+  {
+    return this.getLineItemID().compareTo(otherLine.getLineItemID());
   }
 }
