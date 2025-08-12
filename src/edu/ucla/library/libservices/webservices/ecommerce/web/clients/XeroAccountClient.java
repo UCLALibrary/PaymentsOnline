@@ -28,10 +28,13 @@ public class XeroAccountClient
   private String accountID;
   // XeroContact bean returned from class
   private String itemCode;
+  
+  private int port;
 
   public XeroAccountClient()
   {
     super();
+    port = 0;
   }
 
   /**
@@ -76,6 +79,16 @@ public class XeroAccountClient
     return accountID;
   }
 
+  public void setPort(int port)
+  {
+    this.port = port;
+  }
+
+  public int getPort()
+  {
+    return port;
+  }
+
   /**
    * @return String representation of OAuth token used to call Xero API
    */
@@ -108,7 +121,7 @@ public class XeroAccountClient
 
     loadProperties();
     client = Client.create();
-    webResource = client.resource(getAccountURL().concat(getAccountID()));
+    webResource = client.resource(buildURL(getAccountID()));
 
     authString = "Bearer ".concat(getAccessToken());
     response = webResource.accept("application/json")
@@ -131,5 +144,17 @@ public class XeroAccountClient
     }
 
     return itemCode;
+  }
+
+  
+  private String buildURL(String queryOrID)
+  {
+    String url;
+    url = getAccountURL();
+    if ( getPort() != 0 )
+    {
+      url = url.replace("{port}}", ":".concat(String.valueOf(getPort())));
+    }
+    return url.concat(queryOrID);
   }
 }

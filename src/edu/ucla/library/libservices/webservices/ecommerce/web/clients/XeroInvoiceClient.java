@@ -35,10 +35,13 @@ public class XeroInvoiceClient
 
   private XeroInvoice singleInvoice;
   private XeroInvoiceList allUnpaid;
+  
+  private int port;
 
   public XeroInvoiceClient()
   {
     super();
+    port = 0;
   }
 
   /**
@@ -116,6 +119,16 @@ public class XeroInvoiceClient
     return invoiceID;
   }
 
+  public void setPort(int port)
+  {
+    this.port = port;
+  }
+
+  public int getPort()
+  {
+    return port;
+  }
+
   public XeroInvoice getSingleInvoice()
   {
     Client client;
@@ -125,7 +138,7 @@ public class XeroInvoiceClient
 
     loadProperties();
     client = Client.create();
-    webResource = client.resource(getInvoiceURL().concat("/").concat(getInvoiceID()));
+    webResource = client.resource(buildURL("/".concat(getInvoiceID())));
     authString = "Bearer ".concat(getAccessToken());
     response = webResource.accept("application/json")
                           .header("Authorization", authString)
@@ -134,6 +147,7 @@ public class XeroInvoiceClient
     if (response.getStatus() == 200)
     {
       String json = response.getEntity(String.class);
+      System.out.println(json);
       singleInvoice = new Gson().fromJson(json, XeroInvoiceList.class).getInvoices().get(0);
       for (XeroLineItem theLine : singleInvoice.getLineItems() )
       {
@@ -158,8 +172,8 @@ public class XeroInvoiceClient
 
     loadProperties();
     client = Client.create();
-    webResource = client.resource(getInvoiceURL().concat("?Statuses=AUTHORISED&ContactIDs=")
-                                                 .concat(getContactID()));
+    webResource = client.resource(buildURL("?Statuses=AUTHORISED&ContactIDs="
+                                                 .concat(getContactID())));
     authString = "Bearer ".concat(getAccessToken());
     response = webResource.accept("application/json")
                           .header("Authorization", authString)
@@ -183,6 +197,7 @@ public class XeroInvoiceClient
     XeroAccountClient accountClient;
     accountClient = new XeroAccountClient();
     accountClient.setAccountID(accountID);
+    accountClient.setPort(getPort());
     accountClient.setSecretsFile(getSecretsFile());
     accountClient.setTokensFile(getTokensFile());
     
@@ -194,5 +209,16 @@ public class XeroInvoiceClient
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+  
+  private String buildURL(String queryOrID)
+  {
+    String url;
+    url = getInvoiceURL();
+    if ( getPort() != 0 )
+    {
+      url = url.replace("{port}}", ":".concat(String.valueOf(getPort())));
+    }
+    return url.concat(queryOrID);
   }
 }
