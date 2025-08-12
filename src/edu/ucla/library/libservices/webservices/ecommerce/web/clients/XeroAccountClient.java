@@ -163,7 +163,7 @@ public class XeroAccountClient
     url = getAccountURL();
     if ( getPort() != 0 )
     {
-      url = url.replace("{port}}", ":".concat(String.valueOf(getPort())));
+      url = url.replace("{port}", ":".concat(String.valueOf(getPort())));
     }
     return url.concat(queryOrID);
   }

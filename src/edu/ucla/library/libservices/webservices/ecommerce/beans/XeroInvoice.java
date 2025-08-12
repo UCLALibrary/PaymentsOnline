@@ -18,7 +18,7 @@ public class XeroInvoice implements Comparable<XeroInvoice>
   //optional text field, when filled will be displayed in unpaid-invoice list
   private String Reference;
   private ArrayList<XeroLineItem> LineItems;
-  // grouped and summed values per Tranaact item code
+  // grouped and summed values per Transact item code
   private HashMap<String, Double> itemCodeAmts;
 
   public XeroInvoice()
