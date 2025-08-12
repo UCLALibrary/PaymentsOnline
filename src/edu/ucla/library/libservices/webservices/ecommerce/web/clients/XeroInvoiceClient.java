@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Calls Xero invoice API and retrieves either singular invoice
+ * or all unpaid invoices
+ */
 public class XeroInvoiceClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
@@ -129,6 +133,12 @@ public class XeroInvoiceClient
     return port;
   }
 
+  /**
+   * Retieves details on a particular invoice
+   * Calls XeroAccountClient to retrieve Transact item codes per line item
+   * Groups and sums line-item amounts per item code
+   * @return One Xero invoice mapped to XeroInvoice object
+   */
   public XeroInvoice getSingleInvoice()
   {
     Client client;
@@ -147,7 +157,6 @@ public class XeroInvoiceClient
     if (response.getStatus() == 200)
     {
       String json = response.getEntity(String.class);
-      System.out.println(json);
       singleInvoice = new Gson().fromJson(json, XeroInvoiceList.class).getInvoices().get(0);
       for (XeroLineItem theLine : singleInvoice.getLineItems() )
       {
@@ -163,6 +172,10 @@ public class XeroInvoiceClient
     return singleInvoice;
   }
 
+  /**
+   * Calls Xero invoice API, requesting unpaid/partially paid invoices for a patron
+   * @return A collection of unpaid invoices for a particular patron
+   */
   public XeroInvoiceList getAllUnpaid()
   {
     Client client;
@@ -192,6 +205,10 @@ public class XeroInvoiceClient
     return allUnpaid;
   }
 
+  /**
+   * @param accountID Account ID from line item
+   * @return Transact item code for account
+   */
   private String getItemCode(String accountID)
   {
     XeroAccountClient accountClient;
@@ -210,7 +227,13 @@ public class XeroInvoiceClient
            .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
   }
-  
+
+  /**
+   * kludgey method to handle possible non-stamdard port number,
+   * needed for unit tests
+   * @param queryOrID Query string or invoice ID passed to API
+   * @return formatted URL for API call
+   */
   private String buildURL(String queryOrID)
   {
     String url;

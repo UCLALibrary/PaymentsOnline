@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 
+/**
+ * A single invoice, with related XeroContact and XeroLineItem data
+ */
 public class XeroInvoice implements Comparable<XeroInvoice>
 {
+  //used for sorting, submitting payment
   private String InvoiceID;
+  // the user-set(?) invoice number, to be used as pass-through value to Transact
   private String InvoiceNumber;
   private Double AmountDue;
   private XeroContact Contact;
+  //optional text field, when filled will be displayed in unpaid-invoice list
   private String Reference;
   private ArrayList<XeroLineItem> LineItems;
+  // grouped and summed values per Tranaact item code
   private HashMap<String, Double> itemCodeAmts;
 
   public XeroInvoice()

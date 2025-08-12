@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 
+import java.net.ServerSocket;
+
 import java.nio.file.Paths;
 
 public class XeroAccountClientTest
@@ -127,8 +129,11 @@ public class XeroAccountClientTest
     String mockAccountJson;
     String testItemCode;
     XeroAccountClient testClient;
+    int port;
+    
+    port = findFreePort();
 
-    mockAddress = new InetSocketAddress(8000);
+    mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
     
     gson = new Gson();
@@ -151,10 +156,21 @@ public class XeroAccountClientTest
     testClient.setAccountID("ad4e5b15-3583");
     testClient.setSecretsFile(SECRETS_FILE);
     testClient.setTokensFile(TOKENS_FILE);
+    testClient.setPort(port);
     testItemCode = testClient.getItemCode();
     
     assert(testItemCode.equals(mockAccount.getName()));
     
     mockServer.stop(0);
+  }
+
+  private static int findFreePort()
+    throws IOException
+  {
+    try (ServerSocket socket = new ServerSocket(0))
+    {
+      socket.setReuseAddress(true);
+      return socket.getLocalPort();
+    }
   }
 }

@@ -112,6 +112,11 @@ public class XeroAccountClient
     return secrets.getProperty("account_url");
   }
 
+  /**
+   * Calls Xero account API to retrieve an item code (stored
+   * in account name field)
+   * @return Transact item code associated with account
+   */
   public String getItemCode()
   {
     Client client;
@@ -145,8 +150,13 @@ public class XeroAccountClient
 
     return itemCode;
   }
-
   
+  /**
+   * kludgey method to handle possible non-stamdard port number,
+   * needed for unit tests
+   * @param queryOrID Query string or invoice ID passed to API
+   * @return formatted URL for API call
+   */
   private String buildURL(String queryOrID)
   {
     String url;

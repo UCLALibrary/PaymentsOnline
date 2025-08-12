@@ -3,6 +3,9 @@ package edu.ucla.library.libservices.webservices.ecommerce.beans;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Contains a collection of XeroInvoice objects
+ */
 public class XeroInvoiceList
 {
   private ArrayList<XeroInvoice> Invoices;

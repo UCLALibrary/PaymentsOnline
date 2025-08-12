@@ -1,5 +1,9 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+/**
+ * Represents an account in Xero
+ * Used in LPO to retrieve Transact item codes (stored in Name field)
+ */
 public class XeroAccount
 {
   private String AccountID;

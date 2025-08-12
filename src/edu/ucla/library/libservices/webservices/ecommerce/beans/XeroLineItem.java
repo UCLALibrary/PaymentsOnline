@@ -1,5 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient;
+
 /**
  * Represents a charged item/service in an invoice
  */
@@ -7,12 +9,16 @@ public class XeroLineItem implements Comparable<XeroLineItem>
 {
   // needed for compareTo method
   private String LineItemID;
+  // passed to Transact, along with Description, for display to patron
   private String ItemCode;
   private String Description;
+  // the pr-tax charge for the libne item
   private double LineAmount;
   private double TaxAmount;
   private String AccountCode;
+  // used to link to a XeroAccount object
   private String AccountID;
+  // Transact code retrieved from an account record (cf XeroAccount)
   private String transactItemCode;
 
   public XeroLineItem()
@@ -99,7 +105,12 @@ public class XeroLineItem implements Comparable<XeroLineItem>
   {
     return transactItemCode;
   }
-  
+
+  /**
+   * Multiply the sum by 100 to head-off floating point
+   * rounding errors in XeroInvoiceClient.groupdAndSumCodes()
+   * @return sum of base line amount and tax, if any
+   */
   public double getLineTotal()
   {
     return (getLineAmount() + getTaxAmount()) * 100d;
