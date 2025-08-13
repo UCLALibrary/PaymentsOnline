@@ -1,7 +1,5 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
-import static org.junit.Assert.*;
-
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -23,8 +21,6 @@ import org.junit.Test;
 import com.google.gson.Gson;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
-
-import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 
 import java.nio.file.Paths;
@@ -135,14 +131,14 @@ public class XeroContactClientTest
     };
     mockServer.createContext("/api.xro/2.0/Contacts/1234", handler);
     mockServer.start();
-    
+
     testClient = new XeroContactClient();
     testClient.setSecretsFile(SECRETS_FILE);
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setUserID("1234");
     testContact = testClient.getTheContact();
     assert(testClient.equals(mockContact));
-    
+
     mockServer.stop(0);
   }
 }
