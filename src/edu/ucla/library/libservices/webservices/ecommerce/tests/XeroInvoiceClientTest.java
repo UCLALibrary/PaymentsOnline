@@ -151,7 +151,7 @@ public class XeroInvoiceClientTest
     String mockInvoiceJson;
     String mockAccountJson;
     XeroInvoiceClient testClient;
-    XeroInvoice testInvocie;
+    XeroInvoice testInvoice;
 
     port = findFreePort();
     mockAddress = new InetSocketAddress(port);
@@ -193,8 +193,8 @@ public class XeroInvoiceClientTest
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setPort(port);
 
-    testInvocie = testClient.getSingleInvoice();
-    assert (testInvocie.equals(mockInvoiceList));
+    testInvoice = testClient.getSingleInvoice();
+    assert (testInvoice.equals(mockInvoiceList));
 
     mockServer.stop(0);
   }
