@@ -1,9 +1,14 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.clients;
 
-import java.util.Properties;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.XeroTokenHandler;
+
+import java.util.Properties;
 
 public abstract class AbstractXeroClient
 {
@@ -21,32 +26,32 @@ public abstract class AbstractXeroClient
     super();
   }
 
-  protected void setPort(int port)
+  public void setPort(int port)
   {
     this.port = port;
   }
 
-  protected int getPort()
+  public int getPort()
   {
     return port;
   }
 
-  protected void setSecretsFile(String secretsFile)
+  public void setSecretsFile(String secretsFile)
   {
     this.secretsFile = secretsFile;
   }
 
-  protected String getSecretsFile()
+  public String getSecretsFile()
   {
     return secretsFile;
   }
 
-  protected void setTokensFile(String tokensFile)
+  public void setTokensFile(String tokensFile)
   {
     this.tokensFile = tokensFile;
   }
 
-  protected String getTokensFile()
+  public String getTokensFile()
   {
     return tokensFile;
   }
@@ -97,6 +102,30 @@ public abstract class AbstractXeroClient
       url = url.replace("{port}", ":".concat(String.valueOf(getPort())));
     }
     return url.concat(queryOrID);
+  }
+  
+  protected WebResource getWebResource(String url)
+  {
+    Client client;
+    WebResource webResource;
+
+    client = Client.create();
+    webResource = client.resource(url);
+
+    return webResource;
+  }
+  
+  protected ClientResponse getResponse(WebResource resource)
+  {
+    return resource.accept(XeroConstants.JSON_ACCEPT)
+                          .header(XeroConstants.AUTH_HEADER, getAuthString())
+                          .header(XeroConstants.TENANT_HEADER, getTenantID())
+                          .get(ClientResponse.class);
+  }
+  
+  protected String getAuthString()
+  {
+    return XeroConstants.AUTH_BASE.concat(getAccessToken());
   }
 
   private String getAccountURL()

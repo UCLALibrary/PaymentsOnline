@@ -3,4 +3,4 @@ client_secret = frerejacques
 tenant_id = this-that-other
 invoice_url = http://localhost{port}/api.xro/2.0/Invoices
 account_url = http://localhost{port}/api.xro/2.0/Accounts/
-contact_url = http://localhost:8000/api.xro/2.0/Contacts/1234
+contact_url = http://localhost:8000/api.xro/2.0/Contacts/
