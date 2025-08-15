@@ -24,6 +24,7 @@ public class XeroInvoiceClient
   extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
+  private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&ContactIDs=";
 
   private String contactID;
   private String invoiceID;
@@ -57,6 +58,21 @@ public class XeroInvoiceClient
     return invoiceID;
   }
 
+  private String getInvoiceURL()
+  {
+    return secrets.getProperty(XeroConstants.INVOICE_URL);
+  }
+
+  private String buildSingleURL()
+  {
+    return getInvoiceURL().concat("/").concat(getInvoiceID());
+  }
+
+  private String buildUnpaidURL()
+  {
+    return getInvoiceURL().concat(UNPAID_QUERY).concat(getContactID());
+  }
+
   /**
    * Retieves details on a particular invoice
    * Calls XeroAccountClient to retrieve Transact item codes per line item
@@ -69,8 +85,8 @@ public class XeroInvoiceClient
     WebResource webResource;
 
     loadProperties();
-    webResource = getWebResource(buildURL("/".concat(getInvoiceID()), XeroConstants.INVOICE));
-    response = getResponse(webResource);
+    webResource = getWebResource(replacePort(buildSingleURL()));
+    response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
     {
       String json = response.getEntity(String.class);
@@ -92,6 +108,21 @@ public class XeroInvoiceClient
   }
 
   /**
+   * Retieves details on a particular invoice in PDF format
+   * @return One Xero invoice as a PDF
+   */
+  public ClientResponse getInvoicePDF()
+  {
+    ClientResponse response;
+    WebResource webResource;
+
+    loadProperties();
+    webResource = getWebResource(replacePort(buildSingleURL()));
+    response = getResponse(webResource, XeroConstants.PDF_ACCEPT);
+    return response;
+  }
+
+  /**
    * Calls Xero invoice API, requesting unpaid/partially paid invoices for a patron
    * @return A collection of unpaid invoices for a particular patron
    */
@@ -101,9 +132,8 @@ public class XeroInvoiceClient
     WebResource webResource;
 
     loadProperties();
-    webResource =
-      getWebResource(buildURL("?Statuses=AUTHORISED&ContactIDs=".concat(getContactID()), XeroConstants.INVOICE));
-    response = getResponse(webResource);
+    webResource = getWebResource(replacePort(buildUnpaidURL()));
+    response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
     {
       String json = response.getEntity(String.class);

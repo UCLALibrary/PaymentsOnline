@@ -22,6 +22,7 @@ public class XeroTokenClient extends AbstractXeroClient
   public XeroTokenClient()
   {
     super();
+    port = 0;
   }
 
   public void setRefreshToken(String refreshToken)
@@ -64,7 +65,7 @@ public class XeroTokenClient extends AbstractXeroClient
     loadProperties();
     authString = buildAuthString();
 
-    webResource = getWebResource(secrets.getProperty(XeroConstants.TOKEN_URL));
+    webResource = getWebResource(replacePort(secrets.getProperty(XeroConstants.TOKEN_URL)));
 
     Form form = new Form();
     form.add("grant_type", "refresh_token");

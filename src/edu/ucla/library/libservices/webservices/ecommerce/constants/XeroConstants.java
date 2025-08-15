@@ -11,6 +11,7 @@ public class XeroConstants
   public static final String AUTH_HEADER = "Authorization";
   public static final String CLIENT_ID = "client_id";
   public static final String CLIENT_SECRET = "client_secret";
+  public static final String CONTACT_URL = "contact_url";
   public static final String FORM_ENCODE = "application/x-www-form-urlencoded";
   public static final String INVOICE = "invoice";
   public static final String INVOICE_URL = "invoice_url";

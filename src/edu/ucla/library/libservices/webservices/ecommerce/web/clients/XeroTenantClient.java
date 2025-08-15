@@ -7,6 +7,8 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTenantID;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -18,7 +20,13 @@ public class XeroTenantClient extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroTenantClient.class);
   private String tenantURL;
-
+  
+  public XeroTenantClient()
+  {
+    super();
+    port = 0;
+  }
+  
   public void setTenantURL(String tenantURL)
   {
     this.tenantURL = tenantURL;
@@ -43,8 +51,8 @@ public class XeroTenantClient extends AbstractXeroClient
 
     gson = new Gson();
 
-    webResource = getWebResource(getTenantURL());
-    response = getResponse(webResource);
+    webResource = getWebResource(replacePort(getTenantURL()));
+    response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
 
     if (response.getStatus() == 200)
     {

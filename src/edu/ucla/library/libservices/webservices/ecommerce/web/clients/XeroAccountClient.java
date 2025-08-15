@@ -35,6 +35,11 @@ public class XeroAccountClient extends AbstractXeroClient
     return accountID;
   }
 
+  private String getAccountURL()
+  {
+    return secrets.getProperty(XeroConstants.ACCOUNT_URL).concat(getAccountID());
+  }
+
   /**
    * Calls Xero account API to retrieve an item code (stored
    * in account name field)
@@ -46,8 +51,8 @@ public class XeroAccountClient extends AbstractXeroClient
     WebResource webResource;
 
     loadProperties();
-    webResource = getWebResource(buildURL(getAccountID(), XeroConstants.ACCOUNT));
-    response = getResponse(webResource);
+    webResource = getWebResource(replacePort(getAccountURL()));
+    response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
     {
       XeroAccountList theList;

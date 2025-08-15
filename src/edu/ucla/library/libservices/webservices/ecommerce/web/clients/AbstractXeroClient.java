@@ -86,22 +86,12 @@ public abstract class AbstractXeroClient
     return secrets.getProperty(XeroConstants.TENANT_ID);
   }
 
- /**
-   * kludgey method to handle possible non-stamdard port number,
-   * needed for unit tests
-   * @param queryOrID Query string or invoice/account ID passed to API
-   * @param type Whether call for account or invoice data
-   * @return formatted URL for API call
-   */
-  protected String buildURL(String queryOrID, String type)
+  protected String replacePort(String url)
   {
-    String url;
-    url = type.equals(XeroConstants.ACCOUNT) ? getAccountURL() : getInvoiceURL();
-    if ( getPort() != 0 )
-    {
-      url = url.replace("{port}", ":".concat(String.valueOf(getPort())));
-    }
-    return url.concat(queryOrID);
+    if (getPort() != 0)
+      return url.replace("{port}", ":".concat(String.valueOf(getPort())));
+    else
+      return url;
   }
   
   protected WebResource getWebResource(String url)
@@ -115,26 +105,16 @@ public abstract class AbstractXeroClient
     return webResource;
   }
   
-  protected ClientResponse getResponse(WebResource resource)
+  protected ClientResponse getResponse(WebResource resource, String acceptType)
   {
-    return resource.accept(XeroConstants.JSON_ACCEPT)
+    return resource.accept(acceptType)
                           .header(XeroConstants.AUTH_HEADER, getAuthString())
                           .header(XeroConstants.TENANT_HEADER, getTenantID())
                           .get(ClientResponse.class);
   }
   
-  protected String getAuthString()
+  private String getAuthString()
   {
     return XeroConstants.AUTH_BASE.concat(getAccessToken());
-  }
-
-  private String getAccountURL()
-  {
-    return secrets.getProperty(XeroConstants.ACCOUNT_URL);
-  }
-
-  private String getInvoiceURL()
-  {
-    return secrets.getProperty(XeroConstants.INVOICE_URL);
   }
 }

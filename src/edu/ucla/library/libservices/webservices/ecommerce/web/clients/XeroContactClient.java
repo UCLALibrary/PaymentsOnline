@@ -35,7 +35,7 @@ public class XeroContactClient extends AbstractXeroClient
 
   private String getContactURL()
   {
-    return secrets.getProperty("contact_url");
+    return secrets.getProperty(XeroConstants.CONTACT_URL).concat(getUserID());
   }
 
   /**
@@ -51,8 +51,8 @@ public class XeroContactClient extends AbstractXeroClient
       WebResource webResource;
       ClientResponse response;
 
-      webResource = getWebResource(getContactURL().concat(getUserID()));
-      response = getResponse(webResource);
+      webResource = getWebResource(replacePort(getContactURL()));
+      response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
       if (response.getStatus() == 200)
       {
         XeroContactList theList;
