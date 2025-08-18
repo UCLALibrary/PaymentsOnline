@@ -52,7 +52,6 @@ public class TokenFileHandler
     // 'expires in' is seconds until access token expires, connverted to date/time for
     // temporal evaluation when retrieved elsewhere in app
     expireTime = LocalDateTime.now().plusSeconds(Long.parseLong(tokens.getExpires_in()));
-
     try
     {
       writer = new BufferedWriter(new FileWriter(new File(getTokensFile())));

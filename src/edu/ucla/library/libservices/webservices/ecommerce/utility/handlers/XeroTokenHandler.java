@@ -66,6 +66,7 @@ public class XeroTokenHandler
       tokenClient = new XeroTokenClient();
       tokenClient.setRefreshToken(theBean.getRefresh_token());
       tokenClient.setSecretsFile(getSecretsFile());
+      tokenClient.setPort(0);
       json = tokenClient.getTokens();
       fileHandler.writeTokensFile(json);
       theBean = fileHandler.readTokensFile();
