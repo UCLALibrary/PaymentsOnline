@@ -23,6 +23,8 @@ import com.google.gson.Gson;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.TokenFileHandler;
 
+import java.net.ServerSocket;
+
 import java.nio.file.Paths;
 
 public class XeroContactClientTest
@@ -106,6 +108,7 @@ public class XeroContactClientTest
   public void testGetTheContact()
     throws IOException
   {
+    int port;
     Gson gson;
     HttpHandler handler;
     HttpServer mockServer;
@@ -114,7 +117,8 @@ public class XeroContactClientTest
     XeroContactClient testClient;
     XeroContact testContact;
 
-    mockAddress = new InetSocketAddress(8000);
+    port = findFreePort();
+    mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
     gson = new Gson();
     mockJson = gson.toJson(mockList);
@@ -136,9 +140,20 @@ public class XeroContactClientTest
     testClient.setSecretsFile(SECRETS_FILE);
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setUserID("1234");
+    testClient.setPort(port);
     testContact = testClient.getTheContact();
     assert(testClient.equals(mockContact));
 
     mockServer.stop(0);
+  }
+
+  private static int findFreePort()
+    throws IOException
+  {
+    try (ServerSocket socket = new ServerSocket(0))
+    {
+      socket.setReuseAddress(true);
+      return socket.getLocalPort();
+    }
   }
 }
