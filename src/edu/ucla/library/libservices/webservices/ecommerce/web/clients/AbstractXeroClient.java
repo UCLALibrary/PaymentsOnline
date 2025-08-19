@@ -113,7 +113,7 @@ public abstract class AbstractXeroClient
                           .get(ClientResponse.class);
   }
   
-  private String getAuthString()
+  protected String getAuthString()
   {
     return XeroConstants.AUTH_BASE.concat(getAccessToken());
   }
