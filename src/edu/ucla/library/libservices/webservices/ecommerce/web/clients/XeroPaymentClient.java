@@ -1,14 +1,15 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.clients;
 
-import com.sun.jersey.api.client.ClientResponse;
+import com.google.gson.Gson;
 
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
-import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroLineItem;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPayment;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPaymentAccount;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPaymentInvoice;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPaymentList;
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 
 import java.time.LocalDateTime;
@@ -68,7 +69,7 @@ public class XeroPaymentClient
     return theClient.getSingleInvoice();
   }
 
-  private XeroPayment buildPayment(XeroLineItem theLine)
+  private XeroPayment buildPayment(String accountID, Double amount)
   {
     XeroPayment thePayment;
     XeroPaymentInvoice invoice;
@@ -77,11 +78,11 @@ public class XeroPaymentClient
     invoice = new XeroPaymentInvoice();
     invoice.setInvoiceID(getInvoiceID());
     account = new XeroPaymentAccount();
-    account.setAccountID(theLine.getAccountID());
+    account.setAccountID(accountID);
 
     thePayment = new XeroPayment();
     thePayment.setAccount(account);
-    thePayment.setAmount(theLine.getLineTotal() / 100D);
+    thePayment.setAmount(amount / 100D);
     thePayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     thePayment.setInvoice(invoice);
     thePayment.setReference(getReference());
@@ -92,16 +93,24 @@ public class XeroPaymentClient
   {
     ClientResponse response;
     WebResource webResource;
+    XeroInvoice toBePaid;
+    XeroPaymentList payments;
 
+    payments = new XeroPaymentList();
     loadProperties();
+    toBePaid = getInvoice();
+    for ( String accountID : toBePaid.getAccountAmts().keySet() )
+    {
+      payments.getPayments().add(buildPayment(accountID, toBePaid.getAccountAmts().get(accountID)));
+    }
     webResource = getWebResource(replacePort(getPaymentURL()));
     response = webResource.accept(XeroConstants.JSON_ACCEPT)
                           .header(XeroConstants.AUTH_HEADER, getAuthString())
                           .header(XeroConstants.TENANT_HEADER, getTenantID())
-                          .put(null);
+                          .put(ClientResponse.class, new Gson().toJson( payments ));
     if (response.getStatus() != 200)
     {
-      LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
+      LOGGER.error("payment service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
     }
     return response;
   }

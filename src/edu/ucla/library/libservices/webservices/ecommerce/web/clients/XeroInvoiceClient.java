@@ -98,6 +98,7 @@ public class XeroInvoiceClient
         theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
       }
       singleInvoice.setItemCodeAmts(groupdAndSumCodes(singleInvoice.getLineItems()));
+      singleInvoice.setAccountAmts(groupdAndSumAccounts(singleInvoice.getLineItems()));
     }
     else
     {
@@ -167,6 +168,13 @@ public class XeroInvoiceClient
   {
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+
+  private HashMap<String, Double> groupdAndSumAccounts(ArrayList<XeroLineItem> theLines)
+  {
+    return (HashMap<String, Double>) theLines.stream()
+           .collect(Collectors.groupingBy(XeroLineItem::getAccountID,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
   }
 }
