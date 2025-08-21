@@ -22,7 +22,7 @@ public class XeroPaymentClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
 
-  private String invoiceID;
+  private String invoiceNumber;
   private String reference;
 
   public XeroPaymentClient()
@@ -31,14 +31,14 @@ public class XeroPaymentClient
     port = 0;
   }
 
-  public void setInvoiceID(String invoiceID)
+  public void setInvoiceNumber(String invoiceID)
   {
-    this.invoiceID = invoiceID;
+    this.invoiceNumber = invoiceID;
   }
 
-  public String getInvoiceID()
+  public String getInvoiceNumber()
   {
-    return invoiceID;
+    return invoiceNumber;
   }
 
   public void setReference(String reference)
@@ -61,7 +61,7 @@ public class XeroPaymentClient
     XeroInvoiceClient theClient;
 
     theClient = new XeroInvoiceClient();
-    theClient.setInvoiceID(getInvoiceID());
+    theClient.setInvoiceID(getInvoiceNumber());
     theClient.setPort(getPort());
     theClient.setSecretsFile(getSecretsFile());
     theClient.setTokensFile(getTokensFile());
@@ -69,14 +69,14 @@ public class XeroPaymentClient
     return theClient.getSingleInvoice();
   }
 
-  private XeroPayment buildPayment(String accountID, Double amount)
+  private XeroPayment buildPayment(String accountID, String invoiceID, Double amount)
   {
     XeroPayment thePayment;
     XeroPaymentInvoice invoice;
     XeroPaymentAccount account;
 
     invoice = new XeroPaymentInvoice();
-    invoice.setInvoiceID(getInvoiceID());
+    invoice.setInvoiceID(invoiceID);
     account = new XeroPaymentAccount();
     account.setAccountID(accountID);
 
@@ -101,7 +101,7 @@ public class XeroPaymentClient
     toBePaid = getInvoice();
     for ( String accountID : toBePaid.getAccountAmts().keySet() )
     {
-      payments.getPayments().add(buildPayment(accountID, toBePaid.getAccountAmts().get(accountID)));
+      payments.getPayments().add(buildPayment(accountID, toBePaid.getInvoiceID(), toBePaid.getAccountAmts().get(accountID)));
     }
     webResource = getWebResource(replacePort(getPaymentURL()));
     response = webResource.accept(XeroConstants.JSON_ACCEPT)
