@@ -1,7 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
 /**
- * Holds data for a single payment to an invoice/account combo 
+ * Holds data for a single payment to an invoice/account combo
  */
 public class XeroPayment
 {
@@ -10,8 +10,8 @@ public class XeroPayment
   private String Date;
   private Double Amount;
   private String Reference;
-  
-    public XeroPayment()
+
+  public XeroPayment()
   {
     super();
   }
@@ -64,5 +64,23 @@ public class XeroPayment
   public String getReference()
   {
     return Reference;
+  }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || this.getClass() != theOther.getClass())
+      return false;
+    XeroPayment aBean = (XeroPayment) theOther;
+
+    return this.getAccount()
+               .getAccountID()
+               .equals(aBean.getAccount().getAccountID()) && this.getAmount().equals(aBean.getAmount()) &&
+           this.getDate().equals(aBean.getDate()) && this.getInvoice()
+                                                         .getInvoiceID()
+                                                         .equals(aBean.getInvoice().getInvoiceID()) &&
+           this.getReference().equals(aBean.getReference());
   }
 }

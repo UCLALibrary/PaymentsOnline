@@ -17,12 +17,16 @@ import java.time.format.DateTimeFormatter;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Class to handle calls to Xero payment API
+ */
 public class XeroPaymentClient
   extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
 
   private String invoiceNumber;
+  // free text field, planning to include payment method (card/echeck) and Transact transaction number
   private String reference;
 
   public XeroPaymentClient()
@@ -56,6 +60,10 @@ public class XeroPaymentClient
     return secrets.getProperty(XeroConstants.PAYMENT_URL);
   }
 
+  /**
+   * retrieve data for the invoice to be paid
+   * @return data for invoice being paid, mapped to XeroInvoice object
+   */
   private XeroInvoice getInvoice()
   {
     XeroInvoiceClient theClient;
@@ -69,7 +77,15 @@ public class XeroPaymentClient
     return theClient.getSingleInvoice();
   }
 
-  private XeroPayment buildPayment(String accountID, String invoiceID, Double amount)
+  /**
+   * Build an object that can be submitted to Xero as a payment, for a 
+   * particular invoice/account/amount combo
+   * @param accountID The account the payment is associated with
+   * @param invoiceID the invoice being paid
+   * @param amount amount of payment
+   * @return Data necessary for a payment event in Xero, mapped to XeroPayment object
+   */
+  public XeroPayment buildPayment(String accountID, String invoiceID, Double amount)
   {
     XeroPayment thePayment;
     XeroPaymentInvoice invoice;
@@ -89,6 +105,10 @@ public class XeroPaymentClient
     return thePayment;
   }
 
+  /**
+   * Submit a payment via HTTP PUT to Xero
+   * @return response (HTTP code and message body) from Xero service
+   */
   public ClientResponse putPayment()
   {
     ClientResponse response;
