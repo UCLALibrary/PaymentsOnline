@@ -21,7 +21,7 @@ public class XeroInvoice
   private ArrayList<XeroLineItem> LineItems;
   // grouped and summed values per Transact item code
   private HashMap<String, Double> itemCodeAmts;
-  // grouped and summed values per line-item accunt ID
+  // grouped and summed values per line-item account ID
   private HashMap<String, Double> accountAmts;
 
   public XeroInvoice()
