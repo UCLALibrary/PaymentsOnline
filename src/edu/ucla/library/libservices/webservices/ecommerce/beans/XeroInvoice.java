@@ -7,7 +7,8 @@ import java.util.Collections;
 /**
  * A single invoice, with related XeroContact and XeroLineItem data
  */
-public class XeroInvoice implements Comparable<XeroInvoice>
+public class XeroInvoice
+  implements Comparable<XeroInvoice>
 {
   //used for sorting, submitting payment
   private String InvoiceID;
@@ -20,6 +21,8 @@ public class XeroInvoice implements Comparable<XeroInvoice>
   private ArrayList<XeroLineItem> LineItems;
   // grouped and summed values per Transact item code
   private HashMap<String, Double> itemCodeAmts;
+  // grouped and summed values per line-item account ID
+  private HashMap<String, Double> accountAmts;
 
   public XeroInvoice()
   {
@@ -98,6 +101,16 @@ public class XeroInvoice implements Comparable<XeroInvoice>
     return itemCodeAmts;
   }
 
+  public void setAccountAmts(HashMap<String, Double> accountAmts)
+  {
+    this.accountAmts = accountAmts;
+  }
+
+  public HashMap<String, Double> getAccountAmts()
+  {
+    return accountAmts;
+  }
+
   @Override
   public boolean equals(Object theOther)
   {
@@ -107,13 +120,15 @@ public class XeroInvoice implements Comparable<XeroInvoice>
       return false;
     XeroInvoice aBean = (XeroInvoice) theOther;
 
-    boolean simpleCompare = this.getInvoiceID() == aBean.getInvoiceID() && this.getInvoiceNumber() == aBean.getInvoiceNumber() &&
-           this.getAmountDue() == aBean.getAmountDue() && this.getContact().equals(aBean.getContact()) &&
-           this.getReference() == aBean.getReference();
+    boolean simpleCompare =
+      this.getInvoiceID() == aBean.getInvoiceID() && this.getInvoiceNumber() == aBean.getInvoiceNumber() &&
+      this.getAmountDue() == aBean.getAmountDue() && this.getContact().equals(aBean.getContact()) &&
+      this.getReference() == aBean.getReference();
     Collections.sort(this.getLineItems());
     Collections.sort(aBean.getLineItems());
     boolean lineCompare = this.getLineItems().equals(aBean.getLineItems());
-    boolean amountsCompare = this.getItemCodeAmts().equals(aBean.getItemCodeAmts());
+    boolean amountsCompare =
+      this.getItemCodeAmts().equals(aBean.getItemCodeAmts()) && this.getAccountAmts().equals(aBean.getAccountAmts());
     return simpleCompare && lineCompare && amountsCompare;
   }
 

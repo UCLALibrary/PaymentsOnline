@@ -16,6 +16,7 @@ public class XeroConstants
   public static final String INVOICE = "invoice";
   public static final String INVOICE_URL = "invoice_url";
   public static final String JSON_ACCEPT = "application/json";
+  public static final String PAYMENT_URL = "payment_url";
   public static final String PDF_ACCEPT = "application/pdf";
   public static final String TENANT_HEADER = "xero-tenant-id";
   public static final String TENANT_ID = "tenant_id";
