@@ -45,6 +45,26 @@
             <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
             <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.invoice"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
+          <c:when test="${fn:contains(param.invoice, '-')}">
+            <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
+              <jsp:setProperty property="invoiceID" name="xeroSource" value="${param.invoice}"/>
+              <jsp:setProperty property="port" name="xeroSource" value="0"/>
+              <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+              <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
+            </jsp:useBean>
+            <c:set var="index" value="0"/>
+            <c:forEach var="theLine" items="${xeroSource.singleInvoice.itemCodeAmts}">
+              <c:set var="index" value="${index + 1}"/>
+              <input id="Hidden" type="hidden" name="itemcode${index}" value="${theLine.key}"/>
+              <input id="Hidden" type="hidden" name="amount${index}" value="${theLine.value}"/>
+              <input id="Hidden" type="hidden" name="desc${index}" value="${xeroSource.singleInvoice.InvoiceNumber}-${theLine.key}"/>
+            </c:forEach>
+            <c:if test="${index gt 1}">
+              <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
+            </c:if>
+            <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${xeroSource.singleInvoice.InvoiceNumber}"/>
+            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
+          </c:when>
           <c:otherwise>
             <jsp:useBean id="libBillSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.CashNetClient">
               <jsp:setProperty property="uriBase" name="libBillSource" value='<%= application.getInitParameter("uri.base") %>'/>
