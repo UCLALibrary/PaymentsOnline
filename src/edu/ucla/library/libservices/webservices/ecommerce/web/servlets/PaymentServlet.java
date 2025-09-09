@@ -10,6 +10,8 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.String
 
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
 
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroPaymentClient;
+
 import java.io.IOException;
 
 import javax.servlet.*;
@@ -29,13 +31,6 @@ public class PaymentServlet
   @SuppressWarnings("compatibility:-306225955054470783")
   private static final long serialVersionUID = -5089517672925799118L;
   private static final String CONTENT_TYPE = "text/html; charset=windows-1252";
-  //private static final String COUNT_QUERY =
-    //"SELECT count(aeon_request_id) FROM invoice_aeon_request_vw WHERE invoice_number = ?";
-  //private static final String ID_QUERY = "SELECT aeon_request_id FROM invoice_aeon_request_vw WHERE invoice_number = ?";
-  private static final String UPDATE_QUERY =
-    "update fine_fee_transactions set trans_note = to_char(sysdate, 'MM/DD/YY')" +
-    " || ' Paid in LibBill               ' || substr(trans_note, 40) where " +
-    "trans_note like '%Invoiced in LibBill           ' || ? || '%'";
 
   public void init(ServletConfig config)
     throws ServletException
@@ -56,17 +51,7 @@ public class PaymentServlet
     Logger log;
     log = Logger.getLogger(LoggingServlet.class);
 
-    //log.info( "ecommerce.PaymentServlet: doPost()" );
-
     handlePayment(request, log);
-    /*if (request.getParameter("UCLA_REF_NO").startsWith("CS"))
-    {
-      updateVoyager(request, log);
-    }*/
-    //else if (!request.getParameter("UCLA_REF_NO").startsWith("alma"))
-    //{
-      //checkAeon(request, log);
-    //}
   }
 
   private void handlePayment(HttpServletRequest request, Logger log)
@@ -75,74 +60,14 @@ public class PaymentServlet
     {
       doAlmaPayment(request, log);
     }
+    else if (request.getParameter("UCLA_REF_NO").contains("-"))
+    {
+      doXeroPayment(request, log);
+    }
     else
     {
-      log.info("going to libbill payments");
       doLibBillPayment(request, log);
     }
-  }
-
-  /*
-   * check if invoice number linked to aeon request
-   * if so, write payment file and upload to sftp
-   */
-
-  /*private void checkAeon(HttpServletRequest request, Logger log)
-  {
-    String invoice;
-    DataSource ds;
-
-    invoice = request.getParameter("UCLA_REF_NO");
-    ds = DataSourceFactory.createDataSource(getServletContext().getInitParameter("datasource.invoice"));
-    if (new JdbcTemplate(ds).queryForInt(COUNT_QUERY, new Object[] { invoice }) > 0)
-    {
-      int aeonID;
-
-      aeonID = new JdbcTemplate(ds).queryForInt(ID_QUERY, new Object[] { invoice });
-      writeUpload(invoice, aeonID);
-      uploadFile(aeonID);
-    }
-  }
-
-  private void writeUpload(String invoice, int aeon)
-  {
-    UploadWriter writer;
-
-    writer = new UploadWriter();
-    writer.setAeonID(aeon);
-    writer.setInvoiceNumber(invoice);
-    writer.setDirectory(getServletContext().getRealPath(getServletContext().getInitParameter("upload.local")));
-
-    writer.writeFile();
-  }
-
-  private void uploadFile(int aeonID)
-  {
-    SftpClient sftp;
-
-    sftp = new SftpClient();
-    sftp.setFileName(String.valueOf(aeonID).concat(".txt"));
-    sftp.setHost(getServletContext().getInitParameter("sftp.host"));
-    sftp.setKeyfilePath(getServletContext().getRealPath(getServletContext().getInitParameter("keyfile.path")));
-    sftp.setLocalDir(getServletContext().getRealPath(getServletContext().getInitParameter("upload.local")));
-    sftp.setRemoteDir(getServletContext().getInitParameter("upload.remotel"));
-    sftp.setUser(getServletContext().getInitParameter("sftp.user"));
-
-    sftp.getSftpConnect();
-    sftp.uploadFile();
-  }*/
-
-  private void updateVoyager(HttpServletRequest request, Logger log)
-  {
-    int updates;
-    DataSource ds;
-
-    updates = 0;
-    ds = DataSourceFactory.createDataSource(getServletContext().getInitParameter("datasource.ucladb"));
-
-    updates = new JdbcTemplate(ds).update(UPDATE_QUERY, new Object[] { request.getParameter("UCLA_REF_NO") });
-    if (updates != 0)
-      log.info("Voyager-LibBill update: no matches found for invoice " + request.getParameter("UCLA_REF_NO"));
   }
 
   private void doAlmaPayment(HttpServletRequest request, Logger log)
@@ -155,7 +80,6 @@ public class PaymentServlet
     log.info("working with invoice " + invoiceNo);
     
     payClient = new AlmaClient();
-    //log.info("payment amount " + getPaymentAmount(request) );
     payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
     payClient.setFineID(invoiceNo);
     payClient.setKey(getServletContext().getInitParameter("alma.key"));
@@ -163,11 +87,9 @@ public class PaymentServlet
     log.info("transaction number " + request.getParameter("tx") );
     payClient.setTransNo(request.getParameter("tx"));
     payClient.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
-    ///log.info("calling getUser with invoice number " + invoiceNo);
     payClient.setUserID(getUser(invoiceNo, log));
     responseCode = payClient.postPayment();
     log.info("payment POST response = " + responseCode);
-    //clearRecord(invoiceNo);
   }
 
   private void doLibBillPayment(HttpServletRequest request, Logger log)
@@ -195,7 +117,6 @@ public class PaymentServlet
     DataHandler handler = new DataHandler();
     handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
     handler.setInvoiceID(fine);
-    //log.info("returning user" + handler.getPatronData());
     return handler.getPatronData();
   }
 
@@ -212,11 +133,25 @@ public class PaymentServlet
     
     return total;
   }
-  /*private void clearRecord(String fine)
+
+  private void doXeroPayment(HttpServletRequest request, Logger log)
   {
-    DataHandler handler = new DataHandler();
-    handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
-    handler.setInvoiceID(fine);
-    handler.deleteInvoiceData();
-  }*/
+    XeroPaymentClient theClient;
+    theClient = new XeroPaymentClient();
+    theClient.setInvoiceNumber(request.getParameter("UCLA_REF_NO"));
+    theClient.setPort(0);
+    theClient.setReference(buildReference(request));
+    theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
+    theClient.setTokensFile(getServletContext().getInitParameter("xero.tokens"));
+    theClient.putPayment();
+  }
+
+  private String buildReference(HttpServletRequest request)
+  {
+    StringBuffer buffer;
+    buffer = new StringBuffer("payment from LPO; ");
+    buffer.append("payment method: " + request.getParameter( "pmtcode" ) + ";");
+    buffer.append("Transact transaction #: " + request.getParameter( "tx" ));
+    return buffer.toString();
+  }
 }
