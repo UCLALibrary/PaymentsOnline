@@ -83,4 +83,15 @@ public class XeroPayment
                                                          .equals(aBean.getInvoice().getInvoiceID()) &&
            this.getReference().equals(aBean.getReference());
   }
+  @Override
+  public String toString()
+  {
+    StringBuffer buffer;
+    buffer = new StringBuffer("Invoice ID: ".concat(this.getInvoice().getInvoiceID()));
+    buffer.append("\tAccount ID: ".concat(this.getAccount().getAccountID()));
+    buffer.append("\tDate: ".concat(this.getDate()));
+    buffer.append("\tReference: ".concat(this.getReference()));
+    buffer.append("\tAmount: ".concat(String.valueOf(this.getAmount())));
+    return buffer.toString();
+  }
 }

@@ -542,7 +542,19 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
+            <value n="id" v="Byte-buddy-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Byte-buddy-agent-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
             <value n="id" v="Mockito-core-4.11.0.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Objenesis-3.3.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -577,11 +589,38 @@
             </hash>
             <hash>
                <list n="classPath">
+                  <url path="../../jars/lpo/byte-buddy-1.12.19.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Byte-buddy-1.12.19.jar"/>
+               <value n="id" v="Byte-buddy-1.12.19.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="../../jars/lpo/byte-buddy-agent-1.12.19.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Byte-buddy-agent-1.12.19.jar"/>
+               <value n="id" v="Byte-buddy-agent-1.12.19.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
                   <url path="../../jars/lpo/mockito-core-4.11.0.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Mockito-core-4.11.0.jar"/>
                <value n="id" v="Mockito-core-4.11.0.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="../../jars/lpo/objenesis-3.3.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Objenesis-3.3.jar"/>
+               <value n="id" v="Objenesis-3.3.jar"/>
                <value n="locked" v="true"/>
             </hash>
          </list>
@@ -648,7 +687,19 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
+            <value n="id" v="Byte-buddy-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Byte-buddy-agent-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
             <value n="id" v="Mockito-core-4.11.0.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Objenesis-3.3.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

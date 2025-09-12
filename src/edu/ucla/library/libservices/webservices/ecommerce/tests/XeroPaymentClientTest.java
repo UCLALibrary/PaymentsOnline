@@ -31,7 +31,7 @@ public class XeroPaymentClientTest
     mockPayment = new XeroPayment();
     mockPayment.setAccount(account);
     mockPayment.setAmount(200.00d);
-    mockPayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    mockPayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
     mockPayment.setInvoice(invoice);
     mockPayment.setReference("Reference");
   }
@@ -71,7 +71,7 @@ public class XeroPaymentClientTest
     testClient = new XeroPaymentClient();
     testClient.setReference("Reference");
     
-    testPayment = testClient.buildPayment("987-654", "123-456", 200.00d);
+    testPayment = testClient.buildPayment("987-654", "123-456", 20000.00d);
     assert(testPayment.equals(mockPayment));
   }
 }

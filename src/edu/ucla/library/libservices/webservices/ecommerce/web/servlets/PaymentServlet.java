@@ -150,7 +150,7 @@ public class PaymentServlet
   {
     StringBuffer buffer;
     buffer = new StringBuffer("payment from LPO; ");
-    buffer.append("payment method: " + request.getParameter( "pmtcode" ) + ";");
+    buffer.append("payment method: " + request.getParameter( "pmtcode" ) + "; ");
     buffer.append("Transact transaction #: " + request.getParameter( "tx" ));
     return buffer.toString();
   }

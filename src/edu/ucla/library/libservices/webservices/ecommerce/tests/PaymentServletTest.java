@@ -1,4 +1,4 @@
-package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
+package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
 import static org.mockito.Mockito.*;
 
@@ -84,12 +84,12 @@ public class PaymentServletTest
     invoice.setInvoiceID("123-456");
 
     account = new XeroPaymentAccount();
-    account.setAccountID("987-654");
+    account.setAccountID("ad4e5b15-3583");
 
     mockPayment = new XeroPayment();
     mockPayment.setAccount(account);
     mockPayment.setAmount(200.00d);
-    mockPayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    mockPayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
     mockPayment.setInvoice(invoice);
     mockPayment.setReference("payment from LPO; payment method: cc; Transact transaction #: 95175");
 
@@ -133,7 +133,7 @@ public class PaymentServletTest
     mockRequest = mock(HttpServletRequest.class);
     when(mockRequest.getParameter("pmtcode")).thenReturn("cc");
     when(mockRequest.getParameter("tx")).thenReturn("95175");
-    when(mockRequest.getParameter("UCLA_REF_NO")).thenReturn("SR00125");
+    when(mockRequest.getParameter("UCLA_REF_NO")).thenReturn("123-456");
   }
 
   @After
@@ -164,63 +164,23 @@ public class PaymentServletTest
   public void testDoXeroPayment()
     throws IOException
   {
-    /*
-    * build fake request
-    * build mock server to handle client/account calls from payment client
-    * verify that reference and payment objects built by client are correct;
-    */
     int port;
-    Gson gson;
-    HttpHandler invoiceHandler;
-    HttpHandler accountHandler;
-    HttpServer mockServer;
-    InetSocketAddress mockAddress;
-    String mockInvoiceJson;
-    String mockAccountJson;
+    String reference;
     XeroPaymentClient theClient;
 
     port = findFreePort();
-    mockAddress = new InetSocketAddress(port);
-    mockServer = HttpServer.create(mockAddress, 0);
-
-    gson = new Gson();
-    mockInvoiceJson = gson.toJson(mockInvoiceList);
-    invoiceHandler = new HttpHandler()
-    {
-      public void handle(HttpExchange exchange)
-        throws IOException
-      {
-        byte[] response = mockInvoiceJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockAccountJson = gson.toJson(mockAccountList);
-    accountHandler = new HttpHandler()
-    {
-      public void handle(HttpExchange exchange)
-        throws IOException
-      {
-        byte[] response = mockAccountJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockServer.createContext("/api.xro/2.0/Invoices/123-456", invoiceHandler);
-    mockServer.createContext("/api.xro/2.0/Accounts/ad4e5b15-3583", accountHandler);
-
-    mockServer.start();
-
+    
+    reference = buildReference(mockRequest);
+    assertEquals(reference, mockPayment.getReference());
     theClient = new XeroPaymentClient();
     theClient.setInvoiceNumber(mockRequest.getParameter("UCLA_REF_NO"));
     theClient.setPort(port);
-    theClient.setReference(buildReference(mockRequest));
+    theClient.setReference(reference);
     theClient.setSecretsFile(SECRETS_FILE);
     theClient.setTokensFile(TOKENS_FILE);
+    XeroPayment testPayment = theClient.buildPayment(mockAccount.getAccountID(), mockInvoice.getInvoiceID(), 20000.00d);
+    assertEquals(testPayment, mockPayment);
 
-    mockServer.stop(0);
   }
 
   private static int findFreePort()
@@ -237,7 +197,7 @@ public class PaymentServletTest
   {
     StringBuffer buffer;
     buffer = new StringBuffer("payment from LPO; ");
-    buffer.append("payment method: " + mockRequest.getParameter("pmtcode") + ";");
+    buffer.append("payment method: " + mockRequest.getParameter("pmtcode") + "; ");
     buffer.append("Transact transaction #: " + mockRequest.getParameter("tx"));
     return buffer.toString();
   }
