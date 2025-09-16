@@ -146,6 +146,13 @@ public class PaymentServlet
     theClient.putPayment();
   }
 
+  /**
+   * Method used to populate the "reference" field in a Xero payment
+   * record, spcifying the source/method of the payment and the
+   * transaction number from Transact/Cashnet for audit purposes
+   * @param request HTTP request, holding parameters used to build a string
+   * @return Free-text string passed to Xero
+   */
   private String buildReference(HttpServletRequest request)
   {
     StringBuffer buffer;
