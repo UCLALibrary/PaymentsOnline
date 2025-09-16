@@ -22,6 +22,10 @@
     <servlet-name>AuthServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.AuthServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>XeroPdfServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.XeroPdfServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
     <url-pattern>/loggingservlet</url-pattern>
@@ -146,6 +150,10 @@
   <servlet-mapping>
     <servlet-name>AuthServlet</servlet-name>
     <url-pattern>/authservlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>XeroPdfServlet</servlet-name>
+    <url-pattern>/xeropdfservlet</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>

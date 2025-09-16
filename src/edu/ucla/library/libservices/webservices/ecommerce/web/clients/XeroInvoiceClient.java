@@ -118,6 +118,7 @@ public class XeroInvoiceClient
     WebResource webResource;
 
     loadProperties();
+    System.out.println(replacePort(buildSingleURL()));
     webResource = getWebResource(replacePort(buildSingleURL()));
     response = getResponse(webResource, XeroConstants.PDF_ACCEPT);
     return response;
