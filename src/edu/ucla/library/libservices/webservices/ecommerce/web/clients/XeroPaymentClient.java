@@ -99,7 +99,7 @@ public class XeroPaymentClient
     thePayment = new XeroPayment();
     thePayment.setAccount(account);
     thePayment.setAmount(amount / 100D);
-    thePayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    thePayment.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
     thePayment.setInvoice(invoice);
     thePayment.setReference(getReference());
     return thePayment;
