@@ -5,7 +5,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -13,7 +13,7 @@ import javax.servlet.http.*;
 public class XeroPdfServlet
   extends HttpServlet
 {
-  @SuppressWarnings("compatibility:-4386877370931444547")
+  @SuppressWarnings("compatibility:4151141589361119859")
   private static final long serialVersionUID = 1043653224671454044L;
   private static final String CONTENT_TYPE = "application/pdf;charset=UTF-8";
 
@@ -40,6 +40,7 @@ public class XeroPdfServlet
     pdfClient.setPort(0);
     pdfClient.setSecretsFile("secretsFile");
     pdfClient.setTokensFile("tokensFile");
-    //out.write(pdfClient.getInvoicePDF().getEntity(ClientResponse.class));
+    byte[] bytes = pdfClient.getInvoicePDF().getEntity(ClientResponse.class).toString().getBytes("UTF-16");
+    out.write(bytes);
   }
 }
