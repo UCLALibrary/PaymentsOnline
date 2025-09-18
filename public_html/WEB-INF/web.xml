@@ -24,7 +24,7 @@
   </servlet>
   <servlet>
     <servlet-name>XeroPdfServlet</servlet-name>
-    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.XeroPdfServlet</servlet-class>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.XeroPdfServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
