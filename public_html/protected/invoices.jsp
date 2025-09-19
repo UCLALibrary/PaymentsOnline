@@ -169,7 +169,7 @@
                   <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.InvoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theXeroInvoice.invoiceNumber}
                 </td>
                 <td>
-                  ${theXeroInvoice.Date}"
+                  ${theXeroInvoice.Date}
                 </td>
                 <td>
                   ${theXeroInvoice.Reference}
