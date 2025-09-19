@@ -166,18 +166,18 @@
             <c:forEach var="theXeroInvoice" items="${xeroSource.allUnpaid}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.InvoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theInvoice.invoiceNumber}
+                  <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.InvoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theXeroInvoice.invoiceNumber}
                 </td>
                 <td>
-                  ${theInvoice.Date}"
+                  ${theXeroInvoice.Date}"
                 </td>
                 <td>
-                  ${theInvoice.Reference}
+                  ${theXeroInvoice.Reference}
                 </td>
                 <td align="right">
-                  <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.AmountDue}" pattern="$###,###.##"/>
-                  &nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a>
-                  <%--&nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>--%>
+                  <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theXeroInvoice.AmountDue}" pattern="$###,###.##"/>
+                  <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theXeroInvoice.InvoiceID}" target="_blank">View Invoice (PDF)*</a>--%>
+                  <%--&nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theXeroInvoice.InvoiceID}" target="_blank">View Invoice (PDF)*</a>--%>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
