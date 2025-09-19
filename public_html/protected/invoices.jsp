@@ -22,8 +22,6 @@
 <jsp:useBean id="libBillInvoices"
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.PatronClient">
   <jsp:setProperty property="userID" name="libBillInvoices" value="${idSource.userID}"/>
-  <%--jsp:setProperty property="UID" name="libBillInvoices" value="${idSource.userID}"/>
-  <jsp:setProperty property="logonID" name="libBillInvoices" value="${idSource.userID}"/--%>
   <jsp:setProperty property="uriBase" name="libBillInvoices" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="libBillInvoices" value='<%= application.getInitParameter("uri.patron") %>'/>
   <jsp:setProperty property="user" name="libBillInvoices" value='<%= application.getInitParameter("key.one") %>'/>
@@ -38,13 +36,12 @@
   <jsp:setProperty property="key" name="almaSource" value='<%= application.getInitParameter("alma.key") %>'/>
 </jsp:useBean>
 
-<%--jsp:useBean id="invoiceSource"
-             class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.InvoiceClient">
-  <jsp:setProperty property="uriBase" name="invoiceSource" value='<%= application.getInitParameter("uri.base") %>'/>
-  <jsp:setProperty property="resourceURI" name="invoiceSource" value='<%= application.getInitParameter("uri.invoice") %>'/>
-  <jsp:setProperty property="user" name="invoiceSource" value='<%= application.getInitParameter("key.one") %>'/>
-  <jsp:setProperty property="crypt" name="invoiceSource" value='<%= application.getInitParameter("key.two") %>'/>
-</jsp:useBean--%>
+<jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
+  <jsp:setProperty property="contactID" name="xeroSource" value="${idSource.userID}"/>
+  <jsp:setProperty property="port" name="xeroSource" value="0"/>
+  <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
+</jsp:useBean>
 
 <html>
   <head>
@@ -128,8 +125,6 @@
             <c:set var="index" value="0"/>
             <c:set var="first" value="true"/>
             <c:forEach var="theInvoice" items="${libBillInvoices.thePatron.invoices}">
-              <%--jsp:setProperty property="invoiceID" name="invoiceSource"
-                               value="${theID}"/--%>
               <tr>
                 <td>
                   <input type="radio" name="invoice" id='invoice' value="${theInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theInvoice.invoiceNumber}<!--invoiceSource.-->
@@ -163,6 +158,26 @@
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
                   &nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/alma/${theAlmaInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                </td>
+              </tr>
+              <c:set var="index" value="${index + 1}"/>
+              <c:set var="first" value="false"/>
+            </c:forEach>
+            <c:forEach var="theXeroInvoice" items="${xeroSource.allUnpaid}">
+              <tr>
+                <td>
+                  <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.InvoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theXeroInvoice.invoiceNumber}
+                </td>
+                <td>
+                  ${theXeroInvoice.Date}
+                </td>
+                <td>
+                  ${theXeroInvoice.Reference}
+                </td>
+                <td align="right">
+                  <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theXeroInvoice.AmountDue}" pattern="$###,###.##"/>
+                  <%--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theXeroInvoice.InvoiceID}" target="_blank">View Invoice (PDF)*</a>--%>
+                  <%--&nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theXeroInvoice.InvoiceID}" target="_blank">View Invoice (PDF)*</a>--%>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
