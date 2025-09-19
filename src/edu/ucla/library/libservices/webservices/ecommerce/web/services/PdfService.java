@@ -1,13 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.services;
 
-import edu.ucla.library.libservices.webservices.ecommerce.utility.generators.PdfGenerator;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import java.io.ByteArrayOutputStream;
+import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient;
 
 import javax.servlet.ServletConfig;
 
@@ -18,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-@Path("/alma/")
+@Path("/xero/")
 public class PdfService
 {
   @Context
@@ -31,34 +24,19 @@ public class PdfService
 
   @GET
   @Produces("application/pdf")
-  @Path("display_invoice/{in}/{uid}")
-  public Response getInvoicePdf(@PathParam("in") String invoiceNo, @PathParam("uid") String uid)
+  @Path("display_invoice/{in}")
+  public Response getInvoicePdf(@PathParam("in") String invoiceNo)
   {
-    ByteArrayOutputStream baos;
-    Document document;
-    PdfGenerator generator;
+    XeroInvoiceClient pdfClient;
+    String filename;
 
-    try
-    {
-      document = new Document(PageSize.LETTER);
-      baos = new ByteArrayOutputStream();
-      generator = new PdfGenerator();
-      generator.setInvoiceNumber(invoiceNo);
-      generator.setPatronID(uid);
-      generator.setDbName(config.getServletContext().getInitParameter("datasource.invoice"));
-      generator.setApiKey(config.getServletContext().getInitParameter("alma.key"));
-      generator.setUriBase(config.getServletContext().getInitParameter("alma.base.fees"));
+    filename = invoiceNo.concat(".pdf");
 
-      PdfWriter.getInstance(document, baos);
-      generator.populatePdf(document);
-
-      return Response.ok(baos.toByteArray()).build();
-    }
-    catch (DocumentException de)
-    {
-      return Response.serverError()
-                     .entity("Invoice creation failed: ".concat(de.getMessage()))
-                     .build();
-    }
+    pdfClient = new XeroInvoiceClient();
+    pdfClient.setInvoiceID(invoiceNo);
+    pdfClient.setPort(0);
+    pdfClient.setSecretsFile(config.getServletContext().getInitParameter("secrets"));
+    pdfClient.setTokensFile(config.getServletContext().getInitParameter("tokens"));
+    return Response.ok( pdfClient.getInvoicePDF().getEntityInputStream() ).header("Content-Disposition", "inline; filename=".concat(filename)).build();
   }
 }
