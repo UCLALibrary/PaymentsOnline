@@ -22,6 +22,12 @@ public class PdfService
     super();
   }
 
+  /**
+   * Uses XeroInvoiceClient to retrieve an invoice in PDF format,
+   * returns the Xero API response to the caller (presumably a browser window)
+   * @param invoiceNo Invoice number of invoice to be viewed
+   * @return the response from Xero invoice service
+   */
   @GET
   @Produces("application/pdf")
   @Path("display_invoice/{in}")
