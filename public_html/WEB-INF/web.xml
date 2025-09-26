@@ -3,6 +3,19 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
   <servlet>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>edu.ucla.library.libservices.webservices.ecommerce.web.services</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <url-pattern>/xero</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>LoggingServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.LoggingServlet</servlet-class>
   </servlet>
@@ -21,6 +34,10 @@
   <servlet>
     <servlet-name>AuthServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.AuthServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>XeroPdfServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.XeroPdfServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
@@ -146,6 +163,10 @@
   <servlet-mapping>
     <servlet-name>AuthServlet</servlet-name>
     <url-pattern>/authservlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>XeroPdfServlet</servlet-name>
+    <url-pattern>/xeropdfservlet</url-pattern>
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>
