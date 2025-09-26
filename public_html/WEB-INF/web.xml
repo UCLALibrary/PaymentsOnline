@@ -14,14 +14,6 @@
     <servlet-name>TestServlet</servlet-name>
     <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.TestServlet</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>PdfServlet</servlet-name>
-    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.PdfServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>AuthServlet</servlet-name>
-    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.AuthServlet</servlet-class>
-  </servlet>
   <servlet-mapping>
     <servlet-name>LoggingServlet</servlet-name>
     <url-pattern>/loggingservlet</url-pattern>
@@ -29,6 +21,18 @@
   <servlet-mapping>
     <servlet-name>PaymentServlet</servlet-name>
     <url-pattern>/paymentservlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.AuthServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PdfServlet</servlet-name>
+    <servlet-class>edu.ucla.library.libservices.webservices.ecommerce.web.servlets.PdfServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/authservlet</url-pattern>
   </servlet-mapping>
   <context-param>
     <param-name>uri.base</param-name>
@@ -52,18 +56,6 @@
     <param-value>/invoicing/invoices/display_invoice/</param-value>
     <!--param-value>/invoicing-dev/invoices/display_invoice/</param-value-->
     <!--param-value>/invoicing-test/invoices/display_invoice/</param-value-->
-  </context-param>
-  <context-param>
-    <param-name>alma.key</param-name>
-    <param-value>l8xx8cb982c2d4b04ef79375f5c776dbae71</param-value>
-  </context-param>
-  <context-param>
-    <param-name>alma.base.fees</param-name>
-    <param-value>https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/</param-value>
-  </context-param>
-  <context-param>
-    <param-name>alma.resource.fees</param-name>
-    <param-value>/fees?status=ACTIVE&amp;apikey=</param-value>
   </context-param>
   <context-param>
     <param-name>uri.cashnet</param-name>
@@ -99,17 +91,27 @@
   </context-param>
   <context-param>
     <param-name>cashnet.ip.one</param-name>
-    <param-value>63.144.247.36</param-value>
+    <param-value>34.195.213.231</param-value>
+    <!--param-value>63.144.247.36</param-value-->
     <!--param-value>66.111.104.148</param-value-->
   </context-param>
   <context-param>
     <param-name>cashnet.ip.two</param-name>
     <!--param-value>67.208.47.14</param-value-->
-    <param-value>208.47.84.36</param-value>
+    <!--param-value>208.47.84.36</param-value-->
+    <param-value>34.192.112.253</param-value>
+  </context-param>
+  <context-param>
+    <param-name>cashnet.ip.three</param-name>
+    <param-value>40.90.247.249</param-value>
   </context-param>
   <context-param>
     <param-name>datasource.invoice</param-name>
     <param-value>jdbc/billDS</param-value>
+  </context-param>
+  <context-param>
+    <param-name>datasource.ucladb</param-name>
+    <param-value>jdbc/uclaDS</param-value>
   </context-param>
   <context-param>
     <param-name>upload.local</param-name>
@@ -135,6 +137,22 @@
     <param-name>user.logging.cashnet</param-name>
     <param-value>ecommerce</param-value>
   </context-param>
+  <context-param>
+    <param-name>alma.key</param-name>
+    <param-value>l8xx8cb982c2d4b04ef79375f5c776dbae71</param-value>
+  </context-param>
+  <context-param>
+    <param-name>alma.key.auth</param-name>
+    <param-value>l8xx9b4188ba3ad44d70a17cf3500ba0962f</param-value>
+  </context-param>
+  <context-param>
+    <param-name>alma.base.fees</param-name>
+    <param-value>https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/</param-value>
+  </context-param>
+  <context-param>
+    <param-name>alma.resource.fees</param-name>
+    <param-value>/fees?status=ACTIVE&amp;apikey=</param-value>
+  </context-param>
   <servlet-mapping>
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/testservlet</url-pattern>
@@ -143,13 +161,15 @@
     <servlet-name>PdfServlet</servlet-name>
     <url-pattern>/pdfservlet</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>AuthServlet</servlet-name>
-    <url-pattern>/authservlet</url-pattern>
-  </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>
     <res-ref-name>jdbc/billDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <resource-ref>
+    <description>DB Connection</description>
+    <res-ref-name>jdbc/uclaDS</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
