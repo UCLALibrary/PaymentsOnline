@@ -14,6 +14,8 @@ public class XeroInvoice
   private String InvoiceID;
   // the user-set(?) invoice number, to be used as pass-through value to Transact
   private String InvoiceNumber;
+  // date invoice was issued, displayed in invoices.jsp
+  private String Date;
   private Double AmountDue;
   private XeroContact Contact;
   //optional text field, when filled will be displayed in unpaid-invoice list
@@ -109,6 +111,16 @@ public class XeroInvoice
   public HashMap<String, Double> getAccountAmts()
   {
     return accountAmts;
+  }
+
+  public void setDate(String Date)
+  {
+    this.Date = Date;
+  }
+
+  public String getDate()
+  {
+    return Date;
   }
 
   @Override
