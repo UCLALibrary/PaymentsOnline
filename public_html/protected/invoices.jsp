@@ -7,7 +7,7 @@
 <c:set var="fakeLogon" value=""/>
 
 <c:if test="${empty param.uid and empty header.SHIBUCLAUNIVERSITYID and empty header.SHIBEDUPERSONPRINCIPALNAME and empty cookie.almaID}">
-  <c:redirect url="https://webservices.library.ucla.edu/lpo/landing.html"/>
+  <c:redirect url="https://webservices-test.library.ucla.edu/lpo/landing.html"/>
 </c:if>
 
 <jsp:useBean id="idSource"
@@ -144,7 +144,7 @@
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.balanceDue}" pattern="$###,###.##"/>
                   &nbsp;<!--a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a-->
-<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+<a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -163,7 +163,7 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;<a href="https://webservices-test.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
