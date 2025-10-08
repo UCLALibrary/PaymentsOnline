@@ -1,7 +1,5 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
-import edu.ucla.library.libservices.invoicing.webservices.patrons.beans.Country;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;

@@ -522,11 +522,15 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Mimepull.jar1"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
+            <value n="id" v="JUnit 4 Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Mimepull.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -538,15 +542,15 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="JUnit 4 Runtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Byte-buddy-1.12.19.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
             <value n="id" v="Byte-buddy-agent-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Jaxb-api-2.3.1.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -562,16 +566,16 @@
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url path="../../jars/mimepull.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/mimepull.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Mimepull.jar1"/>
-               <value n="id" v="Mimepull.jar1"/>
+               <value n="description" v="Mimepull.jar"/>
+               <value n="id" v="Mimepull.jar"/>
                <value n="locked" v="true"/>
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../Projects/LibBill/middleware/deploy/invoices.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/invoices.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Invoices.jar"/>
@@ -580,7 +584,7 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/gson-2.13.1.jar" jar-entry=""/>
+                  <url path="../../../../jars/gson-2.13.1.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Gson-2.13.1.jar"/>
@@ -589,7 +593,7 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/lpo/byte-buddy-1.12.19.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/byte-buddy-1.12.19.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Byte-buddy-1.12.19.jar"/>
@@ -598,7 +602,7 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/lpo/byte-buddy-agent-1.12.19.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/byte-buddy-agent-1.12.19.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Byte-buddy-agent-1.12.19.jar"/>
@@ -607,7 +611,16 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/lpo/mockito-core-4.11.0.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/jaxb-api-2.3.1.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Jaxb-api-2.3.1.jar"/>
+               <value n="id" v="Jaxb-api-2.3.1.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="../../../../jars/lpo/mockito-core-4.11.0.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Mockito-core-4.11.0.jar"/>
@@ -616,7 +629,7 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="../../jars/lpo/objenesis-3.3.jar" jar-entry=""/>
+                  <url path="../../../../jars/lpo/objenesis-3.3.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Objenesis-3.3.jar"/>
@@ -667,11 +680,15 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Mimepull.jar1"/>
+            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <url n="id" path="../../Users/drickard1967/AppData/Roaming/JDeveloper/system12.2.1.4.42.190911.2248/o.jdeveloper/iText.library"/>
+            <value n="id" v="JUnit 4 Runtime"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Mimepull.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -683,15 +700,15 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="JUnit 4 Runtime"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
             <value n="id" v="Byte-buddy-1.12.19.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
             <value n="id" v="Byte-buddy-agent-1.12.19.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Jaxb-api-2.3.1.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
