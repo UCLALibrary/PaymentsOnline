@@ -207,7 +207,7 @@ public class ReceiptClient
     //check that invoice number is not empty
     if (!ContentTests.isEmpty(getInvoiceNumber()))
     {
-      prepAlmaClient(almaClient, libBillReceipt.getPatronID(), getInvoiceNumber());
+      prepAlmaClient(almaClient, String.valueOf(libBillReceipt.getPatronID()), getInvoiceNumber());
       libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
     }
 

@@ -45,10 +45,17 @@
             <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
             <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.invoice"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
-          <c:when test="${fn:contains(param.invoice, '-')}">
+          <c:when test="${fn:contains(param.invoice, '-') or not empty param.invoiceNo}">
+            <c:choose>
+              <c:when test="${not empty param.invoiceNo}">
+                <c:set var="invNumber" value="param.invoiceNo"/>
+              </c:when>
+              <c:otherwise>
+                <c:set var="invNumber" value="param.invoice"/>
+              </c:otherwise>
+            </c:choose>
             <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
-              <jsp:setProperty property="invoiceID" name="xeroSource" value="${param.invoice}"/>
-              <jsp:setProperty property="port" name="xeroSource" value="0"/>
+              <jsp:setProperty property="invoiceID" name="xeroSource" value="${invNumber}"/>
               <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
               <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
             </jsp:useBean>
@@ -62,7 +69,14 @@
             <c:if test="${index gt 1}">
               <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
             </c:if>
-            <input id="Hidden" type="hidden" name="ucla_ref_no" value="{xeroSource.singleInvoice.InvoiceNumber}"/>
+            <c:choose>
+              <c:when test="${not empty param.invoiceNo}">
+                <input id="Hidden" type="hidden" name="ucla_ref_no" value="{xeroSource.singleInvoice.InvoiceNumber}~fromxero"/>
+              </c:when>
+              <c:otherwise>
+                <input id="Hidden" type="hidden" name="ucla_ref_no" value="{xeroSource.singleInvoice.InvoiceNumber}"/>
+              </c:otherwise>
+            </c:choose>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
           </c:when>
           <c:otherwise>
