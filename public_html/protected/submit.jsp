@@ -52,7 +52,7 @@
               </c:when>
               <c:otherwise>
                 <c:set var="invNumber" value="param.invoice"/>
-              </c:otherwise?
+              </c:otherwise>
             </c:choose>
             <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
               <jsp:setProperty property="invoiceID" name="xeroSource" value="${invNumber}"/>
@@ -75,7 +75,7 @@
               </c:when>
               <c:otherwise>
                 <input id="Hidden" type="hidden" name="ucla_ref_no" value="{xeroSource.singleInvoice.InvoiceNumber}"/>
-              </c:otherwise?
+              </c:otherwise>
             </c:choose>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
           </c:when>
