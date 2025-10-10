@@ -9,6 +9,7 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
@@ -26,15 +27,18 @@ public class AlmaClient
   private AlmaUser thePatron;
   private Client client;
   private WebResource webResource;
-  private String userID;
-  private String fineID;
   private String amount;
-  private String payMethod;
-  private String transNo;
-  private String resourceURI;
-  private String uriBase;
-  private String key;
   private String dbName;
+  private String fineID;
+  private String key;
+  private String payMethod;
+  private String resourceURI;
+  private String secretsFile;
+  private String tokensFile;
+  private String transNo;
+  private String uriBase;
+  private String userID;
+    
 
   public AlmaClient()
   {
@@ -134,6 +138,26 @@ public class AlmaClient
     return dbName;
   }
 
+  public void setSecretsFile(String secretsFile) 
+  {
+      this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile() 
+  {
+      return secretsFile;
+  }
+
+  public void setTokensFile(String tokensFile) 
+  {
+      this.tokensFile = tokensFile;
+  }
+
+  public String getTokensFile() 
+  {
+      return tokensFile;
+  }
+
   public AlmaUser getThePatron()
   {
     if (thePatron == null)
@@ -150,7 +174,17 @@ public class AlmaClient
       }
       else
       {
+        XeroContactClient contactClient;
+        XeroContact theContact;
+        
+        contactClient = new XeroContactClient();
+        contactClient.setTokensFile(getTokensFile());
+        contactClient.setSecretsFile(getSecretsFile());
+        theContact = contactClient.getTheContact();
         thePatron = new AlmaUser();
+        thePatron.setFirstName(theContact.getFirstName());
+        thePatron.setLastName(theContact.getLastName());
+        thePatron.setPatronID(theContact.getContactID());
       }
     }
     return thePatron;
