@@ -174,17 +174,7 @@ public class AlmaClient
       }
       else
       {
-        XeroContactClient contactClient;
-        XeroContact theContact;
-        
-        contactClient = new XeroContactClient();
-        contactClient.setTokensFile(getTokensFile());
-        contactClient.setSecretsFile(getSecretsFile());
-        theContact = contactClient.getTheContact();
         thePatron = new AlmaUser();
-        thePatron.setFirstName(theContact.getFirstName());
-        thePatron.setLastName(theContact.getLastName());
-        thePatron.setPatronID(theContact.getContactID());
       }
     }
     return thePatron;

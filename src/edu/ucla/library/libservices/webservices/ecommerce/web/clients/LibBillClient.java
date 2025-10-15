@@ -8,7 +8,7 @@ import edu.ucla.library.libservices.invoicing.webservices.patrons.beans.SimplePa
 
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 
-public class PatronClient
+public class LibBillClient
 {
 
   private SimplePatron thePatron;
@@ -20,7 +20,7 @@ public class PatronClient
   private String user;
   private String crypt;
   
-  public PatronClient()
+  public LibBillClient()
   {
     super();
     thePatron = null;
