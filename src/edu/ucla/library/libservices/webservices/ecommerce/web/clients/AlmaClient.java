@@ -9,7 +9,6 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
@@ -33,8 +32,6 @@ public class AlmaClient
   private String key;
   private String payMethod;
   private String resourceURI;
-  private String secretsFile;
-  private String tokensFile;
   private String transNo;
   private String uriBase;
   private String userID;
@@ -136,26 +133,6 @@ public class AlmaClient
   private String getDbName()
   {
     return dbName;
-  }
-
-  public void setSecretsFile(String secretsFile) 
-  {
-      this.secretsFile = secretsFile;
-  }
-
-  public String getSecretsFile() 
-  {
-      return secretsFile;
-  }
-
-  public void setTokensFile(String tokensFile) 
-  {
-      this.tokensFile = tokensFile;
-  }
-
-  public String getTokensFile() 
-  {
-      return tokensFile;
   }
 
   public AlmaUser getThePatron()
