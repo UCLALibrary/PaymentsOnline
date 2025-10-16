@@ -26,15 +26,16 @@ public class AlmaClient
   private AlmaUser thePatron;
   private Client client;
   private WebResource webResource;
-  private String userID;
-  private String fineID;
   private String amount;
-  private String payMethod;
-  private String transNo;
-  private String resourceURI;
-  private String uriBase;
-  private String key;
   private String dbName;
+  private String fineID;
+  private String key;
+  private String payMethod;
+  private String resourceURI;
+  private String transNo;
+  private String uriBase;
+  private String userID;
+    
 
   public AlmaClient()
   {

@@ -20,6 +20,8 @@ public class XeroInvoice
   private XeroContact Contact;
   //optional text field, when filled will be displayed in unpaid-invoice list
   private String Reference;
+  //paid/unpaid status of invoice
+  private String Status;
   private ArrayList<XeroLineItem> LineItems;
   // grouped and summed values per Transact item code
   private HashMap<String, Double> itemCodeAmts;
@@ -121,6 +123,16 @@ public class XeroInvoice
   public String getDate()
   {
     return Date;
+  }
+
+  public void setStatus(String Status)
+  {
+    this.Status = Status;
+  }
+
+  public String getStatus()
+  {
+    return Status;
   }
 
   @Override

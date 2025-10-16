@@ -19,7 +19,7 @@
 </jsp:useBean>
 
 <jsp:useBean id="libBillInvoices"
-             class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.PatronClient">
+             class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.LibBillClient">
   <jsp:setProperty property="userID" name="libBillInvoices" value="${idSource.userID}"/>
   <jsp:setProperty property="uriBase" name="libBillInvoices" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="libBillInvoices" value='<%= application.getInitParameter("uri.patron") %>'/>
@@ -40,6 +40,14 @@
   <jsp:setProperty property="port" name="xeroSource" value="0"/>
   <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
   <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
+</jsp:useBean>
+
+<jsp:useBean id="patronSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.GeneralPatronClient">
+  <jsp:setProperty property="userID" name="patronSource" value="${idSource.userID}"/>
+  <jsp:setProperty property="uriBase" name="patronSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
+  <jsp:setProperty property="key" name="patronSource" value='<%= application.getInitParameter("alma.key") %>'/>
+  <jsp:setProperty property="secretsFile" name="patronSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="tokensFile" name="patronSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
 <html>
@@ -75,7 +83,7 @@
     </table>
 
     <c:choose>
-      <c:when test="${empty almaSource.thePatron.lastName}">
+      <c:when test="${empty patronSource.thePatron.lastName}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr>
@@ -97,7 +105,7 @@
           <tr><td></td><td>&nbsp;</td></tr>
           <tr>
             <td>
-              <h3>${almaSource.thePatron.firstName}&nbsp;${almaSource.thePatron.lastName}</h3>
+              <h3>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h3>
             </td>
             <td align="right">
               <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
