@@ -11,6 +11,7 @@ public class XeroContact
   private String Name;
   private String FirstName;
   private String LastName;
+  private String AccountNumber;
 
   public XeroContact()
   {
@@ -65,6 +66,16 @@ public class XeroContact
   public String getName()
   {
     return Name;
+  }
+
+  public void setAccountNumber(String AccountNumber)
+  {
+    this.AccountNumber = AccountNumber;
+  }
+
+  public String getAccountNumber()
+  {
+    return AccountNumber;
   }
 
   @Override

@@ -24,13 +24,13 @@ public class XeroInvoiceClient
   extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
-  private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&ContactIDs=";
+  private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&AccountNumber=";
 
   private String contactID;
   private String invoiceID;
 
   private XeroInvoice singleInvoice;
-  private XeroInvoiceList allUnpaid;
+  private ArrayList<XeroInvoice> allUnpaid;
 
   public XeroInvoiceClient()
   {
@@ -102,9 +102,10 @@ public class XeroInvoiceClient
     }
     else
     {
-      LOGGER.error("invoice service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
+      LOGGER.error("invoice service return code " + response.getStatus() + " on URL " + buildSingleURL() + "\t" + response.getEntity(String.class));
       singleInvoice = new XeroInvoice();
     }
+    LOGGER.info("returning invoice " + singleInvoice.toString());
     return singleInvoice;
   }
 
@@ -127,10 +128,11 @@ public class XeroInvoiceClient
    * Calls Xero invoice API, requesting unpaid/partially paid invoices for a patron
    * @return A collection of unpaid invoices for a particular patron
    */
-  public XeroInvoiceList getAllUnpaid()
+  public ArrayList<XeroInvoice> getAllUnpaid()
   {
     ClientResponse response;
     WebResource webResource;
+      XeroInvoiceList unpaid;
 
     loadProperties();
     webResource = getWebResource(replacePort(buildUnpaidURL()));
@@ -138,12 +140,13 @@ public class XeroInvoiceClient
     if (response.getStatus() == 200)
     {
       String json = response.getEntity(String.class);
-      allUnpaid = new Gson().fromJson(json, XeroInvoiceList.class);
+      unpaid = new Gson().fromJson(json, XeroInvoiceList.class);
+      allUnpaid = unpaid.getInvoices();
     }
     else
     {
-      LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
-      allUnpaid = new XeroInvoiceList();
+      LOGGER.error("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
+      allUnpaid = new ArrayList<XeroInvoice>();
     }
     return allUnpaid;
   }

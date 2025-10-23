@@ -22,6 +22,8 @@
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
   <jsp:setProperty property="user" name="receiptSource" value='<%= application.getInitParameter("key.one") %>'/>
   <jsp:setProperty property="crypt" name="receiptSource" value='<%= application.getInitParameter("key.two") %>'/>
+  <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="tokensFile" name="receiptSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
 <jsp:useBean id="now" class="java.util.Date" scope="page"/>

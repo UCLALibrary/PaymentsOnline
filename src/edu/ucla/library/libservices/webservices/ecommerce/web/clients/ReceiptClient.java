@@ -271,7 +271,7 @@ public class ReceiptClient
     patronClient = new XeroContactClient();
     patronClient.setSecretsFile(getSecretsFile());
     patronClient.setTokensFile(getTokensFile());
-    patronClient.setUserID(theInvoice.getContact().getContactID());
+    patronClient.setUserID(theInvoice.getContact().getAccountNumber());
     thePatron = patronClient.getTheContact();
 
     xeroReceipt = new ReceiptInfo();
@@ -281,7 +281,7 @@ public class ReceiptClient
 
     invoiceClient.setContactID(thePatron.getContactID());
 
-    xeroReceipt.setUnpaid(invoiceClient.getAllUnpaid().getInvoices().size());
+    xeroReceipt.setUnpaid(invoiceClient.getAllUnpaid().size());
 
     return xeroReceipt;
   }

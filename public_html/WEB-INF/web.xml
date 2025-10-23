@@ -152,6 +152,14 @@
     <param-name>user.logging.cashnet</param-name>
     <param-value>ecommerce</param-value>
   </context-param>
+  <context-param>
+    <param-name>xero.tokens</param-name>
+    <param-value>/usr/local/share/applications/xero/secrets.txt</param-value>
+  </context-param>
+  <context-param>
+    <param-name>xero.secrets</param-name>
+    <param-value>/usr/local/share/applications/xero/xero.props</param-value>
+  </context-param>
   <servlet-mapping>
     <servlet-name>TestServlet</servlet-name>
     <url-pattern>/testservlet</url-pattern>

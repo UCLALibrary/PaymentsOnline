@@ -1,5 +1,8 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
@@ -15,7 +18,7 @@ public class XeroInvoice
   // the user-set(?) invoice number, to be used as pass-through value to Transact
   private String InvoiceNumber;
   // date invoice was issued, displayed in invoices.jsp
-  private String Date;
+  private String DateString;
   private Double AmountDue;
   private XeroContact Contact;
   //optional text field, when filled will be displayed in unpaid-invoice list
@@ -117,12 +120,14 @@ public class XeroInvoice
 
   public void setDate(String Date)
   {
-    this.Date = Date;
+    this.DateString = Date;
   }
 
   public String getDate()
   {
-    return Date;
+    DateTimeFormatter formatter;
+    formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    return LocalDateTime.parse(DateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME).format(formatter);
   }
 
   public void setStatus(String Status)
@@ -161,4 +166,11 @@ public class XeroInvoice
   {
     return this.getInvoiceID().compareTo(other.getInvoiceID());
   }
+
+  @Override
+  public String toString()
+  {
+    return getInvoiceID() + "/" + getInvoiceNumber() + "\t" + getAmountDue();
+  }
+
 }

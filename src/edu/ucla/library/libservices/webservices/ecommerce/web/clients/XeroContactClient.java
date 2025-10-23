@@ -17,7 +17,9 @@ import org.apache.log4j.Logger;
 public class XeroContactClient extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
-
+  // query string for contact lookup
+  private static final String QUERY = "?where=AccountNumber=\"{id}\"";
+  
   // unique ID for a contact
   private String userID;
   // XeroContact bean returned from class
@@ -35,7 +37,7 @@ public class XeroContactClient extends AbstractXeroClient
 
   private String getContactURL()
   {
-    return secrets.getProperty(XeroConstants.CONTACT_URL).concat(getUserID());
+    return secrets.getProperty(XeroConstants.CONTACT_URL).concat(QUERY.replace("{id}", getUserID()));
   }
 
   /**
@@ -62,7 +64,7 @@ public class XeroContactClient extends AbstractXeroClient
       }
       else
       {
-        LOGGER.error("contact service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
+        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL() +"\t" + response.getEntity(String.class));
         this.theContact = new XeroContact();
       }
     }
