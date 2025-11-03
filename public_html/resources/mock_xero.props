@@ -1,7 +1,7 @@
 authorization_url = https://login.xero.com/identity/connect/authorize
-client_id = 226BBE55309C4E978FFC2EB865823433
-client_secret = tSniEWrmmj1lP6pzSgPHjztzHm5asfF1QDP5TFopdjZPA8Cg
-tenant_id = d9e3104a-1995-4ab7-b3f7-c889b9e7338a
+client_id = clientid
+client_secret = clinetsecret
+tenant_id = tenantid
 # Need accounting.transactions for Invoices, accounting.settings for Accounts,
 # and accounting.contacts for Contacts.
 scope = offline_access accounting.transactions accounting.settings accounting.contacts
