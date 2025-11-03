@@ -59,6 +59,7 @@
           <tr>
             <td>&nbsp;</td>
             <td align="right">
+              <!--form method="POST" action="https://webservices-test.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
               <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                 <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
                 <input type="submit" value="Logout">
@@ -89,6 +90,7 @@
               <tr>
                 <td>&nbsp;</td>
                 <td align="right">
+                  <!--form method="POST" action="https://webservices-test.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                   <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                     <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
                     <input type="submit" value="Logout">

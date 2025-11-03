@@ -138,7 +138,7 @@ public class PaymentServlet
   {
     XeroPaymentClient theClient;
     theClient = new XeroPaymentClient();
-    theClient.setInvoiceNumber(request.getParameter("UCLA_REF_NO"));
+    theClient.setInvoiceNumber(request.getParameter("UCLA_REF_NO").replace("~fromxero", ""));
     theClient.setPort(0);
     theClient.setReference(buildReference(request));
     theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));

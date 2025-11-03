@@ -10,25 +10,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class GeneralPatron
 {
   @XmlElement( name = "primary_id" )
-  private String patronID;
+  private String almaID;
   @XmlElement( name = "first_name" )
   private String firstName;
   @XmlElement( name = "last_name" ) 
   private String lastName;
+  private String xeroID;
 
   public GeneralPatron()
   {
     super();
   }
 
-  public void setPatronID(String patronID)
+  public void setAlmaID(String patronID)
   {
-    this.patronID = patronID;
+    this.almaID = patronID;
   }
 
-  public String getPatronID()
+  public String getAlmaID()
   {
-    return patronID;
+    return almaID;
   }
 
   public void setFirstName(String firstName)
@@ -49,5 +50,15 @@ public class GeneralPatron
   public String getLastName()
   {
     return lastName;
+  }
+
+  public void setXeroID(String xeroID)
+  {
+    this.xeroID = xeroID;
+  }
+
+  public String getXeroID()
+  {
+    return xeroID;
   }
 }

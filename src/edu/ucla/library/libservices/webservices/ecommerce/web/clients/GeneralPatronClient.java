@@ -41,6 +41,7 @@ public class GeneralPatronClient
       if (almaUser.getFirstName() != null || almaUser.getFirstName().length() == 0)
       {
         mapAlmaToGeneral(almaUser, thePatron);
+        thePatron.setXeroID(getXeroID(getUserID()));
       }
       else
       {
@@ -49,6 +50,7 @@ public class GeneralPatronClient
         XeroContact theContact;
 
         contactClient = new XeroContactClient();
+        contactClient.setUserID(getUserID());
         contactClient.setTokensFile(getTokensFile());
         contactClient.setSecretsFile(getSecretsFile());
         theContact = contactClient.getTheContact();
@@ -112,13 +114,26 @@ public class GeneralPatronClient
   {
     thePatron.setFirstName(almaUser.getFirstName());
     thePatron.setLastName(almaUser.getLastName());
-    thePatron.setPatronID(almaUser.getPatronID());
+    thePatron.setAlmaID(almaUser.getPatronID());
   }
 
   private void mapXeroToGeneral(XeroContact theContact, GeneralPatron thePatron)
   {
     thePatron.setFirstName(theContact.getFirstName());
     thePatron.setLastName(theContact.getLastName());
-    thePatron.setPatronID(theContact.getContactID());
+    thePatron.setXeroID(theContact.getContactID());
+  }
+
+  private String getXeroID(String string)
+  {
+    XeroContactClient contactClient;
+    XeroContact theContact;
+
+    contactClient = new XeroContactClient();
+    contactClient.setUserID(getUserID());
+    contactClient.setTokensFile(getTokensFile());
+    contactClient.setSecretsFile(getSecretsFile());
+    theContact = contactClient.getTheContact();
+    return theContact.getContactID();
   }
 }

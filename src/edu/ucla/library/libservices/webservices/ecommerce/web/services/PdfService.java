@@ -42,6 +42,6 @@ public class PdfService
     pdfClient.setInvoiceID(invoiceNo);
     pdfClient.setSecretsFile(config.getServletContext().getInitParameter("xero.secrets"));
     pdfClient.setTokensFile(config.getServletContext().getInitParameter("xero.tokens"));
-    return Response.ok( pdfClient.getInvoicePDF().getEntityInputStream() ).header("Content-Disposition", "inline; filename=".concat(filename)).build();
+    return Response.ok( pdfClient.getInvoicePDF() ).header("Content-Disposition", "inline; filename=".concat(filename)).build();
   }
 }

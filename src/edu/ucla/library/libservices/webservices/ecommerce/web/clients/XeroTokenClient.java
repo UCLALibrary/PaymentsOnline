@@ -81,7 +81,7 @@ public class XeroTokenClient extends AbstractXeroClient
     }
     else
     {
-      System.out.println("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
+      //System.out.println("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       LOGGER.error("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       json = null;
     }

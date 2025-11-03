@@ -189,11 +189,11 @@ public class AlmaClient
 
       theLine = new CashNetLine();
       client = Client.create();
-      System.out.println(getUriBase().concat(getUserID())
+      /*System.out.println(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())
                                                 .concat("?apikey=")
-                                                .concat(getKey()));
+                                                .concat(getKey()));*/
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())

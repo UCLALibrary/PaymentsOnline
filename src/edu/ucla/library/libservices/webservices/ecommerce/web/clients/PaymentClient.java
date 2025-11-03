@@ -99,7 +99,7 @@ public class PaymentClient
     uriWithParams = new StringBuffer( getResourceURI() );
     uriWithParams.append( "/invoice/" ).append( getInvoiceNumber() ).append( "/type/" ).append( getPaymentTypeID() );
     
-    System.out.println( "resource = " + getUriBase().concat( uriWithParams.toString() ) );
+    //System.out.println( "resource = " + getUriBase().concat( uriWithParams.toString() ) );
     ClientResponse response;
     client = Client.create();
     webResource =

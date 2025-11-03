@@ -9,11 +9,15 @@
       <param-name>com.sun.jersey.config.property.packages</param-name>
       <param-value>edu.ucla.library.libservices.webservices.ecommerce.web.services</param-value>
     </init-param>
+    <init-param>
+      <param-name>com.sun.ws.rest.config.property.resourceConfigClass</param-name>
+      <param-value>com.sun.ws.rest.api.core.PackagesResourceConfig</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>Jersey Web Application</servlet-name>
-    <url-pattern>/xero</url-pattern>
+    <url-pattern>/pdfs/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>LoggingServlet</servlet-name>
@@ -116,13 +120,19 @@
   </context-param>
   <context-param>
     <param-name>cashnet.ip.one</param-name>
-    <param-value>63.144.247.36</param-value>
+    <param-value>34.195.213.231</param-value>
+    <!--param-value>63.144.247.36</param-value-->
     <!--param-value>66.111.104.148</param-value-->
   </context-param>
   <context-param>
     <param-name>cashnet.ip.two</param-name>
     <!--param-value>67.208.47.14</param-value-->
-    <param-value>208.47.84.36</param-value>
+    <!--param-value>208.47.84.36</param-value-->
+    <param-value>34.192.112.253</param-value>
+  </context-param>
+  <context-param>
+    <param-name>cashnet.ip.three</param-name>
+    <param-value>40.90.247.249</param-value>
   </context-param>
   <context-param>
     <param-name>datasource.invoice</param-name>

@@ -10,6 +10,8 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoiceList;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroLineItem;
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 
+import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -24,7 +26,7 @@ public class XeroInvoiceClient
   extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
-  private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&AccountNumber=";
+  private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&ContactIds=";
 
   private String contactID;
   private String invoiceID;
@@ -113,7 +115,7 @@ public class XeroInvoiceClient
    * Retieves details on a particular invoice in PDF format
    * @return One Xero invoice as a PDF
    */
-  public ClientResponse getInvoicePDF()
+  public InputStream getInvoicePDF()
   {
     ClientResponse response;
     WebResource webResource;
@@ -121,7 +123,8 @@ public class XeroInvoiceClient
     loadProperties();
     webResource = getWebResource(replacePort(buildSingleURL()));
     response = getResponse(webResource, XeroConstants.PDF_ACCEPT);
-    return response;
+    //testing
+    return response.getEntityInputStream();
   }
 
   /**
@@ -135,6 +138,10 @@ public class XeroInvoiceClient
       XeroInvoiceList unpaid;
 
     loadProperties();
+    //LOGGER.info("calling Xero invoice service wih URL " + buildUnpaidURL());
+    if ( getContactID() == null || getContactID().equals("") )
+      return new ArrayList<XeroInvoice>();;
+
     webResource = getWebResource(replacePort(buildUnpaidURL()));
     response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)

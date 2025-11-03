@@ -69,7 +69,7 @@ public class AuthClient
     webResource = client.resource(getUriBase().concat(getUserID())
                                               .concat("??op=auth&apikey=")
                                               .concat(getKey()));
-    System.out.println(webResource.getURI().toString());
+    //System.out.println(webResource.getURI().toString());
     response = webResource.header("Exl-User-Pw", getPassword())
                           //.header("Content-Type", "application/x-www-form-urlencoded")
                           //.accept("application/json")
@@ -80,7 +80,7 @@ public class AuthClient
     }
     else
     {
-      System.out.println("status code = " + response.getStatus());
+      //System.out.println("status code = " + response.getStatus());
       return false;
     }
   }

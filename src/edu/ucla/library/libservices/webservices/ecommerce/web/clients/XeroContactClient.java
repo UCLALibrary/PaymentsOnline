@@ -9,7 +9,11 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContactList;
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.log4j.Logger;
+
+import java.net.URLEncoder;
 
 /**
  * Class that retrieves contact (customer/patron) data from Xero API
@@ -18,7 +22,7 @@ public class XeroContactClient extends AbstractXeroClient
 {
   private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
   // query string for contact lookup
-  private static final String QUERY = "?where=AccountNumber=\"{id}\"";
+  private static final String QUERY = "AccountNumber=\"{id}\"";
   
   // unique ID for a contact
   private String userID;
@@ -37,7 +41,16 @@ public class XeroContactClient extends AbstractXeroClient
 
   private String getContactURL()
   {
-    return secrets.getProperty(XeroConstants.CONTACT_URL).concat(QUERY.replace("{id}", getUserID()));
+    try
+    {
+      return secrets.getProperty(XeroConstants.CONTACT_URL).concat("?where=")
+             .concat(URLEncoder.encode(QUERY.replace("{id}", getUserID()), "UTF-8"));
+    }
+    catch (UnsupportedEncodingException uee)
+    {
+      LOGGER.error(uee.getMessage());
+      return null;
+    }
   }
 
   /**
@@ -52,7 +65,8 @@ public class XeroContactClient extends AbstractXeroClient
     {
       WebResource webResource;
       ClientResponse response;
-
+      
+      //System.out.println("calling contact service with URL " + getContactURL());
       webResource = getWebResource(replacePort(getContactURL()));
       response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
       if (response.getStatus() == 200)

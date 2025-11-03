@@ -16,9 +16,9 @@
       }
     </script>
   </head>
-  <body><!-- onload="javascript:submitForm();"-->
-    <form id="Demo1" method="post" action="https://train.cashnet.com/404handler/pageredirpost.aspx?virtual=UCLALIBRARYTEST">
-    <!--form id="Demo1" method="post" action="https://commerce.cashnet.com/404Handler/pageredirpost.aspx?virtual=UCLALIBRARY"-->
+  <body onload="javascript:submitForm();">
+    <!--form id="Demo1" method="post" action="https://train.cashnet.com/404handler/pageredirpost.aspx?virtual=UCLALIBRARYTEST"-->
+    <form id="Demo1" method="post" action="https://commerce.cashnet.com/404Handler/pageredirpost.aspx?virtual=UCLALIBRARY">
       <div>
         <c:choose>
           <c:when test="${fn:startsWith(param.invoice, 'alma')}">
@@ -42,7 +42,8 @@
               <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${almaSource.theInvoice.invoiceNumber}"/>
-            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
             <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.invoice"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
           <c:when test="${fn:contains(param.invoice, '-') or not empty param.invoiceNo}">
@@ -63,21 +64,22 @@
             <c:forEach var="theLine" items="${xeroSource.singleInvoice.itemCodeAmts}">
               <c:set var="index" value="${index + 1}"/>
               <input id="Hidden" type="hidden" name="itemcode${index}" value="${theLine.key}"/>
-              <input id="Hidden" type="hidden" name="amount${index}" value="${theLine.value}"/>
-              <input id="Hidden" type="hidden" name="desc${index}" value="${xeroSource.singleInvoice.InvoiceNumber}-${theLine.key}"/>
+              <input id="Hidden" type="hidden" name="amount${index}" value="${theLine.value div 100.00}"/>
+              <input id="Hidden" type="hidden" name="desc${index}" value="${xeroSource.singleInvoice.invoiceNumber}-${theLine.key}"/>
             </c:forEach>
             <c:if test="${index gt 1}">
               <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
             </c:if>
             <c:choose>
               <c:when test="${not empty param.invoiceNo}">
-                <input id="Hidden" type="hidden" name="ucla_ref_no" value="${xeroSource.singleInvoice.InvoiceNumber}~fromxero"/>
+                <input id="Hidden" type="hidden" name="ucla_ref_no" value="${xeroSource.singleInvoice.invoiceNumber}~fromxero"/>
               </c:when>
               <c:otherwise>
-                <input id="Hidden" type="hidden" name="ucla_ref_no" value="${xeroSource.singleInvoice.InvoiceNumber}"/>
+                <input id="Hidden" type="hidden" name="ucla_ref_no" value="${xeroSource.singleInvoice.invoiceNumber}"/>
               </c:otherwise>
             </c:choose>
-            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
           </c:when>
           <c:otherwise>
             <jsp:useBean id="libBillSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.CashNetClient">
@@ -98,7 +100,8 @@
               <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="${libBillSource.theInvoice.invoiceNumber}"/>
-            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices.library.ucla.edu/lpo/protected/confirm.jsp"/>
+            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
           </c:otherwise>
         </c:choose>
       </div>
