@@ -9,7 +9,7 @@ public class StringHandler
   
   public static String extractInvoiceID(String source)
   {
-    return source.replace("alma", "");
+    return source.replace("alma", "").replace("~fromxero", "");
   }
   
   public static String extractFeeType(String input)

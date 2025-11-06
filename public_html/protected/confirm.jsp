@@ -6,6 +6,10 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <c:set var="invoiceNo" value="${fn:replace(param.UCLA_REF_NO, 'alma', '')}"/>
+<c:if test="${fn:endsWith(invoiceNo, '~fromxero')}">
+  <c:set var="invoiceNo" value="${fn:replace(invoiceNo, '~fromxero', '')}"/>
+  <c:set var="noshow" value="true"/>
+</c:if>
 
 <jsp:useBean id="receiptSource"
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.ReceiptClient">
@@ -18,6 +22,8 @@
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
   <jsp:setProperty property="user" name="receiptSource" value='<%= application.getInitParameter("key.one") %>'/>
   <jsp:setProperty property="crypt" name="receiptSource" value='<%= application.getInitParameter("key.two") %>'/>
+  <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="tokensFile" name="receiptSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
 <jsp:useBean id="now" class="java.util.Date" scope="page"/>
@@ -53,6 +59,7 @@
           <tr>
             <td>&nbsp;</td>
             <td align="right">
+              <!--form method="POST" action="https://webservices-test.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
               <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                 <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
                 <input type="submit" value="Logout">
@@ -83,6 +90,7 @@
               <tr>
                 <td>&nbsp;</td>
                 <td align="right">
+                  <!--form method="POST" action="https://webservices-test.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                   <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
                     <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
                     <input type="submit" value="Logout">
@@ -98,7 +106,9 @@
               <tr>
                 <td>&nbsp;</td>
                 <td>
-                  Thank you, ${receiptSource.theReceipt.userName}.<br/>
+                  <c:if test="${not noshow}">
+                    Thank you, ${receiptSource.theReceipt.userName}.<br/>
+                  </c:if>
                   <%
                     double total = 0.0d;
                     for ( int index = 1;
@@ -110,7 +120,7 @@
                     }
                     out.print( "A payment of " + new java.text.DecimalFormat( "$###########0.00" ).format( total ) 
                     + " by " + ( request.getParameter( "pmtcode" ).equalsIgnoreCase( "CC" ) ? "credit card" : "e-check" ) 
-                    + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ).replace("alma", "") + ".<br/>" );
+                    + " has been received for invoice " + request.getParameter( "UCLA_REF_NO" ).replace("alma", "").replace("~fromxero", "") + ".<br/>" );
                   %>
                   Payment transaction number: ${param.tx}
                 </td>
@@ -135,11 +145,10 @@
                 <td>&nbsp;</td>
                 <td>A receipt has also been emailed to the address you entered on the payment screen.</td>
               </tr>
-              <c:if test="${receiptSource.theReceipt.unpaid gt 0}">
+              <c:if test="${receiptSource.theReceipt.unpaid gt 0 and not noshow}">
                 <tr>
                   <td>&nbsp;</td>
                   <td>
-                    <!--a href="invoices.jsp">Pay another invoice</a-->
                     <form action="invoices.jsp">
                       <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
                       <input type="submit" value="Pay another invoice">
@@ -155,9 +164,18 @@
               <tr><td colspan="2">&nbsp;</td></tr>
               <tr>
                 <td>&nbsp;</td>
-                <td>
-                  <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${invoiceNo} was not successful.</h3>
-                </td>
+                <c:choose>
+                  <c:when test="${not noshow}">
+                    <td>
+                      <h3>Sorry, ${receiptSource.theReceipt.userName}, your payment for invoice ${invoiceNo} was not successful.</h3>
+                    </td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>
+                      <h3>Sorry, your payment for invoice ${invoiceNo} was not successful.</h3>
+                    </td>
+                  </c:otherwise>
+                </c:choose>
               </tr>
               <tr>
                 <td>&nbsp;</td>

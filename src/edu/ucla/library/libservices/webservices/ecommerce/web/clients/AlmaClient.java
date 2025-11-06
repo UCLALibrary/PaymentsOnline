@@ -26,15 +26,16 @@ public class AlmaClient
   private AlmaUser thePatron;
   private Client client;
   private WebResource webResource;
-  private String userID;
-  private String fineID;
   private String amount;
-  private String payMethod;
-  private String transNo;
-  private String resourceURI;
-  private String uriBase;
-  private String key;
   private String dbName;
+  private String fineID;
+  private String key;
+  private String payMethod;
+  private String resourceURI;
+  private String transNo;
+  private String uriBase;
+  private String userID;
+    
 
   public AlmaClient()
   {
@@ -188,11 +189,11 @@ public class AlmaClient
 
       theLine = new CashNetLine();
       client = Client.create();
-      System.out.println(getUriBase().concat(getUserID())
+      /*System.out.println(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())
                                                 .concat("?apikey=")
-                                                .concat(getKey()));
+                                                .concat(getKey()));*/
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())

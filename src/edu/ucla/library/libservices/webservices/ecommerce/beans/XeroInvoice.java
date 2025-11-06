@@ -1,0 +1,176 @@
+package edu.ucla.library.libservices.webservices.ecommerce.beans;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collections;
+
+/**
+ * A single invoice, with related XeroContact and XeroLineItem data
+ */
+public class XeroInvoice
+  implements Comparable<XeroInvoice>
+{
+  //used for sorting, submitting payment
+  private String InvoiceID;
+  // the user-set(?) invoice number, to be used as pass-through value to Transact
+  private String InvoiceNumber;
+  // date invoice was issued, displayed in invoices.jsp
+  private String DateString;
+  private Double AmountDue;
+  private XeroContact Contact;
+  //optional text field, when filled will be displayed in unpaid-invoice list
+  private String Reference;
+  //paid/unpaid status of invoice
+  private String Status;
+  private ArrayList<XeroLineItem> LineItems;
+  // grouped and summed values per Transact item code
+  private HashMap<String, Double> itemCodeAmts;
+  // grouped and summed values per line-item account ID
+  private HashMap<String, Double> accountAmts;
+
+  public XeroInvoice()
+  {
+    super();
+    LineItems = new ArrayList<>();
+    itemCodeAmts = new HashMap<>();
+  }
+
+  public void setInvoiceID(String InvoiceID)
+  {
+    this.InvoiceID = InvoiceID;
+  }
+
+  public String getInvoiceID()
+  {
+    return InvoiceID;
+  }
+
+  public void setInvoiceNumber(String InvoiceNumber)
+  {
+    this.InvoiceNumber = InvoiceNumber;
+  }
+
+  public String getInvoiceNumber()
+  {
+    return InvoiceNumber;
+  }
+
+  public void setAmountDue(Double AmountDue)
+  {
+    this.AmountDue = AmountDue;
+  }
+
+  public Double getAmountDue()
+  {
+    return AmountDue;
+  }
+
+  public void setReference(String Reference)
+  {
+    this.Reference = Reference;
+  }
+
+  public String getReference()
+  {
+    return Reference;
+  }
+
+  public void setContact(XeroContact Contact)
+  {
+    this.Contact = Contact;
+  }
+
+  public XeroContact getContact()
+  {
+    return Contact;
+  }
+
+  public void setLineItems(ArrayList<XeroLineItem> LineItems)
+  {
+    this.LineItems = LineItems;
+  }
+
+  public ArrayList<XeroLineItem> getLineItems()
+  {
+    return LineItems;
+  }
+
+  public void setItemCodeAmts(HashMap<String, Double> itemCodeAmts)
+  {
+    this.itemCodeAmts = itemCodeAmts;
+  }
+
+  public HashMap<String, Double> getItemCodeAmts()
+  {
+    return itemCodeAmts;
+  }
+
+  public void setAccountAmts(HashMap<String, Double> accountAmts)
+  {
+    this.accountAmts = accountAmts;
+  }
+
+  public HashMap<String, Double> getAccountAmts()
+  {
+    return accountAmts;
+  }
+
+  public void setDate(String Date)
+  {
+    this.DateString = Date;
+  }
+
+  public String getDate()
+  {
+    DateTimeFormatter formatter;
+    formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    return LocalDateTime.parse(DateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME).format(formatter);
+  }
+
+  public void setStatus(String Status)
+  {
+    this.Status = Status;
+  }
+
+  public String getStatus()
+  {
+    return Status;
+  }
+
+  @Override
+  public boolean equals(Object theOther)
+  {
+    if (this == theOther)
+      return true;
+    if (theOther == null || getClass() != theOther.getClass())
+      return false;
+    XeroInvoice aBean = (XeroInvoice) theOther;
+
+    boolean simpleCompare =
+      this.getInvoiceID() == aBean.getInvoiceID() && this.getInvoiceNumber() == aBean.getInvoiceNumber() &&
+      this.getAmountDue() == aBean.getAmountDue() && this.getContact().equals(aBean.getContact()) &&
+      this.getReference() == aBean.getReference();
+    Collections.sort(this.getLineItems());
+    Collections.sort(aBean.getLineItems());
+    boolean lineCompare = this.getLineItems().equals(aBean.getLineItems());
+    boolean amountsCompare =
+      this.getItemCodeAmts().equals(aBean.getItemCodeAmts()) && this.getAccountAmts().equals(aBean.getAccountAmts());
+    return simpleCompare && lineCompare && amountsCompare;
+  }
+
+  @Override
+  public int compareTo(XeroInvoice other)
+  {
+    return this.getInvoiceID().compareTo(other.getInvoiceID());
+  }
+
+  @Override
+  public String toString()
+  {
+    return getInvoiceID() + "/" + getInvoiceNumber() + "\t" + getAmountDue();
+  }
+
+}

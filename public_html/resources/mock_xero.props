@@ -1,0 +1,14 @@
+authorization_url = https://login.xero.com/identity/connect/authorize
+client_id = clientid
+client_secret = clinetsecret
+tenant_id = tenantid
+# Need accounting.transactions for Invoices, accounting.settings for Accounts,
+# and accounting.contacts for Contacts.
+scope = offline_access accounting.transactions accounting.settings accounting.contacts
+state = some_random_value
+tenant_url = https://api.xero.com/connections
+token_url = https://identity.xero.com/connect/token
+invoice_url = https://api.xero.com/api.xro/2.0/Invoices
+account_url = https://api.xero.com/api.xro/2.0/Accounts/
+contact_url = https://api.xero.com/api.xro/2.0/Contacts
+payment_url = https://api.xero.com/api.xro/2.0/Payments

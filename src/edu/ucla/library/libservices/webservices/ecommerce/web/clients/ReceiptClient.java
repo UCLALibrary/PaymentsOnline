@@ -8,6 +8,8 @@ import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 //import org.apache.log4j.Logger;
@@ -25,6 +27,8 @@ public class ReceiptClient
   private String user;
   private String crypt;
   private String invoiceNumber;
+  private String secretsFile;
+  private String tokensFile;
 
   public ReceiptClient()
   {
@@ -38,6 +42,10 @@ public class ReceiptClient
       if (getInvoiceNumber().startsWith("alma"))
       {
         theReceipt = buildAlmaReceipt();
+      }
+      else if (getInvoiceNumber().contains("-"))
+      {
+        theReceipt = buildXeroReceipt();
       }
       else
       {
@@ -142,6 +150,26 @@ public class ReceiptClient
     return almaUriBase;
   }
 
+  public void setSecretsFile(String secretsFile)
+  {
+    this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile()
+  {
+    return secretsFile;
+  }
+
+  public void setTokensFile(String tokensFile)
+  {
+    this.tokensFile = tokensFile;
+  }
+
+  public String getTokensFile()
+  {
+    return tokensFile;
+  }
+
   private ReceiptInfo buildAlmaReceipt()
   {
     AlmaClient client;
@@ -207,7 +235,7 @@ public class ReceiptClient
     //check that invoice number is not empty
     if (!ContentTests.isEmpty(getInvoiceNumber()))
     {
-      prepAlmaClient(almaClient, libBillReceipt.getPatronID(), getInvoiceNumber());
+      prepAlmaClient(almaClient, String.valueOf(libBillReceipt.getPatronID()), getInvoiceNumber());
       libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
     }
 
@@ -222,5 +250,40 @@ public class ReceiptClient
     theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
     theClient.setUriBase(getAlmaUriBase());
     theClient.setUserID(patronID);
+  }
+
+  private ReceiptInfo buildXeroReceipt()
+  {
+    ReceiptInfo xeroReceipt;
+    String cleanInvoiceNo;
+    XeroContact thePatron;
+    XeroContactClient patronClient;
+    XeroInvoiceClient invoiceClient;
+    XeroInvoice theInvoice;
+
+    cleanInvoiceNo = StringHandler.extractInvoiceID(getInvoiceNumber());
+    invoiceClient = new XeroInvoiceClient();
+    invoiceClient.setInvoiceID(cleanInvoiceNo);
+    invoiceClient.setSecretsFile(getSecretsFile());
+    invoiceClient.setTokensFile(getTokensFile());
+    theInvoice = invoiceClient.getSingleInvoice();
+
+    patronClient = new XeroContactClient();
+    patronClient.setSecretsFile(getSecretsFile());
+    patronClient.setTokensFile(getTokensFile());
+    //System.out.println("setting account number as " + theInvoice.getContact().getAccountNumber());
+    patronClient.setUserID(theInvoice.getContact().getAccountNumber());
+    thePatron = patronClient.getTheContact();
+
+    xeroReceipt = new ReceiptInfo();
+    xeroReceipt.setUid(thePatron.getAccountNumber());
+    xeroReceipt.setStatus(theInvoice.getStatus());
+    xeroReceipt.setUserName(thePatron.getFirstName() + " " + thePatron.getLastName());
+
+    invoiceClient.setContactID(thePatron.getContactID());
+
+    xeroReceipt.setUnpaid(invoiceClient.getAllUnpaid().size());
+
+    return xeroReceipt;
   }
 }

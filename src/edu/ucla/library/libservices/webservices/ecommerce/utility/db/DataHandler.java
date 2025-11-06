@@ -131,7 +131,7 @@ public class DataHandler
     DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createBillSource();
     //LOGGER.info(query.replace("?", feeType));
-    System.out.println(query.replace("?", feeType));
+    //System.out.println(query.replace("?", feeType));
     return new JdbcTemplate(source).queryForObject(query, new Object[] { feeType }, String.class).toString();
   }
 
