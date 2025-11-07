@@ -271,9 +271,16 @@ public class ReceiptClient
     patronClient = new XeroContactClient();
     patronClient.setSecretsFile(getSecretsFile());
     patronClient.setTokensFile(getTokensFile());
-    //System.out.println("setting account number as " + theInvoice.getContact().getAccountNumber());
-    patronClient.setUserID(theInvoice.getContact().getAccountNumber());
-    thePatron = patronClient.getTheContact();
+    if ( theInvoice.getContact().getAccountNumber() != null && theInvoice.getContact().getAccountNumber().length() != 0 )
+    {
+      patronClient.setUserID(theInvoice.getContact().getAccountNumber());
+      thePatron = patronClient.getTheContact();
+    }
+    else
+    {
+      patronClient.setUserID(theInvoice.getContact().getContactID());
+      thePatron = patronClient.getTheContactByID();
+    }
 
     xeroReceipt = new ReceiptInfo();
     xeroReceipt.setUid(thePatron.getAccountNumber());
