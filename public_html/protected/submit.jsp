@@ -28,7 +28,7 @@
               <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
               <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
               <jsp:setProperty property="key" name="almaSource" value='<%= application.getInitParameter("alma.key") %>'/>
-              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
+              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
               <%--jsp:setProperty property="feeType" name="almaSource" param="invoice"/--%>
             </jsp:useBean>
             <c:set var="index" value="0"/>
@@ -44,7 +44,7 @@
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${almaSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://webservices.library.ucla.edu/lpo/protected/confirm.jsp"/>
             <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
-            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.invoice"), request.getParameter("invoice"), request.getParameter("patronID")); %>
+            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.ucladb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
           <c:when test="${fn:contains(param.invoice, '-') or not empty param.invoiceNo}">
             <c:choose>
