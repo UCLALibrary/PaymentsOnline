@@ -39,17 +39,24 @@ public class XeroContactClient extends AbstractXeroClient
     return userID;
   }
 
-  private String getContactURL()
+  private String getContactURL(boolean byID)
   {
-    try
+    if (byID)
     {
-      return secrets.getProperty(XeroConstants.CONTACT_URL).concat("?where=")
-             .concat(URLEncoder.encode(QUERY.replace("{id}", getUserID()), "UTF-8"));
+      return secrets.getProperty(XeroConstants.CONTACT_URL).concat("/").concat(getUserID());
     }
-    catch (UnsupportedEncodingException uee)
+    else
     {
-      LOGGER.error(uee.getMessage());
-      return null;
+      try
+      {
+        return secrets.getProperty(XeroConstants.CONTACT_URL).concat("?where=")
+               .concat(URLEncoder.encode(QUERY.replace("{id}", getUserID()), "UTF-8"));
+      }
+      catch (UnsupportedEncodingException uee)
+      {
+        LOGGER.error(uee.getMessage());
+        return null;
+      }
     }
   }
 
@@ -67,18 +74,59 @@ public class XeroContactClient extends AbstractXeroClient
       ClientResponse response;
       
       //System.out.println("calling contact service with URL " + getContactURL());
-      webResource = getWebResource(replacePort(getContactURL()));
+      webResource = getWebResource(replacePort(getContactURL(false)));
       response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
       if (response.getStatus() == 200)
       {
         XeroContactList theList;
         String json = response.getEntity(String.class);
         theList = new Gson().fromJson(json, XeroContactList.class);
-        this.theContact = theList.getContacts().get(0);
+        if ( theList.getContacts().size() > 0 )
+        {
+          this.theContact = theList.getContacts().get(0);
+        }
+        else
+        {
+          this.theContact = new XeroContact();
+        }
       }
       else
       {
-        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL() +"\t" + response.getEntity(String.class));
+        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL(false) +"\t" + response.getEntity(String.class));
+        this.theContact = new XeroContact();
+      }
+    }
+    return this.theContact;
+  }
+
+  public XeroContact getTheContactByID()
+  {
+    loadProperties();
+    if (this.theContact == null)
+    {
+      WebResource webResource;
+      ClientResponse response;
+      
+      //System.out.println("calling contact service with URL " + getContactURL());
+      webResource = getWebResource(replacePort(getContactURL(true)));
+      response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
+      if (response.getStatus() == 200)
+      {
+        XeroContactList theList;
+        String json = response.getEntity(String.class);
+        theList = new Gson().fromJson(json, XeroContactList.class);
+        if ( theList.getContacts().size() > 0 )
+        {
+          this.theContact = theList.getContacts().get(0);
+        }
+        else
+        {
+          this.theContact = new XeroContact();
+        }
+      }
+      else
+      {
+        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL(true) +"\t" + response.getEntity(String.class));
         this.theContact = new XeroContact();
       }
     }

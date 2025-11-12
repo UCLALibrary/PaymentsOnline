@@ -5,4 +5,7 @@
     <ResourceLink name="jdbc/billDS"
                  global="jdbc/billDS"
                   type="javax.sql.DataSource" />
+    <ResourceLink name="jdbc/uclaDS"
+                 global="jdbc/uclaDS"
+                  type="javax.sql.DataSource" />
 </Context>
