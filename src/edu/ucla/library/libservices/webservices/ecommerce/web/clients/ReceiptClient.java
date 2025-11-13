@@ -244,7 +244,7 @@ public class ReceiptClient
 
   private void prepAlmaClient(AlmaClient theClient, String patronID, String invoice)
   {
-    theClient.setDbName(getVgerName());
+    theClient.setDbName(getLibBillName());
     theClient.setFineID(invoice);
     theClient.setKey(getApiKey());
     theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
