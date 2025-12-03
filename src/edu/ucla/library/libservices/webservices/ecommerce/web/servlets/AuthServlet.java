@@ -36,7 +36,7 @@ public class AuthServlet
   {
     AuthClient theClient;
     theClient = new AuthClient();
-    theClient.setKey(getServletContext().getInitParameter("alma.key.auth"));
+    theClient.setKey(getServletContext().getInitParameter("alma.key"));
     theClient.setPassword(request.getParameter("password"));
     theClient.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
     theClient.setUserID(request.getParameter("userID"));

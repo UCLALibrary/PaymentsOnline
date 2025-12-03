@@ -67,7 +67,7 @@ public class AuthClient
     ClientResponse response;
     client = Client.create();
     webResource = client.resource(getUriBase().concat(getUserID())
-                                              .concat("??op=auth&apikey=")
+                                              .concat("?op=auth&apikey=")
                                               .concat(getKey()));
     //System.out.println(webResource.getURI().toString());
     response = webResource.header("Exl-User-Pw", getPassword())
