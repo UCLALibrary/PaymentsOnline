@@ -41,7 +41,16 @@ public class PaymentServlet
   public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {
-    doPost(request, response);
+    try
+    {
+      doPost(request, response);
+    }
+    catch (Exception e)
+    {
+      Logger log;
+      log = Logger.getLogger(LoggingServlet.class);
+      log.error(e.getMessage());
+    }
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -51,10 +60,18 @@ public class PaymentServlet
     Logger log;
     log = Logger.getLogger(LoggingServlet.class);
 
-    handlePayment(request, log);
+    try
+    {
+      handlePayment(request, log);
+    }
+    catch (Exception e)
+    {
+      log.error(e.getMessage());
+    }
   }
 
   private void handlePayment(HttpServletRequest request, Logger log)
+    throws Exception
   {
     if (request.getParameter("UCLA_REF_NO").startsWith("alma"))
     {
@@ -135,6 +152,7 @@ public class PaymentServlet
   }
 
   private void doXeroPayment(HttpServletRequest request, Logger log)
+    throws Exception
   {
     XeroPaymentClient theClient;
     theClient = new XeroPaymentClient();

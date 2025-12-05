@@ -65,6 +65,7 @@ public class XeroPaymentClient
    * @return data for invoice being paid, mapped to XeroInvoice object
    */
   private XeroInvoice getInvoice()
+    throws Exception
   {
     XeroInvoiceClient theClient;
 
@@ -110,6 +111,7 @@ public class XeroPaymentClient
    * @return response (HTTP code and message body) from Xero service
    */
   public ClientResponse putPayment()
+    throws Exception
   {
     ClientResponse response;
     WebResource webResource;

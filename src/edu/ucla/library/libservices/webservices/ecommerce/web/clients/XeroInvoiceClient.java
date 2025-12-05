@@ -82,6 +82,7 @@ public class XeroInvoiceClient
    * @return One Xero invoice mapped to XeroInvoice object
    */
   public XeroInvoice getSingleInvoice()
+    throws Exception
   {
     ClientResponse response;
     WebResource webResource;
@@ -97,7 +98,27 @@ public class XeroInvoiceClient
                                 .get(0);
       for (XeroLineItem theLine: singleInvoice.getLineItems())
       {
-        theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
+ /*
+  * Case 1: account ID and amount
+	retrieve item code
+Case 2: no account ID, no amount
+	log & skip line
+Case 3: no account ID, amount
+	log & throw exception
+  */
+        if ( theLine.getAccountID() != null && theLine.getAccountID().length() != 0 && theLine.getLineAmount() > 0 )
+        {
+          theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
+        }
+        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() ==0 )
+        {
+          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
+                       + theLine.getDescription() + " lacks account ID and amount");
+        }
+        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() > 0 )
+        {
+          throw new Exception("Invoice ".concat(singleInvoice.getInvoiceNumber()).concat(" has an invalid line item."));
+        }
       }
       singleInvoice.setItemCodeAmts(groupAndSumCodes(singleInvoice.getLineItems()));
       singleInvoice.setAccountAmts(groupAndSumAccounts(singleInvoice.getLineItems()));
