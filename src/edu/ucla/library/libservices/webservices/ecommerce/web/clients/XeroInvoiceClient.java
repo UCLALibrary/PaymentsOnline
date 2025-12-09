@@ -98,26 +98,18 @@ public class XeroInvoiceClient
                                 .get(0);
       for (XeroLineItem theLine: singleInvoice.getLineItems())
       {
- /*
-  * Case 1: account ID and amount
-	retrieve item code
-Case 2: no account ID, no amount
-	log & skip line
-Case 3: no account ID, amount
-	log & throw exception
-  */
         if ( theLine.getAccountID() != null && theLine.getAccountID().length() != 0 && theLine.getLineAmount() > 0 )
         {
           theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
         }
-        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() ==0 )
+        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() == 0 )
         {
           LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
                        + theLine.getDescription() + " lacks account ID and amount");
         }
         if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() > 0 )
         {
-          throw new Exception("Invoice ".concat(singleInvoice.getInvoiceNumber()).concat(" has an invalid line item."));
+          throw new Exception(buildExceptionMessage(singleInvoice, theLine));
         }
       }
       singleInvoice.setItemCodeAmts(groupAndSumCodes(singleInvoice.getLineItems()));
@@ -207,5 +199,15 @@ Case 3: no account ID, amount
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getAccountID,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+
+  private String buildExceptionMessage(XeroInvoice singleInvoice, XeroLineItem theLine)
+  {
+    StringBuffer buffer;
+    buffer = new StringBuffer();
+    buffer.append("Invoice ").append(singleInvoice.getInvoiceNumber()).append(" has an invalid line item. ");
+    buffer.append("Please contact the issuing Library unit with this information: ");
+    buffer.append("The charge for ").append(theLine.getDescription()).append(" lacks an account number/item code.");
+    return buffer.toString();
   }
 }

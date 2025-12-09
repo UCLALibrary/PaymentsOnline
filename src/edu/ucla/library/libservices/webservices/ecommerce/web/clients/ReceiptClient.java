@@ -36,6 +36,7 @@ public class ReceiptClient
   }
 
   public ReceiptInfo getTheReceipt()
+    throws Exception
   {
     if (theReceipt == null)
     {
@@ -253,6 +254,7 @@ public class ReceiptClient
   }
 
   private ReceiptInfo buildXeroReceipt()
+    throws Exception
   {
     ReceiptInfo xeroReceipt;
     String cleanInvoiceNo;
