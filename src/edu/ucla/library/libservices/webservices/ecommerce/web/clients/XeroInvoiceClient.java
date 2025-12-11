@@ -104,6 +104,11 @@ public class XeroInvoiceClient
         }
         if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() == 0 )
         {
+          /*
+           * This is a line item that lacks both account info (needed to retrieve Transact itemCode) and an amount
+           * Log the occurance of empty line item for possible best-practices review/record keeping
+           * Ignore line for Transact submission because there's no amount to be payed
+           */
           LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
                        + theLine.getDescription() + " lacks account ID and amount");
         }

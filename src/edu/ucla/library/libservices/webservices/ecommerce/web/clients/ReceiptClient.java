@@ -35,6 +35,17 @@ public class ReceiptClient
     super();
   }
 
+  /**
+   * @return
+   * @throws Exception Possible exception from XeroInvoiceClient in retrieving invoice data
+   * Xero allows creation of empty line items (lines with neither an amount nor an account) and (possibly) lines with
+   * amounts but without accounts. Empty lines can be ignored, since there's no amount to be paid; lines with
+   * amounts but no account can't be submitted to Transact, since there's no way to retrieve the Trasact item code.
+   * Such lines should be caught before an invoice is submitted to Transact, but possible thrown exception is noted here
+   * for completeness and Java language rules.
+   * Buusiness logic for LibBill and Alma invoices prevents the creation of line items without amounts/link to Transact
+   * item code.
+   */
   public ReceiptInfo getTheReceipt()
     throws Exception
   {
@@ -253,6 +264,10 @@ public class ReceiptClient
     theClient.setUserID(patronID);
   }
 
+ /*
+  * As noted above at getTheReceipt(), Alma allows the creation of line items missing account or amount values. Such lines 
+  * produce exceptions in XeroInvoiceClient, which get thrown to here, and passed up to getTheReceipt()
+  */
   private ReceiptInfo buildXeroReceipt()
     throws Exception
   {
