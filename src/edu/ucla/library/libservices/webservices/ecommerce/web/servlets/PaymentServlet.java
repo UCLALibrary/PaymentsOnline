@@ -51,27 +51,15 @@ public class PaymentServlet
     Logger log;
     log = Logger.getLogger(LoggingServlet.class);
 
-    try
-    {
-      handlePayment(request, log);
-    }
-    catch (Exception e)
-    {
-      log.error(e.getMessage());
-    }
+    handlePayment(request, log);
   }
 
   /**
    * Record a payment in Alma/LibBill/Xero
    * @param request HTTP request, holding parameters defining the payment
    * @param log logger passed to subsidiary methods
-   * @exception doXeroPayment() calls XeroPaymentClient calls XeroInvoiceClient to retrieve invoice data; XeroInvoiceClient may
-   * throw an exception if there's amalformed line item (line item with amount but no accout/item code value).
-   * Such invoices shouldn't reach payment stage, but Exception included in this method both for
-   * Java language rules and error-handling completeness
    */
   private void handlePayment(HttpServletRequest request, Logger log)
-    throws Exception
   {
     if (request.getParameter("UCLA_REF_NO").startsWith("alma"))
     {
@@ -152,7 +140,6 @@ public class PaymentServlet
   }
 
   private void doXeroPayment(HttpServletRequest request, Logger log)
-    throws Exception
   {
     XeroPaymentClient theClient;
     theClient = new XeroPaymentClient();
@@ -161,7 +148,14 @@ public class PaymentServlet
     theClient.setReference(buildReference(request));
     theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
     theClient.setTokensFile(getServletContext().getInitParameter("xero.tokens"));
-    theClient.putPayment();
+    try
+    {
+      theClient.putPayment();
+    }
+    catch (Exception e)
+    {
+      log.fatal("Payment failed: ".concat(e.getMessage()));
+    }
   }
 
   /**
