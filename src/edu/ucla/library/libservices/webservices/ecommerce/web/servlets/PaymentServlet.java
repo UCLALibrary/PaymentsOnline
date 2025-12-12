@@ -41,7 +41,7 @@ public class PaymentServlet
   public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {
-    doPost(request, response);
+      doPost(request, response);
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -54,6 +54,11 @@ public class PaymentServlet
     handlePayment(request, log);
   }
 
+  /**
+   * Record a payment in Alma/LibBill/Xero
+   * @param request HTTP request, holding parameters defining the payment
+   * @param log logger passed to subsidiary methods
+   */
   private void handlePayment(HttpServletRequest request, Logger log)
   {
     if (request.getParameter("UCLA_REF_NO").startsWith("alma"))
@@ -143,7 +148,14 @@ public class PaymentServlet
     theClient.setReference(buildReference(request));
     theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
     theClient.setTokensFile(getServletContext().getInitParameter("xero.tokens"));
-    theClient.putPayment();
+    try
+    {
+      theClient.putPayment();
+    }
+    catch (Exception e)
+    {
+      log.fatal("Payment failed: ".concat(e.getMessage()));
+    }
   }
 
   /**
