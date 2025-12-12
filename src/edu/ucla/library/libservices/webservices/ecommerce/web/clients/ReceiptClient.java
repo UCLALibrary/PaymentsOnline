@@ -265,7 +265,7 @@ public class ReceiptClient
   }
 
  /*
-  * As noted above at getTheReceipt(), Alma allows the creation of line items missing account or amount values. Such lines 
+  * As noted above at getTheReceipt(), Xero allows the creation of line items missing account or amount values. Such lines 
   * produce exceptions in XeroInvoiceClient, which get thrown to here, and passed up to getTheReceipt()
   */
   private ReceiptInfo buildXeroReceipt()
