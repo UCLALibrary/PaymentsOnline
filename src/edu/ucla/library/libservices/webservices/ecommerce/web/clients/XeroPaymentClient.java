@@ -65,6 +65,7 @@ public class XeroPaymentClient
    * @return data for invoice being paid, mapped to XeroInvoice object
    */
   private XeroInvoice getInvoice()
+    throws Exception
   {
     XeroInvoiceClient theClient;
 
@@ -108,8 +109,13 @@ public class XeroPaymentClient
   /**
    * Submit a payment via HTTP PUT to Xero
    * @return response (HTTP code and message body) from Xero service
+   * @exception XeroPaymentClient calls XeroInvoiceClient to retrieve invoice data; XeroInvoiceClient may
+   * throw an exception if there's amalformed line item (line item with amount but no accout/item code value).
+   * Such invoices shouldn't reach payment stage, but Exception included in this method both for
+   * Java language rules and error-handling completeness
    */
   public ClientResponse putPayment()
+    throws Exception
   {
     ClientResponse response;
     WebResource webResource;

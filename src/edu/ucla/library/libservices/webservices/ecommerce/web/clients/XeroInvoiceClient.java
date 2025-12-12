@@ -82,6 +82,7 @@ public class XeroInvoiceClient
    * @return One Xero invoice mapped to XeroInvoice object
    */
   public XeroInvoice getSingleInvoice()
+    throws Exception
   {
     ClientResponse response;
     WebResource webResource;
@@ -97,7 +98,24 @@ public class XeroInvoiceClient
                                 .get(0);
       for (XeroLineItem theLine: singleInvoice.getLineItems())
       {
-        theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
+        if ( theLine.getAccountID() != null && theLine.getAccountID().length() != 0 && theLine.getLineAmount() > 0 )
+        {
+          theLine.setTransactItemCode(getItemCode(theLine.getAccountID()));
+        }
+        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() == 0 )
+        {
+          /*
+           * This is a line item that lacks both account info (needed to retrieve Transact itemCode) and an amount
+           * Log the occurance of empty line item for possible best-practices review/record keeping
+           * Ignore line for Transact submission because there's no amount to be payed
+           */
+          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
+                       + theLine.getDescription() + " lacks account ID and amount");
+        }
+        if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() > 0 )
+        {
+          throw new Exception(buildExceptionMessage(singleInvoice, theLine));
+        }
       }
       singleInvoice.setItemCodeAmts(groupAndSumCodes(singleInvoice.getLineItems()));
       singleInvoice.setAccountAmts(groupAndSumAccounts(singleInvoice.getLineItems()));
@@ -186,5 +204,15 @@ public class XeroInvoiceClient
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getAccountID,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+
+  private String buildExceptionMessage(XeroInvoice singleInvoice, XeroLineItem theLine)
+  {
+    StringBuffer buffer;
+    buffer = new StringBuffer();
+    buffer.append("Invoice ").append(singleInvoice.getInvoiceNumber()).append(" has an invalid line item. ");
+    buffer.append("Please contact the issuing Library unit with this information: ");
+    buffer.append("The charge for ").append(theLine.getDescription()).append(" lacks an account number/item code.");
+    return buffer.toString();
   }
 }

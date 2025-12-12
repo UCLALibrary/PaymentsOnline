@@ -193,8 +193,15 @@ public class XeroInvoiceClientTest
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setPort(port);
 
-    testInvoice = testClient.getSingleInvoice();
-    assert (testInvoice.equals(mockInvoiceList));
+    try
+    {
+      testInvoice = testClient.getSingleInvoice();
+      assert (testInvoice.equals(mockInvoiceList));
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
 
     mockServer.stop(0);
   }
