@@ -193,8 +193,8 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theXeroInvoice.amountDue}" pattern="$###,###.##"/>
-                  <!--&nbsp;<a href="https://webservices-test.library.ucla.edu/lpo/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a-->
-                  <!--&nbsp;<a href="pdf.jsp?invNumber=${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a-->
+                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a>
+                  <!--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a-->
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
