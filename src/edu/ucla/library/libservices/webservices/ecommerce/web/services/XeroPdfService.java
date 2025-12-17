@@ -12,12 +12,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @Path("/xero/")
-public class PdfService
+public class XeroPdfService
 {
   @Context
   ServletConfig config;
 
-  public PdfService()
+  public XeroPdfService()
   {
     super();
   }
