@@ -478,6 +478,7 @@
                         <string v="Jaxb-api-2.3.1.jar"/>
                         <string v="Byte-buddy-agent-1.12.19.jar"/>
                         <string v="Byte-buddy-1.12.19.jar"/>
+                        <string v="Invoices.jar"/>
                      </list>
                   </hash>
                </list>
@@ -651,10 +652,6 @@
          </hash>
          <hash>
             <value n="id" v="Mimepull.jar"/>
-            <value n="isJDK" v="false"/>
-         </hash>
-         <hash>
-            <value n="id" v="Invoices.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
