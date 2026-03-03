@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.invoicing.security.signatures;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+import java.util.Base64;
 
 import java.io.BufferedReader;
 
@@ -62,7 +62,7 @@ public class SignatureCreator
       byte[] rawHmac = mac.doFinal( data.getBytes() );
 
       // base64-encode the hmac
-      result = Base64.encode( rawHmac );
+      result = Base64.getEncoder().encodeToString( rawHmac );
     }
     catch ( Exception e )
     {
