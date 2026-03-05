@@ -18,6 +18,7 @@ public class TokenFileHandlerTest
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
   private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static XeroTokenBean SOURCE_BEAN;
+  private static XeroTokenBean OUT_BEAN;
 
   @Before
   public void setUp()
@@ -25,9 +26,15 @@ public class TokenFileHandlerTest
   {
     SOURCE_BEAN = new XeroTokenBean();
     SOURCE_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
-    SOURCE_BEAN.setExpires_in("1800");
+    SOURCE_BEAN.setExpires_in("2035-07-08T16:17:53.186");
     SOURCE_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
     SOURCE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
+
+    OUT_BEAN = new XeroTokenBean();
+    OUT_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
+    OUT_BEAN.setExpires_in("1800");
+    OUT_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
+    OUT_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
   }
 
   /**
@@ -46,7 +53,7 @@ public class TokenFileHandlerTest
 
     handler = new TokenFileHandler();
     handler.setTokensFile(outputFile);
-    handler.writeTokensFile(gson.toJson(SOURCE_BEAN));
+    handler.writeTokensFile(gson.toJson(OUT_BEAN));
     assert (Files.exists(Paths.get(outputFile)));
   }
 
