@@ -73,7 +73,7 @@ public class XeroContactClient extends AbstractXeroClient
       WebResource webResource;
       ClientResponse response;
       
-      //System.out.println("calling contact service with URL " + getContactURL());
+      System.out.println("calling URL " + replacePort(getContactURL(false)));
       webResource = getWebResource(replacePort(getContactURL(false)));
       response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
       if (response.getStatus() == 200)
@@ -92,7 +92,8 @@ public class XeroContactClient extends AbstractXeroClient
       }
       else
       {
-        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL(false) +"\t" + response.getEntity(String.class));
+        System.out.println("contact service return code " + response.getStatus() + " on request URL " + replacePort(getContactURL(false)) +"\t" + response.getEntity(String.class));
+        //LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + replacePort(getContactURL(false)) +"\t" + response.getEntity(String.class));
         this.theContact = new XeroContact();
       }
     }

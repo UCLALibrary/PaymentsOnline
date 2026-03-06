@@ -196,7 +196,7 @@ public class XeroInvoiceClientTest
     try
     {
       testInvoice = testClient.getSingleInvoice();
-      assert (testInvoice.equals(mockInvoiceList));
+      assert (testInvoice.equals(mockInvoice));
     }
     catch (Exception e)
     {
