@@ -1,5 +1,5 @@
 access_token = eyJhbGciOiJSUzI1Ni
-expires_in = 2026-03-11T11:47:49.6170831
-refresh_token = wSzpv1rx0k9gCkvGrzXT
+expires_in = 2026-03-11T10:47:50.1799988
+refresh_token = null
 scope = accounting.settings accounting.transactions accounting.contacts offline_access
 

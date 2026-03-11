@@ -88,6 +88,7 @@ public class XeroInvoiceClient
     WebResource webResource;
 
     loadProperties();
+    System.out.println(replacePort(buildSingleURL()));
     webResource = getWebResource(replacePort(buildSingleURL()));
     response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)

@@ -24,9 +24,12 @@ import java.net.ServerSocket;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert;
 
 public class XeroInvoiceClientTest
 {
@@ -60,6 +63,7 @@ public class XeroInvoiceClientTest
     mockLine.setItemCode("PRSVLBR - SC");
     mockLine.setLineAmount(56.58);
     mockLine.setTaxAmount(5.52);
+    mockLine.setTransactItemCode("45400-PR-E");
     mockLineList = new ArrayList<>();
     mockLineList.add(mockLine);
 
@@ -70,6 +74,8 @@ public class XeroInvoiceClientTest
     mockInvoice.setReference("SRLF");
     mockInvoice.setContact(mockContact);
     mockInvoice.setLineItems(mockLineList);
+    mockInvoice.setItemCodeAmts(groupAndSumCodes(mockInvoice.getLineItems()));
+    mockInvoice.setAccountAmts(groupAndSumAccounts(mockInvoice.getLineItems()));
 
     mockInvoiceList = new XeroInvoiceList();
     mockInvoiceList.getInvoices().add(mockInvoice);
@@ -196,7 +202,7 @@ public class XeroInvoiceClientTest
     try
     {
       testInvoice = testClient.getSingleInvoice();
-      assert (testInvoice.equals(mockInvoice));
+      Assert.assertTrue (testInvoice.equals(mockInvoice));
     }
     catch (Exception e)
     {
@@ -221,7 +227,7 @@ public class XeroInvoiceClientTest
     String mockJson;
     XeroInvoiceClient testClient;
     XeroInvoiceList testList;
-    
+
     port = findFreePort();
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
@@ -264,4 +270,17 @@ public class XeroInvoiceClientTest
     }
   }
 
+  private HashMap<String, Double> groupAndSumCodes(ArrayList<XeroLineItem> theLines)
+  {
+    return (HashMap<String, Double>) theLines.stream()
+           .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+
+  private HashMap<String, Double> groupAndSumAccounts(ArrayList<XeroLineItem> theLines)
+  {
+    return (HashMap<String, Double>) theLines.stream()
+           .collect(Collectors.groupingBy(XeroLineItem::getAccountID,
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
 }

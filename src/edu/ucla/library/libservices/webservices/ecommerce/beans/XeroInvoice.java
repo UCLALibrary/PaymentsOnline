@@ -146,13 +146,16 @@ public class XeroInvoice
     if (this == theOther)
       return true;
     if (theOther == null || getClass() != theOther.getClass())
+    {
+      System.out.println("this: " + getClass() + "\ttheOther: " + theOther.getClass());
       return false;
+    }
     XeroInvoice aBean = (XeroInvoice) theOther;
 
     boolean simpleCompare =
-      this.getInvoiceID() == aBean.getInvoiceID() && this.getInvoiceNumber() == aBean.getInvoiceNumber() &&
-      this.getAmountDue() == aBean.getAmountDue() && this.getContact().equals(aBean.getContact()) &&
-      this.getReference() == aBean.getReference();
+      this.getInvoiceID().equals(aBean.getInvoiceID()) && this.getInvoiceNumber().equals(aBean.getInvoiceNumber()) &&
+      this.getAmountDue().equals(aBean.getAmountDue()) && this.getContact().equals(aBean.getContact()) &&
+      this.getReference().equals(aBean.getReference());
     Collections.sort(this.getLineItems());
     Collections.sort(aBean.getLineItems());
     boolean lineCompare = this.getLineItems().equals(aBean.getLineItems());

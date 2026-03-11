@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert;
 
 public class TokenFileHandlerTest
 {
@@ -69,11 +70,6 @@ public class TokenFileHandlerTest
     handler = new TokenFileHandler();
     handler.setTokensFile(TOKENS_FILE);
     result = handler.readTokensFile();
-    System.out.println(SOURCE_BEAN.getAccess_token() + "\t" + SOURCE_BEAN.getExpires_in() + "\t" + SOURCE_BEAN.getRefresh_token() +"\t"
-                       + SOURCE_BEAN.getScope());
-    System.out.println(result.getAccess_token() + "\t" + result.getExpires_in() + "\t" + result.getRefresh_token() +"\t"
-                       + result.getScope());
-    System.out.println(result.equals(SOURCE_BEAN));
     assert (result.equals(SOURCE_BEAN));
   }
 
@@ -87,7 +83,7 @@ public class TokenFileHandlerTest
 
     handler = new TokenFileHandler();
     handler.setTokensFile(TOKENS_FILE);
-    assert (handler.getTokensFile().equals(TOKENS_FILE));
+    Assert.assertTrue (handler.getTokensFile().equals(TOKENS_FILE));
   }
 
 }
