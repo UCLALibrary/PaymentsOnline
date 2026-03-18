@@ -110,7 +110,7 @@ public class XeroInvoiceClient
            * Log the occurance of empty line item for possible best-practices review/record keeping
            * Ignore line for Transact submission because there's no amount to be payed
            */
-          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
+          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for "
                        + theLine.getDescription() + " lacks account ID and amount");
         }
         if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() > 0 )
@@ -161,6 +161,7 @@ public class XeroInvoiceClient
     if ( getContactID() == null || getContactID().equals("") )
       return new ArrayList<XeroInvoice>();;
 
+	System.out.println(replacePort(buildUnpaidURL()));
     webResource = getWebResource(replacePort(buildUnpaidURL()));
     response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
@@ -171,7 +172,8 @@ public class XeroInvoiceClient
     }
     else
     {
-      LOGGER.error("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
+		System.out.println("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
+      //LOGGER.error("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
       allUnpaid = new ArrayList<XeroInvoice>();
     }
     return allUnpaid;
