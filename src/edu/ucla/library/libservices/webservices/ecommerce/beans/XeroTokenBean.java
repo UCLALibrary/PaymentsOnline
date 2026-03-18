@@ -68,14 +68,20 @@ public class XeroTokenBean
     if (this == theOther)
       return true;
     if (theOther == null || getClass() != theOther.getClass())
-      return false;      
+      return false;
 
     XeroTokenBean aBean = (XeroTokenBean) theOther;
 
     return this.getAccess_token().trim().equals(aBean.getAccess_token().trim())
            && this.getExpires_in().trim().equals(aBean.getExpires_in().trim())
-           && this.getRefresh_token().trim().equals(aBean.getRefresh_token().trim()) 
+           && this.getRefresh_token().trim().equals(aBean.getRefresh_token().trim())
            && this.getScope().trim().equals(aBean.getScope().trim());
   }
 
+  @Override
+  public String toString()
+  {
+    return this.getAccess_token() + "\t" + this.getExpires_in() + "\t" + this.getRefresh_token()
+           + this.getScope();
+  }
 }

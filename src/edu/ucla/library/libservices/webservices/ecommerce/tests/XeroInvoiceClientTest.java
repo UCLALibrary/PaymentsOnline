@@ -226,7 +226,7 @@ public class XeroInvoiceClientTest
     InetSocketAddress mockAddress;
     String mockJson;
     XeroInvoiceClient testClient;
-    XeroInvoiceList testList;
+    ArrayList<XeroInvoice> testList;
 
     port = findFreePort();
     mockAddress = new InetSocketAddress(port);
@@ -254,8 +254,10 @@ public class XeroInvoiceClientTest
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setPort(port);
 
-    //testList = testClient.getAllUnpaid();
-    //assert (testList.equals(mockInvoice));
+    testList = testClient.getAllUnpaid();
+    System.out.println("mock: " + mockInvoiceList.getInvoices().size());
+    System.out.println("test: " + testList.size());
+    Assert.assertTrue (testList.equals(mockInvoiceList.getInvoices()));
 
     mockServer.stop(0);
   }
@@ -270,14 +272,14 @@ public class XeroInvoiceClientTest
     }
   }
 
-  private HashMap<String, Double> groupAndSumCodes(ArrayList<XeroLineItem> theLines)
+  private static HashMap<String, Double> groupAndSumCodes(ArrayList<XeroLineItem> theLines)
   {
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
                                           Collectors.summingDouble(XeroLineItem::getLineTotal)));
   }
 
-  private HashMap<String, Double> groupAndSumAccounts(ArrayList<XeroLineItem> theLines)
+  private static HashMap<String, Double> groupAndSumAccounts(ArrayList<XeroLineItem> theLines)
   {
     return (HashMap<String, Double>) theLines.stream()
            .collect(Collectors.groupingBy(XeroLineItem::getAccountID,

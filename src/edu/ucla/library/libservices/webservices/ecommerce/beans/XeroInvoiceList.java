@@ -32,11 +32,15 @@ public class XeroInvoiceList
     if (this == theOther)
       return true;
     if (theOther == null || getClass() != theOther.getClass())
+    {
+		System.out.println("this: " + getClass());
+		System.out.println("other: " + theOther.getClass());
       return false;
+	}
     XeroInvoiceList aBean = (XeroInvoiceList) theOther;
     Collections.sort(this.getInvoices());
     Collections.sort(aBean.getInvoices());
-    
+
     return this.getInvoices().equals(aBean.getInvoices());
   }
 }

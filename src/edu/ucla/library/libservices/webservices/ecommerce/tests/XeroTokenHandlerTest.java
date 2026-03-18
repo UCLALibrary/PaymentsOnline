@@ -73,7 +73,7 @@ public class XeroTokenHandlerTest
     XeroTokenHandler theHandler;
     theHandler = new XeroTokenHandler();
     theHandler.setSecretsFile(SECRETS_FILE);
-    assert (theHandler.getSecretsFile().equals(SECRETS_FILE));
+    Assert.assertTrue(theHandler.getSecretsFile().equals(SECRETS_FILE));
   }
 
   /**
@@ -85,7 +85,7 @@ public class XeroTokenHandlerTest
     XeroTokenHandler theHandler;
     theHandler = new XeroTokenHandler();
     theHandler.setTokensFile(TOKENS_FILE);
-    assert (theHandler.getTokensFile().equals(TOKENS_FILE));
+    Assert.assertTrue(theHandler.getTokensFile().equals(TOKENS_FILE));
   }
 
   /**
@@ -101,7 +101,7 @@ public class XeroTokenHandlerTest
     handler.setTokensFile(FUTURE_FILE);
 
     result = handler.getTokens();
-    assert (result.equals(FUTURE_BEAN));
+    Assert.assertTrue(result.equals(FUTURE_BEAN));
   }
 
   /**
