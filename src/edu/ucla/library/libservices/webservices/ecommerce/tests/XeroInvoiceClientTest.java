@@ -232,34 +232,37 @@ public class XeroInvoiceClientTest
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
 
-    gson = new Gson();
-    mockJson = gson.toJson(mockInvoiceList);
-    handler = new HttpHandler()
-    {
-      public void handle(HttpExchange exchange)
-        throws IOException
-      {
-        byte[] response = mockJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockServer.createContext("/api.xro/2.0/Invoices?Statuses=AUTHORISED&ContactIDs=1234", handler);
-    mockServer.start();
+    try {
+      gson = new Gson();
+      mockJson = gson.toJson(mockInvoiceList);
+      handler = new HttpHandler() {
+        public void handle(HttpExchange exchange)
+        throws IOException {
+          String query = exchange.getRequestURI().getQuery();
+          String path = exchange.getRequestURI().getPath();
+          Assert.assertEquals("Statuses=AUTHORISED&ContactIds=1234", query);
+          Assert.assertEquals("/api.xro/2.0/Invoices", path);
 
-    testClient = new XeroInvoiceClient();
-    testClient.setContactID("1234");
-    testClient.setSecretsFile(SECRETS_FILE);
-    testClient.setTokensFile(TOKENS_FILE);
-    testClient.setPort(port);
+          byte[] response = mockJson.getBytes();
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        }
+      };
+      mockServer.createContext("/api.xro/2.0/Invoices", handler);
+      mockServer.start();
 
-    testList = testClient.getAllUnpaid();
-    System.out.println("mock: " + mockInvoiceList.getInvoices().size());
-    System.out.println("test: " + testList.size());
-    Assert.assertTrue (testList.equals(mockInvoiceList.getInvoices()));
+      testClient = new XeroInvoiceClient();
+      testClient.setContactID("1234");
+      testClient.setSecretsFile(SECRETS_FILE);
+      testClient.setTokensFile(TOKENS_FILE);
+      testClient.setPort(port);
 
-    mockServer.stop(0);
+      testList = testClient.getAllUnpaid();
+      Assert.assertTrue(testList.equals(mockInvoiceList.getInvoices()));
+    } finally {
+      mockServer.stop(0);
+    }
   }
 
   private static int findFreePort()

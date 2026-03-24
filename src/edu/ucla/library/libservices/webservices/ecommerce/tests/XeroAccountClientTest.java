@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+import org.junit.Assert;
 
 import com.google.gson.Gson;
 
@@ -52,10 +53,10 @@ public class XeroAccountClientTest
     throws Exception
   {
     mockAccount = new XeroAccount();
-    mockAccount.setAccountID("ad4e5b15-3583");
+    mockAccount.setAccountID("ad4e5b153583");
     mockAccount.setName("45400-PR-E");
     mockAccount.setCode("PRESERV#01");
-    
+
     mockAccountList = new XeroAccountList();
     mockAccountList.getAccounts().add(mockAccount);
   }
@@ -129,12 +130,12 @@ public class XeroAccountClientTest
     String testItemCode;
     XeroAccountClient testClient;
     int port;
-    
+
     port = findFreePort();
 
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
-    
+
     gson = new Gson();
     mockAccountJson = gson.toJson(mockAccountList);
     accountHandler = new HttpHandler()
@@ -148,18 +149,19 @@ public class XeroAccountClientTest
         exchange.close();
       }
     };
-    mockServer.createContext("/api.xro/2.0/Accounts/ad4e5b15-3583", accountHandler);
+    mockServer.createContext("/api.xro/2.0/Accounts/ad4e5b153583", accountHandler);
     mockServer.start();
 
     testClient = new XeroAccountClient();
-    testClient.setAccountID("ad4e5b15-3583");
+    testClient.setAccountID("ad4e5b153583");
     testClient.setSecretsFile(SECRETS_FILE);
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setPort(port);
     testItemCode = testClient.getItemCode();
-    
-    assert(testItemCode.equals(mockAccount.getName()));
-    
+System.out.println("testItemCode: " + testItemCode);
+System.out.println("mockAccount: " + mockAccount.getName());
+    Assert.assertTrue(testItemCode.equals(mockAccount.getName()));
+
     mockServer.stop(0);
   }
 
