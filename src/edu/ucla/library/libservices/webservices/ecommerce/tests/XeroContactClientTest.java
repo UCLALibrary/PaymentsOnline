@@ -133,7 +133,7 @@ public class XeroContactClientTest
         exchange.close();
       }
     };
-    mockServer.createContext("/api.xro/2.0/Contacts?where=AccountNumber%3D%221234%22", handler);
+    mockServer.createContext("/api.xro/2.0/Contacts", handler);
     mockServer.start();
 
     testClient = new XeroContactClient();
@@ -142,12 +142,6 @@ public class XeroContactClientTest
     testClient.setUserID("1234");
     testClient.setPort(port);
     testContact = testClient.getTheContact();
-    System.out.println(mockContact.getAccountNumber() + "\t" + mockContact.getContactID() + "\t" 
-                       + mockContact.getContactNumber() + "\t" + mockContact.getFirstName() + "\t" + mockContact.getLastName()
-                       + "\t" + mockContact.getName());
-    System.out.println(testContact.getAccountNumber() + "\t" + testContact.getContactID() + "\t" 
-                       + testContact.getContactNumber() + "\t" + testContact.getFirstName() + "\t" + testContact.getLastName()
-                       + "\t" + testContact.getName());
     assert(testContact.equals(mockContact));
 
     mockServer.stop(0);
