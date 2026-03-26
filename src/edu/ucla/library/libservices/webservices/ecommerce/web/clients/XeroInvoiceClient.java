@@ -88,7 +88,6 @@ public class XeroInvoiceClient
     WebResource webResource;
 
     loadProperties();
-    System.out.println(replacePort(buildSingleURL()));
     webResource = getWebResource(replacePort(buildSingleURL()));
     response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
@@ -161,7 +160,6 @@ public class XeroInvoiceClient
     if ( getContactID() == null || getContactID().equals("") )
       return new ArrayList<XeroInvoice>();;
 
-	System.out.println(replacePort(buildUnpaidURL()));
     webResource = getWebResource(replacePort(buildUnpaidURL()));
     response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
     if (response.getStatus() == 200)
@@ -172,8 +170,7 @@ public class XeroInvoiceClient
     }
     else
     {
-		System.out.println("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
-      //LOGGER.error("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
+      LOGGER.error("invoice service return code " + response.getStatus() + " on request URL " + buildUnpaidURL()  + "\t" + response.getEntity(String.class));
       allUnpaid = new ArrayList<XeroInvoice>();
     }
     return allUnpaid;

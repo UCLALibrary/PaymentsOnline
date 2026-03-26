@@ -146,10 +146,8 @@ public class XeroInvoice
     if (this == theOther)
       return true;
     if (theOther == null || getClass() != theOther.getClass())
-    {
-      System.out.println("this: " + getClass() + "\ttheOther: " + theOther.getClass());
       return false;
-    }
+
     XeroInvoice aBean = (XeroInvoice) theOther;
 
     boolean simpleCompare =

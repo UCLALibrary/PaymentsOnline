@@ -51,7 +51,7 @@ public class XeroTokenClient extends AbstractXeroClient
   }
 
   /**
-   * Builds authroization header and request body, then calls 
+   * Builds authroization header and request body, then calls
    * Xero token service
    * @return JSON representation of fresh OAuth tokens from Xero
    */
@@ -81,7 +81,6 @@ public class XeroTokenClient extends AbstractXeroClient
     }
     else
     {
-      //System.out.println("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       LOGGER.error("token service return code " + response.getStatus() + "\t" + response.getEntity(String.class));
       json = null;
     }

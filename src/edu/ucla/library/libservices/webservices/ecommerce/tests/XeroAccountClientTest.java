@@ -158,8 +158,7 @@ public class XeroAccountClientTest
     testClient.setTokensFile(TOKENS_FILE);
     testClient.setPort(port);
     testItemCode = testClient.getItemCode();
-System.out.println("testItemCode: " + testItemCode);
-System.out.println("mockAccount: " + mockAccount.getName());
+
     Assert.assertTrue(testItemCode.equals(mockAccount.getName()));
 
     mockServer.stop(0);
