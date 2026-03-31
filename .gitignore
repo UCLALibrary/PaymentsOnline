@@ -25,3 +25,6 @@ replay_pid*
 # nonstandard maven paths
 target/
 classes/
+
+# files updated by tests
+public_html/resources/*txt
