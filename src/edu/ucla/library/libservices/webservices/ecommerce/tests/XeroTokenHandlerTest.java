@@ -38,8 +38,8 @@ public class XeroTokenHandlerTest
     Gson gson;
     TokenFileHandler handler;
 
-    FUTURE_BEAN = TestUtilities.populateBean("1800");
-    EXPIRED_BEAN = TestUtilities.populateBean("-1800");
+    FUTURE_BEAN = TestUtilities.populateBean("1800", false);
+    EXPIRED_BEAN = TestUtilities.populateBean("-1800", false);
 
     gson = new Gson();
     handler = new TokenFileHandler();
@@ -50,7 +50,6 @@ public class XeroTokenHandlerTest
     handler.setTokensFile(TestUtilities.getFutureFile());
     FUTURE_READ = handler.readTokensFile();
   }
-
 
   @After
   public void tearDown()

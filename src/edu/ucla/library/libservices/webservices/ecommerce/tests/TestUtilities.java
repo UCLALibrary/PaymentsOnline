@@ -13,8 +13,12 @@ import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class TestUtilities
 {
+  private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
   private static final String ACCESS_TOKEN = "fake_access_token";
   private static final String REFRESH_TOKEN = "fake_refresh_token";
   private static final String FUTURE_SECS = "1800";
@@ -23,6 +27,7 @@ public class TestUtilities
   private static final String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
   private static final String EXPIRED_FILE = Paths.get(BASE_PATH, "expired.txt").toString();
   private static final String FUTURE_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
+  private static final String WRITE_FILE = Paths.get(BASE_PATH, "output.txt").toString();
 
   public TestUtilities()
   {
@@ -47,6 +52,11 @@ public class TestUtilities
   {
     return EXPIRED_FILE;
   }
+  
+  public static String getWriteFile()
+    {
+      return WRITE_FILE;
+    }
 
   public static void writeFutureFile()
   {
@@ -86,13 +96,21 @@ public class TestUtilities
     handler.writeTokensFile(gson.toJson(expired_bean));
   }
   
-  public static XeroTokenBean populateBean(String theTime)
+  public static XeroTokenBean populateBean(String theTime, boolean format)
   {
     XeroTokenBean theBean;
 
     theBean = new XeroTokenBean();
     theBean.setAccess_token(ACCESS_TOKEN);
-    theBean.setExpires_in(theTime);
+    if (format)
+    {
+      theBean.setExpires_in(LocalDateTime.now().plusSeconds(Long.parseLong(theTime)).format(FORMAT));;
+    }
+    else
+    {
+      theBean.setExpires_in(theTime);;
+    }
+    
     theBean.setRefresh_token(REFRESH_TOKEN);
     theBean.setScope(SCOPE);
     
@@ -105,6 +123,7 @@ public class TestUtilities
     {
       Files.deleteIfExists(Paths.get(EXPIRED_FILE));
       Files.deleteIfExists(Paths.get(FUTURE_FILE));
+      Files.deleteIfExists(Paths.get(WRITE_FILE));
     }
     catch (IOException ioe)
     {
