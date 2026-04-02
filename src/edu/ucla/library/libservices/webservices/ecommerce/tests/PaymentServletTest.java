@@ -1,13 +1,5 @@
 package edu.ucla.library.libservices.webservices.ecommerce.tests;
 
-import static org.mockito.Mockito.*;
-
-import com.google.gson.Gson;
-
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroAccount;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroAccountList;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
@@ -15,17 +7,11 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoiceList;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroLineItem;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPayment;
-
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPaymentAccount;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroPaymentInvoice;
-
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroPaymentClient;
 
 import java.io.IOException;
-
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 
 import java.nio.file.Paths;
 
@@ -37,17 +23,17 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PaymentServletTest
 {
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
-  private static String TOKENS_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
   private static String SECRETS_FILE = Paths.get(BASE_PATH, "mock_xero.props").toString();
 
   private static XeroPayment mockPayment;
@@ -79,6 +65,8 @@ public class PaymentServletTest
   {
     XeroPaymentInvoice invoice;
     XeroPaymentAccount account;
+    
+    TestUtilities.writeFutureFile();
 
     invoice = new XeroPaymentInvoice();
     invoice.setInvoiceID("123-456");
@@ -140,18 +128,7 @@ public class PaymentServletTest
   public void tearDown()
     throws Exception
   {
-  }
-
-  @BeforeClass
-  public static void setUpBeforeClass()
-    throws Exception
-  {
-  }
-
-  @AfterClass
-  public static void tearDownAfterClass()
-    throws Exception
-  {
+    TestUtilities.clearFiles();
   }
 
   /**
@@ -168,7 +145,7 @@ public class PaymentServletTest
     String reference;
     XeroPaymentClient theClient;
 
-    port = findFreePort();
+    port = TestUtilities.findFreePort();
     
     reference = buildReference(mockRequest);
     assertEquals(reference, mockPayment.getReference());
@@ -177,20 +154,10 @@ public class PaymentServletTest
     theClient.setPort(port);
     theClient.setReference(reference);
     theClient.setSecretsFile(SECRETS_FILE);
-    theClient.setTokensFile(TOKENS_FILE);
+    theClient.setTokensFile(TestUtilities.getFutureFile());
     XeroPayment testPayment = theClient.buildPayment(mockAccount.getAccountID(), mockInvoice.getInvoiceID(), 20000.00d);
     assertEquals(testPayment, mockPayment);
 
-  }
-
-  private static int findFreePort()
-    throws IOException
-  {
-    try (ServerSocket socket = new ServerSocket(0))
-    {
-      socket.setReuseAddress(true);
-      return socket.getLocalPort();
-    }
   }
 
   private static String buildReference(HttpServletRequest mockRequest)
