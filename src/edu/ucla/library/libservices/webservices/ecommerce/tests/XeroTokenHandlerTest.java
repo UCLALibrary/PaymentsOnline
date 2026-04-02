@@ -26,10 +26,7 @@ import org.junit.Test;
 public class XeroTokenHandlerTest
 {
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
-  private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static String SECRETS_FILE = Paths.get(BASE_PATH, "mock_xero.props").toString();
-  private static String FUTURE_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
-  private static String EXPIRED_FILE = Paths.get(BASE_PATH, "expired.txt").toString();
   private static XeroTokenBean FUTURE_BEAN;
   private static XeroTokenBean FUTURE_READ;
   private static XeroTokenBean EXPIRED_BEAN;
@@ -38,44 +35,16 @@ public class XeroTokenHandlerTest
   public void setUp()
     throws Exception
   {
-    //PropertiesHandler props;
-    //String fakeAccessToken;
-    //TokenFileHandler expiredHandler;
-
-    //props = new PropertiesHandler();
-    // a file specifically to hold a Xero OAuth refresh token
-    //props.setFileName(Paths.get(BASE_PATH, "refresh.props").toString());
-
-    //expiredHandler = new TokenFileHandler();
-    //expiredHandler.setTokensFile(TOKENS_FILE);
-
-    //fakeAccessToken = expiredHandler.readTokensFile().getAccess_token();
-    FUTURE_BEAN = TestUtilities.populateBean("1800");
-    /*FUTURE_BEAN = new XeroTokenBean();
-    FUTURE_BEAN.setAccess_token(fakeAccessToken);
-    FUTURE_BEAN.setExpires_in("1800");
-    FUTURE_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
-    FUTURE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");*/
-
-    EXPIRED_BEAN = TestUtilities.populateBean("-1800");
-    /*EXPIRED_BEAN = new XeroTokenBean();
-    EXPIRED_BEAN.setAccess_token(fakeAccessToken);
-    EXPIRED_BEAN.setExpires_in("-1800");
-    EXPIRED_BEAN.setRefresh_token(props.loadProperties().getProperty("refresh_token"));
-    EXPIRED_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");*/
-
-    TokenFileHandler handler;
     Gson gson;
+    TokenFileHandler handler;
+
+    FUTURE_BEAN = TestUtilities.populateBean("1800");
+    EXPIRED_BEAN = TestUtilities.populateBean("-1800");
 
     gson = new Gson();
     handler = new TokenFileHandler();
 
-    //handler.setTokensFile(FUTURE_FILE);
-    //handler.writeTokensFile(gson.toJson(FUTURE_BEAN));
     TestUtilities.writeFutureFile();
-
-    //handler.setTokensFile(EXPIRED_FILE);
-    //handler.writeTokensFile(gson.toJson(EXPIRED_BEAN));
     TestUtilities.writeExpiredFile();
 
     handler.setTokensFile(TestUtilities.getFutureFile());
@@ -110,8 +79,8 @@ public class XeroTokenHandlerTest
   {
     XeroTokenHandler theHandler;
     theHandler = new XeroTokenHandler();
-    theHandler.setTokensFile(TOKENS_FILE);
-    Assert.assertTrue(theHandler.getTokensFile().equals(TOKENS_FILE));
+    theHandler.setTokensFile(TestUtilities.getFutureFile());
+    Assert.assertTrue(theHandler.getTokensFile().equals(TestUtilities.getFutureFile()));
   }
 
   /**
@@ -124,7 +93,7 @@ public class XeroTokenHandlerTest
     XeroTokenHandler handler;
     handler = new XeroTokenHandler();
     handler.setSecretsFile(SECRETS_FILE);
-    handler.setTokensFile(FUTURE_FILE);
+    handler.setTokensFile(TestUtilities.getFutureFile());
 
     result = handler.getTokens();
     Assert.assertTrue(result.equals(FUTURE_READ));
@@ -168,7 +137,7 @@ public class XeroTokenHandlerTest
 
     handler = new XeroTokenHandler();
     handler.setSecretsFile(SECRETS_FILE);
-    handler.setTokensFile(EXPIRED_FILE);
+    handler.setTokensFile(TestUtilities.getExpiredFile());
     handler.setPort(port);
     result = handler.getTokens();
     Assert.assertFalse(result.equals(EXPIRED_BEAN));
