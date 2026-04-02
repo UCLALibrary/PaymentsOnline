@@ -24,8 +24,8 @@ public class TokenFileHandlerTest
   public void setUp()
     throws Exception
   {
-    TestUtilities.writeFutureFile();
     SOURCE_BEAN = TestUtilities.populateBean("1800", true);
+    TestUtilities.writeFutureFile();
     OUT_BEAN = TestUtilities.populateBean("1800", false);
   }
 
@@ -68,7 +68,6 @@ public class TokenFileHandlerTest
     handler = new TokenFileHandler();
     handler.setTokensFile(TestUtilities.getFutureFile());
     result = handler.readTokensFile();
-    
     Assert.assertTrue (result.equals(SOURCE_BEAN));
   }
 
