@@ -117,30 +117,36 @@ public class XeroTokenHandlerTest
     port = TestUtilities.findFreePort();
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
-
-    gson = new Gson();
-    mockTokenJson = gson.toJson(FUTURE_BEAN);
-    tokenHandler = new HttpHandler()
+    
+    try
     {
-      public void handle(HttpExchange exchange)
-        throws IOException
+      gson = new Gson();
+      mockTokenJson = gson.toJson(FUTURE_BEAN);
+      tokenHandler = new HttpHandler()
       {
-        byte[] response = mockTokenJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockServer.createContext("/connect/token", tokenHandler);
-    mockServer.start();
+        public void handle(HttpExchange exchange)
+          throws IOException
+        {
+          byte[] response = mockTokenJson.getBytes();
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        }
+      };
+      mockServer.createContext("/connect/token", tokenHandler);
+      mockServer.start();
 
-    handler = new XeroTokenHandler();
-    handler.setSecretsFile(SECRETS_FILE);
-    handler.setTokensFile(TestUtilities.getExpiredFile());
-    handler.setPort(port);
-    result = handler.getTokens();
-    Assert.assertFalse(result.equals(EXPIRED_BEAN));
-    mockServer.stop(0);
+      handler = new XeroTokenHandler();
+      handler.setSecretsFile(SECRETS_FILE);
+      handler.setTokensFile(TestUtilities.getExpiredFile());
+      handler.setPort(port);
+      result = handler.getTokens();
+      Assert.assertFalse(result.equals(EXPIRED_BEAN));
+    }
+    finally
+    {
+      mockServer.stop(0);
+    }
   }
 
 }
