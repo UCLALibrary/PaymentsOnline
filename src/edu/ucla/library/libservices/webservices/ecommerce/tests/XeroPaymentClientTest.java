@@ -8,6 +8,7 @@ import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroPaymen
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +46,7 @@ public class XeroPaymentClientTest
     XeroPaymentClient testClient;
     testClient = new XeroPaymentClient();
     testClient.setInvoiceNumber("INV-123");
-    assert(testClient.getInvoiceNumber().equals("INV-123"));
+    Assert.assertTrue(testClient.getInvoiceNumber().equals("INV-123"));
   }
 
   /**
@@ -57,7 +58,7 @@ public class XeroPaymentClientTest
     XeroPaymentClient testClient;
     testClient = new XeroPaymentClient();
     testClient.setReference("reference");
-    assert(testClient.getReference().equals("reference"));
+    Assert.assertTrue(testClient.getReference().equals("reference"));
   }
 
   /**
@@ -72,6 +73,6 @@ public class XeroPaymentClientTest
     testClient.setReference("Reference");
     
     testPayment = testClient.buildPayment("987-654", "123-456", 20000.00d);
-    assert(testPayment.equals(mockPayment));
+    Assert.assertTrue(testPayment.equals(mockPayment));
   }
 }

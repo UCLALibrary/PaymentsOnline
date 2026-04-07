@@ -19,7 +19,9 @@ public class XeroTokenHandler
   private String secretsFile;
   //file with OAuth tokens to access Xero API
   private String tokensFile;
-  
+  // port for http/s connections, mostly used for unit tests
+  private int port;
+
   public XeroTokenHandler()
   {
     super();
@@ -45,6 +47,16 @@ public class XeroTokenHandler
     return tokensFile;
   }
 
+  public void setPort(int port)
+  {
+    this.port = port;
+  }
+
+  public int getPort()
+  {
+    return port;
+  }
+
   /**
    * Reads tokens file
    * Checks if access token has expired
@@ -66,7 +78,7 @@ public class XeroTokenHandler
       tokenClient = new XeroTokenClient();
       tokenClient.setRefreshToken(theBean.getRefresh_token());
       tokenClient.setSecretsFile(getSecretsFile());
-      tokenClient.setPort(0);
+      tokenClient.setPort(getPort());
       json = tokenClient.getTokens();
       fileHandler.writeTokensFile(json);
       theBean = fileHandler.readTokensFile();

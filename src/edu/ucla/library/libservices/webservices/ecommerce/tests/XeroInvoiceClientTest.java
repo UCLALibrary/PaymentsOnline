@@ -19,19 +19,20 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 
-import java.net.ServerSocket;
-
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class XeroInvoiceClientTest
 {
   private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
-  private static String TOKENS_FILE = Paths.get(BASE_PATH, "future_proof.txt").toString();
   private static String SECRETS_FILE = Paths.get(BASE_PATH, "mock_xero.props").toString();
   private static XeroContact mockContact;
   private static XeroInvoice mockInvoice;
@@ -45,6 +46,8 @@ public class XeroInvoiceClientTest
   public void setUp()
     throws Exception
   {
+    TestUtilities.writeFutureFile();
+
     mockContact = new XeroContact();
     mockContact.setContactID("1234");
     mockContact.setContactNumber("5678");
@@ -60,6 +63,7 @@ public class XeroInvoiceClientTest
     mockLine.setItemCode("PRSVLBR - SC");
     mockLine.setLineAmount(56.58);
     mockLine.setTaxAmount(5.52);
+    mockLine.setTransactItemCode("45400-PR-E");
     mockLineList = new ArrayList<>();
     mockLineList.add(mockLine);
 
@@ -70,6 +74,8 @@ public class XeroInvoiceClientTest
     mockInvoice.setReference("SRLF");
     mockInvoice.setContact(mockContact);
     mockInvoice.setLineItems(mockLineList);
+    mockInvoice.setItemCodeAmts(groupAndSumCodes(mockInvoice.getLineItems()));
+    mockInvoice.setAccountAmts(groupAndSumAccounts(mockInvoice.getLineItems()));
 
     mockInvoiceList = new XeroInvoiceList();
     mockInvoiceList.getInvoices().add(mockInvoice);
@@ -83,6 +89,13 @@ public class XeroInvoiceClientTest
     mockAccountList.getAccounts().add(mockAccount);
   }
 
+  @After
+  public void tearDown()
+    throws Exception
+  {
+    TestUtilities.clearFiles();
+  }
+
   /**
    * @see edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient#setSecretsFile(String)
    */
@@ -92,7 +105,7 @@ public class XeroInvoiceClientTest
     XeroInvoiceClient testClient;
     testClient = new XeroInvoiceClient();
     testClient.setSecretsFile(SECRETS_FILE);
-    assert (testClient.getSecretsFile().equals(SECRETS_FILE));
+    Assert.assertTrue(testClient.getSecretsFile().equals(SECRETS_FILE));
   }
 
   /**
@@ -103,8 +116,8 @@ public class XeroInvoiceClientTest
   {
     XeroInvoiceClient testClient;
     testClient = new XeroInvoiceClient();
-    testClient.setTokensFile(TOKENS_FILE);
-    assert (testClient.getTokensFile().equals(TOKENS_FILE));
+    testClient.setTokensFile(TestUtilities.getFutureFile());
+    Assert.assertTrue(testClient.getTokensFile().equals(TestUtilities.getFutureFile()));
   }
 
   /**
@@ -118,7 +131,7 @@ public class XeroInvoiceClientTest
     dummyID = "1234";
     testClient = new XeroInvoiceClient();
     testClient.setContactID(dummyID);
-    assert (testClient.getContactID().equals(dummyID));
+    Assert.assertTrue(testClient.getContactID().equals(dummyID));
   }
 
   /**
@@ -132,7 +145,7 @@ public class XeroInvoiceClientTest
     dummyID = "1234";
     testClient = new XeroInvoiceClient();
     testClient.setInvoiceID(dummyID);
-    assert (testClient.getInvoiceID().equals(dummyID));
+    Assert.assertTrue(testClient.getInvoiceID().equals(dummyID));
   }
 
   /**
@@ -153,57 +166,61 @@ public class XeroInvoiceClientTest
     XeroInvoiceClient testClient;
     XeroInvoice testInvoice;
 
-    port = findFreePort();
+    port = TestUtilities.findFreePort();
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
 
-    gson = new Gson();
-    mockInvoiceJson = gson.toJson(mockInvoiceList);
-    invoiceHandler = new HttpHandler()
-    {
-      public void handle(HttpExchange exchange)
-        throws IOException
-      {
-        byte[] response = mockInvoiceJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockAccountJson = gson.toJson(mockAccountList);
-    accountHandler = new HttpHandler()
-    {
-      public void handle(HttpExchange exchange)
-        throws IOException
-      {
-        byte[] response = mockAccountJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockServer.createContext("/api.xro/2.0/Invoices/123-456", invoiceHandler);
-    mockServer.createContext("/api.xro/2.0/Accounts/ad4e5b15-3583", accountHandler);
-
-    mockServer.start();
-
-    testClient = new XeroInvoiceClient();
-    testClient.setInvoiceID("123-456");
-    testClient.setSecretsFile(SECRETS_FILE);
-    testClient.setTokensFile(TOKENS_FILE);
-    testClient.setPort(port);
-
     try
     {
+      gson = new Gson();
+      mockInvoiceJson = gson.toJson(mockInvoiceList);
+      invoiceHandler = new HttpHandler()
+      {
+        public void handle(HttpExchange exchange)
+          throws IOException
+        {
+          byte[] response = mockInvoiceJson.getBytes();
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        }
+      };
+      mockAccountJson = gson.toJson(mockAccountList);
+      accountHandler = new HttpHandler()
+      {
+        public void handle(HttpExchange exchange)
+          throws IOException
+        {
+          byte[] response = mockAccountJson.getBytes();
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        }
+      };
+      mockServer.createContext("/api.xro/2.0/Invoices/123-456", invoiceHandler);
+      mockServer.createContext("/api.xro/2.0/Accounts/ad4e5b15-3583", accountHandler);
+
+      mockServer.start();
+
+      testClient = new XeroInvoiceClient();
+      testClient.setInvoiceID("123-456");
+      testClient.setSecretsFile(SECRETS_FILE);
+      testClient.setTokensFile(TestUtilities.getFutureFile());
+      testClient.setPort(port);
+
       testInvoice = testClient.getSingleInvoice();
-      assert (testInvoice.equals(mockInvoiceList));
+      Assert.assertTrue(testInvoice.equals(mockInvoice));
     }
     catch (Exception e)
     {
       e.printStackTrace();
     }
+    finally
+    {
+      mockServer.stop(0);
 
-    mockServer.stop(0);
+    }
+
   }
 
   /**
@@ -220,48 +237,61 @@ public class XeroInvoiceClientTest
     InetSocketAddress mockAddress;
     String mockJson;
     XeroInvoiceClient testClient;
-    XeroInvoiceList testList;
-    
-    port = findFreePort();
+    ArrayList<XeroInvoice> testList;
+
+    port = TestUtilities.findFreePort();
     mockAddress = new InetSocketAddress(port);
     mockServer = HttpServer.create(mockAddress, 0);
 
-    gson = new Gson();
-    mockJson = gson.toJson(mockInvoiceList);
-    handler = new HttpHandler()
+    try
     {
-      public void handle(HttpExchange exchange)
-        throws IOException
+      gson = new Gson();
+      mockJson = gson.toJson(mockInvoiceList);
+      handler = new HttpHandler()
       {
-        byte[] response = mockJson.getBytes();
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
-        exchange.getResponseBody().write(response);
-        exchange.close();
-      }
-    };
-    mockServer.createContext("/api.xro/2.0/Invoices?Statuses=AUTHORISED&ContactIDs=1234", handler);
-    mockServer.start();
+        public void handle(HttpExchange exchange)
+          throws IOException
+        {
+          String query = exchange.getRequestURI().getQuery();
+          String path = exchange.getRequestURI().getPath();
+          Assert.assertEquals("Statuses=AUTHORISED&ContactIds=1234", query);
+          Assert.assertEquals("/api.xro/2.0/Invoices", path);
 
-    testClient = new XeroInvoiceClient();
-    testClient.setContactID("1234");
-    testClient.setSecretsFile(SECRETS_FILE);
-    testClient.setTokensFile(TOKENS_FILE);
-    testClient.setPort(port);
+          byte[] response = mockJson.getBytes();
+          exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length);
+          exchange.getResponseBody().write(response);
+          exchange.close();
+        }
+      };
+      mockServer.createContext("/api.xro/2.0/Invoices", handler);
+      mockServer.start();
 
-    //testList = testClient.getAllUnpaid();
-    //assert (testList.equals(mockInvoice));
+      testClient = new XeroInvoiceClient();
+      testClient.setContactID("1234");
+      testClient.setSecretsFile(SECRETS_FILE);
+      testClient.setTokensFile(TestUtilities.getFutureFile());
+      testClient.setPort(port);
 
-    mockServer.stop(0);
-  }
-
-  private static int findFreePort()
-    throws IOException
-  {
-    try (ServerSocket socket = new ServerSocket(0))
+      testList = testClient.getAllUnpaid();
+      Assert.assertTrue(testList.equals(mockInvoiceList.getInvoices()));
+    }
+    finally
     {
-      socket.setReuseAddress(true);
-      return socket.getLocalPort();
+      mockServer.stop(0);
     }
   }
 
+  private static HashMap<String, Double> groupAndSumCodes(ArrayList<XeroLineItem> theLines)
+  {
+    return (HashMap<String, Double>) theLines.stream()
+           .collect(Collectors.groupingBy(XeroLineItem::getTransactItemCode,
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
+
+  private static HashMap<String, Double> groupAndSumAccounts(ArrayList<XeroLineItem> theLines)
+  {
+    return (HashMap<String, Double>) theLines.stream()
+           .collect(Collectors.groupingBy(XeroLineItem::getAccountID,
+                                          Collectors.summingDouble(XeroLineItem::getLineTotal)));
+  }
 }

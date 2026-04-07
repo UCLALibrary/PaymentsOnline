@@ -109,7 +109,7 @@ public class XeroInvoiceClient
            * Log the occurance of empty line item for possible best-practices review/record keeping
            * Ignore line for Transact submission because there's no amount to be payed
            */
-          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for " 
+          LOGGER.error("line item for invoice " + singleInvoice.getInvoiceNumber() + " for "
                        + theLine.getDescription() + " lacks account ID and amount");
         }
         if ((theLine.getAccountID() == null || theLine.getAccountID().length() == 0) && theLine.getLineAmount() > 0 )

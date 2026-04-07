@@ -23,7 +23,7 @@ public class XeroContactClient extends AbstractXeroClient
   private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
   // query string for contact lookup
   private static final String QUERY = "AccountNumber=\"{id}\"";
-  
+
   // unique ID for a contact
   private String userID;
   // XeroContact bean returned from class
@@ -72,8 +72,7 @@ public class XeroContactClient extends AbstractXeroClient
     {
       WebResource webResource;
       ClientResponse response;
-      
-      //System.out.println("calling contact service with URL " + getContactURL());
+
       webResource = getWebResource(replacePort(getContactURL(false)));
       response = getResponse(webResource, XeroConstants.JSON_ACCEPT);
       if (response.getStatus() == 200)
@@ -92,7 +91,7 @@ public class XeroContactClient extends AbstractXeroClient
       }
       else
       {
-        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + getContactURL(false) +"\t" + response.getEntity(String.class));
+        LOGGER.error("contact service return code " + response.getStatus() + " on request URL " + replacePort(getContactURL(false)) +"\t" + response.getEntity(String.class));
         this.theContact = new XeroContact();
       }
     }
@@ -106,7 +105,7 @@ public class XeroContactClient extends AbstractXeroClient
     {
       WebResource webResource;
       ClientResponse response;
-      
+
       //System.out.println("calling contact service with URL " + getContactURL());
       webResource = getWebResource(replacePort(getContactURL(true)));
       response = getResponse(webResource, XeroConstants.JSON_ACCEPT);

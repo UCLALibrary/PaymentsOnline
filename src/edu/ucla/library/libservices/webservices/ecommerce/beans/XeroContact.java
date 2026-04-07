@@ -87,8 +87,8 @@ public class XeroContact
       return false;
     XeroContact aBean = (XeroContact) theOther;
 
-    return this.getContactID() == aBean.getContactID() && this.getContactNumber() == aBean.getContactNumber() &&
-           this.getFirstName() == aBean.getFirstName() && this.getLastName() == aBean.getLastName() &&
-           this.getName() == aBean.getName();
+    return this.getContactID().equals(aBean.getContactID()) && this.getContactNumber().equals(aBean.getContactNumber()) &&
+           this.getFirstName().equals(aBean.getFirstName()) && this.getLastName().equals(aBean.getLastName()) &&
+           this.getName().equals(aBean.getName());
   }
 }

@@ -10,24 +10,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TokenFileHandlerTest
 {
-  private static String BASE_PATH = Paths.get(System.getProperty("user.dir"), "public_html", "resources").toString();
-  private static String TOKENS_FILE = Paths.get(BASE_PATH, "default_secrets.txt").toString();
   private static XeroTokenBean SOURCE_BEAN;
+  private static XeroTokenBean OUT_BEAN;
 
   @Before
   public void setUp()
     throws Exception
   {
-    SOURCE_BEAN = new XeroTokenBean();
-    SOURCE_BEAN.setAccess_token("eyJhbGciOiJSUzI1Ni");
-    SOURCE_BEAN.setExpires_in("1800");
-    SOURCE_BEAN.setRefresh_token("wSzpv1rx0k9gCkvGrzXT");
-    SOURCE_BEAN.setScope("accounting.settings accounting.transactions accounting.contacts offline_access");
+    SOURCE_BEAN = TestUtilities.populateBean("1800", true);
+    TestUtilities.writeFutureFile();
+    OUT_BEAN = TestUtilities.populateBean("1800", false);
+  }
+
+  @After
+  public void tearDown()
+    throws Exception
+  {
+    TestUtilities.clearFiles();
   }
 
   /**
@@ -42,12 +48,12 @@ public class TokenFileHandlerTest
     Gson gson;
 
     gson = new Gson();
-    outputFile = Paths.get(BASE_PATH, "test_secrets.txt").toString();
+    outputFile = TestUtilities.getWriteFile();
 
     handler = new TokenFileHandler();
     handler.setTokensFile(outputFile);
-    handler.writeTokensFile(gson.toJson(SOURCE_BEAN));
-    assert (Files.exists(Paths.get(outputFile)));
+    handler.writeTokensFile(gson.toJson(OUT_BEAN));
+    Assert.assertTrue (Files.exists(Paths.get(outputFile)));
   }
 
   /**
@@ -60,9 +66,9 @@ public class TokenFileHandlerTest
     TokenFileHandler handler;
 
     handler = new TokenFileHandler();
-    handler.setTokensFile(TOKENS_FILE);
+    handler.setTokensFile(TestUtilities.getFutureFile());
     result = handler.readTokensFile();
-    assert (result.equals(SOURCE_BEAN));
+    Assert.assertTrue (result.equals(SOURCE_BEAN));
   }
 
   /**
@@ -74,8 +80,8 @@ public class TokenFileHandlerTest
     TokenFileHandler handler;
 
     handler = new TokenFileHandler();
-    handler.setTokensFile(TOKENS_FILE);
-    assert (handler.getTokensFile().equals(TOKENS_FILE));
+    handler.setTokensFile(TestUtilities.getFutureFile());
+    Assert.assertTrue (handler.getTokensFile().equals(TestUtilities.getFutureFile()));
   }
 
 }

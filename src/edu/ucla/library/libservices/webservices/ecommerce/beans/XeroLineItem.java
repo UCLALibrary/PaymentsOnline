@@ -125,15 +125,23 @@ public class XeroLineItem implements Comparable<XeroLineItem>
       return false;
     XeroLineItem aBean = (XeroLineItem) theOther;
 
-    return this.getItemCode() == aBean.getItemCode() && this.getDescription() == aBean.getDescription() &&
+    return this.getItemCode().equals(aBean.getItemCode()) && this.getDescription().equals(aBean.getDescription()) &&
            this.getLineAmount() == aBean.getLineAmount() && this.getTaxAmount() == aBean.getTaxAmount() &&
-           this.getAccountCode() == aBean.getAccountCode() && this.getAccountID() == aBean.getAccountID() &&
-           this.getTransactItemCode() == aBean.getTransactItemCode();
+           this.getAccountCode().equals(aBean.getAccountCode()) && this.getAccountID().equals(aBean.getAccountID()) &&
+           this.getTransactItemCode().equals(aBean.getTransactItemCode());
   }
 
   @Override
   public int compareTo(XeroLineItem otherLine)
   {
     return this.getLineItemID().compareTo(otherLine.getLineItemID());
+  }
+
+  @Override
+  public String toString()
+  {
+	return getLineItemID() + "\t" + getItemCode() + "\t" + getDescription() + "\t" + getLineAmount()
+		   + "\t" + getTaxAmount() + "\t" + getAccountCode() + "\t" + getAccountID()
+		   + "\t" + getTransactItemCode();
   }
 }
