@@ -28,3 +28,6 @@ classes/
 
 # files updated by tests
 public_html/resources/*txt
+
+# files copied & rewritten during build
+rewrite_folder/

@@ -356,6 +356,84 @@
     </resources>
     <outputDirectory>classes/</outputDirectory>
     <plugins>
+
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <!-- here the phase you need -->
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/rewrite_folder</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${basedir}/public_html</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.github.floverfelt</groupId>
+        <artifactId>find-and-replace-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>webservices</id>
+            <phase>package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
+              <replacementType>file-contents</replacementType>
+              <baseDir>rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp</fileMask>
+              <findRegex>%DOMAIN%</findRegex>
+              <replaceValue>${webservices.base}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+          <execution>
+            <id>transact-type</id>
+            <phase>package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
+              <replacementType>file-contents</replacementType>
+              <baseDir>rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp</fileMask>
+              <findRegex>%TRANSACT.TYPE%</findRegex>
+              <replaceValue>${transact.type}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+          <execution>
+            <id>transact-store</id>
+            <phase>package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
+              <replacementType>file-contents</replacementType>
+              <baseDir>rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp</fileMask>
+              <findRegex>%TRANSACT.STORE%</findRegex>
+              <replaceValue>${transact.store}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -370,7 +448,7 @@
           </execution>
         </executions>
         <configuration>
-          <webappDirectory>public_html/</webappDirectory>
+          <webappDirectory>rewrite_folder/</webappDirectory>
           <useCache>true</useCache>
         </configuration>
       </plugin>
@@ -399,60 +477,6 @@
             <include>**/*.java</include>
           </includes>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>io.github.floverfelt</groupId>
-        <artifactId>find-and-replace-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>webservices</id>
-            <phase>target</phase>
-            <goals>
-              <goal>find-and-replace</goal>
-            </goals>
-            <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
-              <replacementType>file-contents</replacementType>
-              <baseDir>target/</baseDir>
-              <fileMask>.html,.jsp</fileMask>
-              <findRegex>%DOMAIN%</findRegex>
-              <replaceValue>${webservices.base}</replaceValue>
-              <recursive>true</recursive>
-            </configuration>
-          </execution>
-          <execution>
-            <id>transact-type</id>
-            <phase>package</phase>
-            <goals>
-              <goal>find-and-replace</goal>
-            </goals>
-            <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
-              <replacementType>file-contents</replacementType>
-              <baseDir>target/</baseDir>
-              <fileMask>.html,.jsp</fileMask>
-              <findRegex>%TRANSACT.TYPE%</findRegex>
-              <replaceValue>${transact.type}</replaceValue>
-              <recursive>true</recursive>
-            </configuration>
-          </execution>
-          <execution>
-            <id>transact-store</id>
-            <phase>package</phase>
-            <goals>
-              <goal>find-and-replace</goal>
-            </goals>
-            <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
-              <replacementType>file-contents</replacementType>
-              <baseDir>target/</baseDir>
-              <fileMask>.html,.jsp</fileMask>
-              <findRegex>%TRANSACT.STORE%</findRegex>
-              <replaceValue>${transact.store}</replaceValue>
-              <recursive>true</recursive>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
     <testSourceDirectory>${project.basedir}/src/edu/ucla/library/libservices/webservices/ecommerce/tests</testSourceDirectory>
