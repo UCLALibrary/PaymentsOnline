@@ -36,7 +36,7 @@
     or by email to <a href="mailto:techhelp@library.ucla.edu">techhelp@library.ucla.edu</a>
     </pre>
     To leave Payments Online, click here: 
-    <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
+    <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
       <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
       <input type="submit" value="Logout">
     </form>

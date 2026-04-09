@@ -17,7 +17,6 @@
     </script>
   </head>
   <body onload="javascript:submitForm();">
-    <!--form id="Demo1" method="post" action="https://train.cashnet.com/404handler/pageredirpost.aspx?virtual=UCLALIBRARYTEST"-->
     <!-- commerce, train; UCLALIBRARY,UCLALIBRARYTEST-->
     <form id="Demo1" method="post" action="https://%TRANSACT.TYPE%.cashnet.com/404Handler/pageredirpost.aspx?virtual=%TRANSACT.STORE%">
       <div>
@@ -44,7 +43,6 @@
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${almaSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
             <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.ucladb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
           <c:when test="${fn:contains(param.invoice, '-') or not empty param.invoiceNo}">
@@ -80,7 +78,6 @@
               </c:otherwise>
             </c:choose>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
           </c:when>
           <c:otherwise>
             <jsp:useBean id="libBillSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.CashNetClient">
@@ -102,7 +99,6 @@
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="${libBillSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-            <!--input id="Hidden" type="hidden" name="signoutURL" value="https://webservices-test.library.ucla.edu/lpo/protected/confirm.jsp"/-->
           </c:otherwise>
         </c:choose>
       </div>
