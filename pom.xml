@@ -383,10 +383,11 @@
       <plugin>
         <groupId>io.github.floverfelt</groupId>
         <artifactId>find-and-replace-maven-plugin</artifactId>
+        <version>1.2.0</version>
         <executions>
           <execution>
             <id>webservices</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>find-and-replace</goal>
             </goals>
@@ -402,7 +403,7 @@
           </execution>
           <execution>
             <id>transact-type</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>find-and-replace</goal>
             </goals>
@@ -418,7 +419,7 @@
           </execution>
           <execution>
             <id>transact-store</id>
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>find-and-replace</goal>
             </goals>
@@ -441,7 +442,7 @@
         <executions>
           <execution>
             <id>prepare-war</id>
-            <phase>prepare-package</phase>
+            <phase>package</phase>
             <goals>
               <goal>exploded</goal>
             </goals>
