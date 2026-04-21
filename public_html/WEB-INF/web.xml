@@ -53,8 +53,7 @@
   </servlet-mapping>
   <context-param>
     <param-name>uri.base</param-name>
-    <param-value>https://webservices.library.ucla.edu</param-value>
-    <!--param-value>https://webservices-test.library.ucla.edu</param-value-->
+    <param-value>https://%DOMAIN%.library.ucla.edu</param-value>
   </context-param>
   <context-param>
     <param-name>uri.patron</param-name>

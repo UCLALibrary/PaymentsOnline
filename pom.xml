@@ -342,9 +342,9 @@
     <finalName>lpo</finalName>
     <resources>
       <resource>
-        <directory>${basedir}</directory>
+        <directory>${basedir}/public_html/resources</directory>
         <includes>
-          <include>*</include>
+          <include>log4j.properties</include>
         </includes>
       </resource>
       <resource>
@@ -394,7 +394,7 @@
               <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
               <replacementType>file-contents</replacementType>
               <baseDir>rewrite_folder/</baseDir>
-              <fileMask>.html,.jsp</fileMask>
+              <fileMask>.html,.jsp,.xml</fileMask>
               <findRegex>%DOMAIN%</findRegex>
               <replaceValue>${webservices.base}</replaceValue>
               <recursive>true</recursive>
