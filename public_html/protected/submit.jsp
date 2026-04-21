@@ -17,7 +17,6 @@
     </script>
   </head>
   <body onload="javascript:submitForm();">
-    <!-- commerce, train; UCLALIBRARY,UCLALIBRARYTEST-->
     <form id="Demo1" method="post" action="https://%TRANSACT.TYPE%.cashnet.com/404Handler/pageredirpost.aspx?virtual=%TRANSACT.STORE%">
       <div>
         <c:choose>
