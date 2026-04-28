@@ -357,6 +357,27 @@
     <outputDirectory>classes/</outputDirectory>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.3</version>
+        <executions>
+          <execution>
+            <id>run-script</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>mkdir</executable>
+          <arguments>
+            <argument>-p</argument>
+            <argument>rewrite_folder</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.5.0</version>
         <executions>

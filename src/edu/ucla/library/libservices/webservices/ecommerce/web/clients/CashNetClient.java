@@ -26,7 +26,7 @@ public class CashNetClient
     webResource = null;
     invoiceID = null;
   }
-  
+
   public void setInvoiceID( String userID )
   {
     this.invoiceID = userID;
@@ -82,7 +82,6 @@ public class CashNetClient
     if ( theInvoice == null )
     {
       client = Client.create();
-      //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
       webResource =
           client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoiceID() ) );
       theInvoice =
@@ -96,8 +95,8 @@ public class CashNetClient
   private String makeAuthorization(String request)
   {
     return SignatureBuilder.computeAuth(
-      SignatureBuilder.buildSimpleSignature( "GET", request ), 
-      getUser(), 
+      SignatureBuilder.buildSimpleSignature( "GET", request ),
+      getUser(),
       getCrypt() );
   }
 }

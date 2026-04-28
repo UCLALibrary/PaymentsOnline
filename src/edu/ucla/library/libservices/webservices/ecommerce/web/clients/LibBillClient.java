@@ -19,7 +19,7 @@ public class LibBillClient
   private String uriBase;
   private String user;
   private String crypt;
-  
+
   public LibBillClient()
   {
     super();
@@ -34,11 +34,10 @@ public class LibBillClient
     if ( thePatron == null )
     {
       client = Client.create();
-      //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
       webResource =
           client.resource( getUriBase().concat( getResourceURI() ).concat( getUserID() ) );
       thePatron =
-          webResource.header( "Authorization", 
+          webResource.header( "Authorization",
                               makeAuthorization( getResourceURI().concat( getUserID() ) ) ).get( SimplePatron.class );
     }
     return thePatron;
@@ -52,8 +51,8 @@ public class LibBillClient
   private String makeAuthorization(String request)
   {
     return SignatureBuilder.computeAuth(
-      SignatureBuilder.buildSimpleSignature( "GET", request ), 
-      getUser(), 
+      SignatureBuilder.buildSimpleSignature( "GET", request ),
+      getUser(),
       getCrypt() );
   }
 
@@ -102,50 +101,3 @@ public class LibBillClient
     this.userID = userID;
   }
 }
-    /*String userID;
-
-    if ( ContentTests.isEmpty( getUID() ) )
-      userID = handleLogonID();
-    else
-      userID = getUID();*/
-    //uID = null;
-    //logonID = null;
-    /*public void setUID( String uid )
-    {
-      this.uID = uid;
-    }
-
-    private String getUID()
-    {
-      return uID;
-    }
-
-    public void setLogonID( String logonID )
-    {
-      this.logonID = logonID;
-    }
-
-    private String getLogonID()
-    {
-      return logonID;
-    }*/
-    //@Context
-    //ServletConfig config;
-    //import javax.servlet.ServletConfig;
-
-    //import javax.ws.rs.core.Context;
-    //private String uID;
-    //private String logonID;
-    /*private String handleLogonID()
-    {
-      if ( getLogonID().indexOf( "@" ) != -1 )
-      {
-        return getLogonID().substring( 0, getLogonID().indexOf( "@" ) );
-      }
-      else
-      {
-        return getLogonID();
-      }
-    }*/
-    
-    //import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;

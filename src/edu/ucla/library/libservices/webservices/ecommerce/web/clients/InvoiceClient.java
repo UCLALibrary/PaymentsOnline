@@ -7,21 +7,17 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.SimpleH
 
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 
-//import java.util.ArrayList;
-//import java.util.List;
-
 public class InvoiceClient
 {
   private Client client;
   private WebResource webResource;
   private String invoiceID;
-  //private List<SimpleHeader> theInvoices;
   private SimpleHeader theInvoice;
   private String resourceURI;
   private String uriBase;
   private String user;
   private String crypt;
-  
+
   public InvoiceClient()
   {
     super();
@@ -30,7 +26,7 @@ public class InvoiceClient
     webResource = null;
     invoiceID = null;
   }
-  
+
   public void setInvoiceID( String userID )
   {
     this.invoiceID = userID;
@@ -46,7 +42,6 @@ public class InvoiceClient
     //if ( theInvoice == null )
     {
       client = Client.create();
-      //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
       webResource =
           client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoiceID() ) );
       theInvoice =
@@ -100,8 +95,8 @@ public class InvoiceClient
   private String makeAuthorization(String request)
   {
     return SignatureBuilder.computeAuth(
-      SignatureBuilder.buildSimpleSignature( "GET", request ), 
-      getUser(), 
+      SignatureBuilder.buildSimpleSignature( "GET", request ),
+      getUser(),
       getCrypt() );
   }
 
