@@ -18,6 +18,9 @@
     logging in, viewing an invoice, submitting payment) when the error occurred.
     <c:if test="${not empty pageContext.exception}">
       ${pageContext.exception.message}<br/>
+<c:set var="exception" value="${pageContext.exception}"/>
+        <h3>Stack Trace:</h3>
+<% exception.printStackTrace(new java.io.PrintWriter(out)); %>
     </c:if>
     <%
       for (Cookie aCookie : request.getCookies() )
