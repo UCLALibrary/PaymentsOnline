@@ -9,6 +9,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <webservices.base>webservices-test</webservices.base>
+    <transact.type>train</transact.type>
+    <transact.store>UCLALIBRARYTEST</transact.store>
   </properties>
   <repositories>
     <repository>
@@ -384,7 +387,7 @@
           <execution>
             <id>copy-resources</id>
             <!-- here the phase you need -->
-            <phase>package</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>copy-resources</goal>
             </goals>
@@ -412,7 +415,6 @@
               <goal>find-and-replace</goal>
             </goals>
             <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
               <replacementType>file-contents</replacementType>
               <baseDir>rewrite_folder/</baseDir>
               <fileMask>.html,.jsp,.xml</fileMask>
@@ -428,7 +430,6 @@
               <goal>find-and-replace</goal>
             </goals>
             <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
               <replacementType>file-contents</replacementType>
               <baseDir>rewrite_folder/</baseDir>
               <fileMask>.html,.jsp</fileMask>
@@ -444,7 +445,6 @@
               <goal>find-and-replace</goal>
             </goals>
             <configuration>
-              <!-- Possible replacementType values: file-contents, filenames, directory-names. To run for multiple types, pass the values as a CSV list. -->
               <replacementType>file-contents</replacementType>
               <baseDir>rewrite_folder/</baseDir>
               <fileMask>.html,.jsp</fileMask>
@@ -459,15 +459,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.3.2</version>
-        <executions>
-          <execution>
-            <id>prepare-war</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exploded</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <webappDirectory>rewrite_folder/</webappDirectory>
           <useCache>true</useCache>
