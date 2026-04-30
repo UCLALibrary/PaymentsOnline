@@ -6,11 +6,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Errors Have Occurred</title>
-    <!--style type="text/css">
-      body {
-      background-color: #ff0000; 
-}
-    </style-->
   </head>
   <body>An error occured:<br/><pre>
     We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
@@ -18,9 +13,9 @@
     logging in, viewing an invoice, submitting payment) when the error occurred.
     <c:if test="${not empty pageContext.exception}">
       ${pageContext.exception.message}<br/>
-<c:set var="exception" value="${pageContext.exception}"/>
-        <h3>Stack Trace:</h3>
-<% exception.printStackTrace(new java.io.PrintWriter(out)); %>
+      <c:set var="exception" value="${pageContext.exception}"/>
+      <h3>Stack Trace:</h3>
+      <% exception.printStackTrace(new java.io.PrintWriter(out)); %>
     </c:if>
     <%
       for (Cookie aCookie : request.getCookies() )
