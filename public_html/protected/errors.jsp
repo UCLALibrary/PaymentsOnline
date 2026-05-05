@@ -2,15 +2,11 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page contentType="text/html;charset=utf-8" isErrorPage="true"
          import="java.io.CharArrayWriter, java.io.PrintWriter"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Errors Have Occurred</title>
-    <!--style type="text/css">
-      body {
-      background-color: #ff0000; 
-}
-    </style-->
   </head>
   <body>An error occured:<br/><pre>
     We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
@@ -18,6 +14,9 @@
     logging in, viewing an invoice, submitting payment) when the error occurred.
     <c:if test="${not empty pageContext.exception}">
       ${pageContext.exception.message}<br/>
+      <c:set var="exception" value="${pageContext.exception}"/>
+      <h3>Stack Trace:</h3>
+      <% exception.printStackTrace(new java.io.PrintWriter(out)); %>
     </c:if>
     <%
       for (Cookie aCookie : request.getCookies() )
@@ -36,7 +35,7 @@
     or by email to <a href="mailto:techhelp@library.ucla.edu">techhelp@library.ucla.edu</a>
     </pre>
     To leave Payments Online, click here: 
-    <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
+    <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
       <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
       <input type="submit" value="Logout">
     </form>

@@ -80,20 +80,19 @@ public class PdfClient
   public Response getPdf()
   {
     client = Client.create();
-    //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
     webResource =
       client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoice() ) );
     pdf =
-      webResource.header( "Authorization", 
+      webResource.header( "Authorization",
               makeAuthorization( getResourceURI().concat( getInvoice() ) ) ).get( Response.class );
     return pdf;
   }
-  
+
   private String makeAuthorization(String request)
   {
     return SignatureBuilder.computeAuth(
-      SignatureBuilder.buildSimpleSignature( "GET", request.concat( getInvoice() ) ), 
-      getUser(), 
+      SignatureBuilder.buildSimpleSignature( "GET", request.concat( getInvoice() ) ),
+      getUser(),
       getCrypt() );
   }
 }

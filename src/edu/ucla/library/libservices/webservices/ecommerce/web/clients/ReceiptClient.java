@@ -226,7 +226,6 @@ public class ReceiptClient
     ClientResponse response;
 
     client = Client.create();
-    //webResource = client.resource("https://webservices.library.ucla.edu/invoicing-dev/patrons/by_uid/".concat( getUserID() ));
     webResource = client.resource(getUriBase().concat(getResourceURI()).concat(getInvoiceNumber()));
     response = webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
                           .type("application/json")
@@ -239,9 +238,6 @@ public class ReceiptClient
     {
       libBillReceipt = new ReceiptInfo();
     }
-    //libBillReceipt =
-    //webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
-    //.get(ReceiptInfo.class);
 
     almaClient = new AlmaClient();
     //check that invoice number is not empty
@@ -265,7 +261,7 @@ public class ReceiptClient
   }
 
  /*
-  * As noted above at getTheReceipt(), Xero allows the creation of line items missing account or amount values. Such lines 
+  * As noted above at getTheReceipt(), Xero allows the creation of line items missing account or amount values. Such lines
   * produce exceptions in XeroInvoiceClient, which get thrown to here, and passed up to getTheReceipt()
   */
   private ReceiptInfo buildXeroReceipt()

@@ -53,26 +53,19 @@
   </servlet-mapping>
   <context-param>
     <param-name>uri.base</param-name>
-    <param-value>https://webservices.library.ucla.edu</param-value>
-    <!--param-value>https://webservices-test.library.ucla.edu</param-value-->
+    <param-value>https://%DOMAIN%.library.ucla.edu</param-value>
   </context-param>
   <context-param>
     <param-name>uri.patron</param-name>
     <param-value>/invoicing/patrons/by_uid/</param-value>
-    <!--param-value>/invoicing-dev/patrons/by_uid/</param-value-->
-    <!--param-value>/invoicing-test/patrons/by_uid/</param-value-->
   </context-param>
   <context-param>
     <param-name>uri.invoice</param-name>
     <param-value>/invoicing/invoices/unpaid_invoices/</param-value>
-    <!--param-value>/invoicing-dev/invoices/unpaid_invoices/</param-value-->
-    <!--param-value>/invoicing-test/invoices/unpaid_invoices/</param-value-->
   </context-param>
   <context-param>
     <param-name>uri.pdf</param-name>
     <param-value>/invoicing/invoices/display_invoice/</param-value>
-    <!--param-value>/invoicing-dev/invoices/display_invoice/</param-value-->
-    <!--param-value>/invoicing-test/invoices/display_invoice/</param-value-->
   </context-param>
   <context-param>
     <param-name>alma.key</param-name>
@@ -89,8 +82,6 @@
   <context-param>
     <param-name>uri.cashnet</param-name>
     <param-value>/invoicing/invoices/cashnet_invoice/</param-value>
-    <!--param-value>/invoicing-dev/invoices/cashnet_invoice/</param-value-->
-    <!--param-value>/invoicing-test/invoices/cashnet_invoice/</param-value-->
   </context-param>
   <context-param>
     <param-name>key.one</param-name>
@@ -103,20 +94,14 @@
   <context-param>
     <param-name>uri.logging</param-name>
     <param-value>/invoicing/logging/add_log</param-value>
-    <!--param-value>/invoicing-dev/logging/add_log</param-value-->
-    <!--param-value>/invoicing-test/logging/add_log</param-value-->
   </context-param>
   <context-param>
     <param-name>uri.payment</param-name>
     <param-value>/invoicing/payments/full_payment</param-value>
-    <!--param-value>/invoicing-dev/payments/full_payment</param-value-->
-    <!--param-value>/invoicing-test/payments/full_payment</param-value-->
   </context-param>
   <context-param>
     <param-name>uri.receipt</param-name>
     <param-value>/invoicing/payments/receipt/</param-value>
-    <!--param-value>/invoicing-dev/payments/receipt/</param-value-->
-    <!--param-value>/invoicing-test/payments/receipt/</param-value-->
   </context-param>
   <context-param>
     <param-name>cashnet.ip.one</param-name>

@@ -34,6 +34,7 @@ public class PdfGenerator
   private AlmaInvoice theInvoice;
   private AlmaUser thePatron;
   private Address thePatronAddress;
+  private String domain;
   private String invoiceNumber;
   private String patronID;
   private String dbName;
@@ -109,6 +110,16 @@ public class PdfGenerator
   private String getApiKey()
   {
     return apiKey;
+  }
+
+  public void setDomain(String domain)
+  {
+    this.domain = domain;
+  }
+
+  public String getDomain()
+  {
+    return domain;
   }
 
   public void populatePdf(Document document)
@@ -263,8 +274,12 @@ public class PdfGenerator
     throws BadElementException, MalformedURLException, IOException, DocumentException
   {
     Image image;
+    StringBuffer url;
+    
+    url = new StringBuffer();
+    url.append(getDomain()).append("/images/Lib_Logo4Invoices.gif");
 
-    image = Image.getInstance(new URL("https://webservices.library.ucla.edu/images/Lib_Logo4Invoices.gif"));
+    image = Image.getInstance(new URL(url.toString()));
 
     image.setAbsolutePosition(350f, 750f);
     image.scalePercent(50f);

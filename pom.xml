@@ -9,7 +9,10 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>  
+    <webservices.base>webservices-test</webservices.base>
+    <transact.type>train</transact.type>
+    <transact.store>UCLALIBRARYTEST</transact.store>
+  </properties>
   <repositories>
     <repository>
       <id>mvnrepository.com</id>
@@ -342,9 +345,9 @@
     <finalName>lpo</finalName>
     <resources>
       <resource>
-        <directory>${basedir}</directory>
+        <directory>${basedir}/public_html/resources</directory>
         <includes>
-          <include>*</include>
+          <include>log4j.properties</include>
         </includes>
       </resource>
       <resource>
@@ -357,11 +360,108 @@
     <outputDirectory>classes/</outputDirectory>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.3</version>
+        <executions>
+          <execution>
+            <id>run-script</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>mkdir</executable>
+          <arguments>
+            <argument>-p</argument>
+            <argument>target/rewrite_folder</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <!-- here the phase you need -->
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/rewrite_folder</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/public_html</directory>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.github.floverfelt</groupId>
+        <artifactId>find-and-replace-maven-plugin</artifactId>
+        <version>1.2.0</version>
+        <executions>
+          <execution>
+            <id>webservices</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <replacementType>file-contents</replacementType>
+              <baseDir>target/rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp,.xml</fileMask>
+              <findRegex>%DOMAIN%</findRegex>
+              <replaceValue>${webservices.base}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+          <execution>
+            <id>transact-type</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <replacementType>file-contents</replacementType>
+              <baseDir>target/rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp</fileMask>
+              <findRegex>%TRANSACT.TYPE%</findRegex>
+              <replaceValue>${transact.type}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+          <execution>
+            <id>transact-store</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>find-and-replace</goal>
+            </goals>
+            <configuration>
+              <replacementType>file-contents</replacementType>
+              <baseDir>target/rewrite_folder/</baseDir>
+              <fileMask>.html,.jsp</fileMask>
+              <findRegex>%TRANSACT.STORE%</findRegex>
+              <replaceValue>${transact.store}</replaceValue>
+              <recursive>true</recursive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.3.2</version>
         <configuration>
-          <webappDirectory>public_html/</webappDirectory>
+          <webappDirectory>target/rewrite_folder/</webappDirectory>
+          <useCache>true</useCache>
         </configuration>
       </plugin>
       <plugin>

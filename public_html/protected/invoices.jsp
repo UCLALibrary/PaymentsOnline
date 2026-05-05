@@ -7,8 +7,7 @@
 <c:set var="fakeLogon" value=""/>
 
 <c:if test="${empty param.uid and empty header.SHIBUCLAUNIVERSITYID and empty header.SHIBEDUPERSONPRINCIPALNAME and empty cookie.almaID}">
-  <%--c:redirect url="https://webservices-test.library.ucla.edu/lpo/landing.html"/--%>
-  <c:redirect url="https://webservices.library.ucla.edu/lpo/landing.html"/>
+  <c:redirect url="https://%DOMAIN%.library.ucla.edu/lpo/landing.html"/>
 </c:if>
 
 <jsp:useBean id="idSource"
@@ -109,8 +108,7 @@
               <h3>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h3>
             </td>
             <td align="right">
-              <!--form method="POST" action="https://webservices-test.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
-              <form method="POST" action="https://webservices.library.ucla.edu/Shibboleth.sso/Logout"><!--?entityId=https://webservices.library.ucla.edu/lpo/shibboleth-sp"-->
+              <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
                 <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
                 <input type="submit" value="Logout">
               </form>
@@ -153,8 +151,8 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theInvoice.balanceDue}" pattern="$###,###.##"/>
-                  &nbsp;<!--a href="https://webservices-test.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${libBillInvoices.thePatron.institutionID}" target="_blank">View Invoice (PDF)*</a-->
-<a href="https://webservices.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;
+                  <a href="https://%DOMAIN%.library.ucla.edu/pdfoutput/pdfs/display_invoice/${theInvoice.invoiceNumber}/${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -173,8 +171,8 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theAlmaInvoice.balance}" pattern="$###,###.##"/>
-	  <!--&nbsp;<a href="https://webservices-test.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a-->
-<a href="https://webservices.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
+                  &nbsp;
+                  <a href="https://%DOMAIN%.library.ucla.edu/lpo/pdfservlet?in=${theAlmaInvoice.invoiceNumber}&amp;uid=${idSource.userID}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>
@@ -193,8 +191,8 @@
                 </td>
                 <td align="right">
                   <fmt:formatNumber currencySymbol="$" minFractionDigits="2" value="${theXeroInvoice.amountDue}" pattern="$###,###.##"/>
-                  &nbsp;<a href="https://webservices.library.ucla.edu/pdfoutput/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a>
-                  <!--&nbsp;<a href="https://webservices-test.library.ucla.edu/pdfoutput/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a-->
+                  &nbsp;
+                  <a href="https://%DOMAIN%.library.ucla.edu/pdfoutput/xero/display_invoice/${theXeroInvoice.invoiceNumber}" target="_blank">View Invoice (PDF)*</a>
                 </td>
               </tr>
               <c:set var="index" value="${index + 1}"/>

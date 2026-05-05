@@ -36,3 +36,12 @@ Windows cmd prompt:	set JAVA_HOME=C:\Path\To\Your\JDK && mvn [maven commands]
 + User-specific maven settings with Github server info is in ~/local_settings.xml; 
 + change that to point to your own location.
   + `docker run --rm -it -v "$(pwd)":/tmp/src/maven -w /tmp/src/maven maven:3.9.14-ibmjava-8 mvn -s local_settings.xml clean install`
+  
+## Building for deploy:
++ To build the WAR for deployment to a server, run the following:
+```
+mvn clean package -Dwebservices.base=<domain name> -Dtransact.type=<test or prod Transact> -Dtransact.store=<test or prod store name>
+```
++ Valid values for `webservices.base` are `webservices` (PROD) and `webservices-test` (TEST)
++ Valid values for `transact.type` are `commerce` (PROD) and `train` (TEST)
++ Valid values for `transact.store` are `UCLALIBRARY` (PROD) and `UCLALIBRARYTEST` (TEST)
