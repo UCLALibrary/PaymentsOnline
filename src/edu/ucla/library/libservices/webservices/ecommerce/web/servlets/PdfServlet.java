@@ -47,6 +47,7 @@ public class PdfServlet
     generator.setDbName(getServletContext().getInitParameter("datasource.invoice"));
     generator.setApiKey(getServletContext().getInitParameter("alma.key"));
     generator.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
+    generator.setDomain(getServletContext().getInitParameter("uri.base"));
 
     try
     {
