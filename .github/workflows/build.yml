@@ -9,6 +9,19 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      DOMAIN_NAME:
+        description: 'URL domain passed from Jenkins'
+        required: true
+        type: string
+      STORE_NAME:
+        description: 'Transact store name passed from Jenkins'
+        required: true
+        type: string
+      STORE_TYPE:
+        description: 'Transact store type passed from Jenkins'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -16,6 +29,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2
+    - name: Set up JDK 8
+      uses: actions/setup-java@8764a52df183aa0ccea74521dfd9d506ffc7a19a # v2
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        cache: maven
+    - name: Build with Maven
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        REPO_SERVER: ${{ secrets.REPO_SERVER }}
+        REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+        DEPLOY_DOMAIN: ${{ github.event.inputs.DOMAIN_NAME }}
+        DEPLOY_STORENAME: ${{ github.event.inputs.STORE_NAME }}
+        DEPLOY_STORETYPE: ${{ github.event.inputs.STORE_TYPE }}
+      run: mvn -ntp package -Dwebservices.base="$DEPLOY_DOMAIN" -Dtransact.type="$DEPLOY_STORETYPE" -Dtransact.store="$DEPLOY_STORENAME" verify \
+            -Dusername="$REPO_USERNAME" -Dpassword="$REPO_TOKEN"
     - name: Deploy with Jenkins
       env:
         CI_WS_SSH_PRIV_KEY: ${{ secrets.CI_WS_SSH_PRIV_KEY }}
