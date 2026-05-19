@@ -43,8 +43,9 @@ jobs:
         DEPLOY_DOMAIN: ${{ github.event.inputs.DOMAIN_NAME }}
         DEPLOY_STORENAME: ${{ github.event.inputs.STORE_NAME }}
         DEPLOY_STORETYPE: ${{ github.event.inputs.STORE_TYPE }}
-      run: mvn -ntp package -Dwebservices.base="$DEPLOY_DOMAIN" -Dtransact.type="$DEPLOY_STORETYPE" -Dtransact.store="$DEPLOY_STORENAME" verify \
-            -Dusername="$REPO_USERNAME" -Dpassword="$REPO_TOKEN"
+      run: |
+        mvn -ntp package -Dwebservices.base="$DEPLOY_DOMAIN" -Dtransact.type="$DEPLOY_STORETYPE" -Dtransact.store="$DEPLOY_STORENAME" verify \
+          -Dusername="$REPO_USERNAME" -Dpassword="$REPO_TOKEN"
     - name: Deploy with Jenkins
       env:
         CI_WS_SSH_PRIV_KEY: ${{ secrets.CI_WS_SSH_PRIV_KEY }}
