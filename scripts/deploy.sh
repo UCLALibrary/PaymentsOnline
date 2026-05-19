@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# all ${SFTP_*} and ${CI_*} values retrieved from GitHub secrets in .github/workflows/build.yml
+
 SFTP_SERVER=appdeploy-sftp.library.ucla.edu
 SFTP_USER=appdeploy
 SFTP_PROJECT=${CI_WEBAPP_NAME}
