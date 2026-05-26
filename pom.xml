@@ -45,61 +45,61 @@
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-apache-client</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-atom-abdera</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-guice</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-json</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-multipart</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-simple-server</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-spring</artifactId>
-      <version>1.2</version>
+      <version>1.13</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -108,22 +108,22 @@
       <version>1.1.1</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
       <scope>compile</scope>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.51</version>
+      <version>0.1.54</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itextpdf</artifactId>
-      <version>5.0.6</version>
+      <version>5.5.13.3</version>
     </dependency>
     <dependency>
       <groupId>org.jvnet.mimepull</groupId>
@@ -165,7 +165,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.5.1</version>
+      <version>42.7.11</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -189,7 +189,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -201,12 +201,12 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.17.1</version>
+      <version>2.25.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.1</version>
+      <version>2.25.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -225,104 +225,104 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.9.4</version>
+      <version>1.11.0</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.0</version>
+      <version>2.14.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>2.0</version>
+      <version>3.9.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-vfs2</artifactId>
-      <version>2.1</version>
+      <version>2.10.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-dao</artifactId>
-      <version>1.2.6</version>
+      <version>2.0.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-hibernate</artifactId>
-      <version>1.2.6</version>
+      <artifactId>spring-hibernate3</artifactId>
+      <version>2.0.8</version>
       <scope>compile</scope>
-    </dependency>
+    </dependency>    
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-mock</artifactId>
-      <version>1.2.6</version>
+      <version>2.0.8</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-remoting</artifactId>
-      <version>1.2.6</version>
+      <version>2.0.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-support</artifactId>
-      <version>1.2.6</version>
+      <version>2.0.8</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>1.2.6</version>
+      <version>5.2.22.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
