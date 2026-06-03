@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class ContentTests
 {
   private static final String GET_INVOICE =
-    "SELECT COUNT(ivw.invoice_number) FROM invoice_vw ivw WHERE ivw.invoice_number" 
+    "SELECT COUNT(ivw.invoice_number) FROM invoice_vw ivw WHERE ivw.invoice_number"
     + " = ? and ivw.patron_id = ?";
 
   public ContentTests()
@@ -19,7 +19,7 @@ public class ContentTests
 
   public static boolean isEmpty( String value )
   {
-    return ( value == null || value.trim().equalsIgnoreCase( "" ) || 
+    return ( value == null || value.trim().equalsIgnoreCase( "" ) ||
              value.trim().length() == 0 );
   }
 
@@ -32,12 +32,12 @@ public class ContentTests
   public static boolean isLegitInvoice( String invoiceID, String uid,
                                         String dbName )
   {
-    return ( 
-      new JdbcTemplate( DataSourceFactory.createDataSource( dbName ) //DataSourceFactory.createBillSource()
-                        ).queryForInt( 
-          GET_INVOICE, new Object[] { invoiceID, uid } ) == 1 );
+    return (
+      Integer.valueOf( new JdbcTemplate( DataSourceFactory.createDataSource( dbName ) //DataSourceFactory.createBillSource()
+                        ).queryForObject(
+          GET_INVOICE, new Object[] { invoiceID, uid }, String.class ) ) == 1 );
   }
-  
+
   public static boolean isUID(String value)
   {
     return Pattern.matches( "[0-9]{9}", value );

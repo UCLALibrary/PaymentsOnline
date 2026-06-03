@@ -11,7 +11,8 @@ import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstant
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URLEncoder;
 
@@ -20,7 +21,7 @@ import java.net.URLEncoder;
  */
 public class XeroContactClient extends AbstractXeroClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroContactClient.class);
+  private static final Logger LOGGER = LogManager.getLogger(XeroContactClient.class);
   // query string for contact lookup
   private static final String QUERY = "AccountNumber=\"{id}\"";
 

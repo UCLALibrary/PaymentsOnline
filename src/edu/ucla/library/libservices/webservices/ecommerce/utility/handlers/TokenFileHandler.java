@@ -14,15 +14,14 @@ import java.time.format.DateTimeFormatter;
 
 import com.google.gson.Gson;
 
-import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
-
 import java.io.FileNotFoundException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TokenFileHandler
 {
-  private static final Logger LOGGER = Logger.getLogger(DataHandler.class);
+  private static final Logger LOGGER = LogManager.getLogger(TokenFileHandler.class);
 
   // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;

@@ -8,11 +8,12 @@ import com.sun.jersey.api.client.WebResource;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroAccountList;
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class XeroAccountClient extends AbstractXeroClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroAccountClient.class);
+  private static final Logger LOGGER = LogManager.getLogger(XeroAccountClient.class);
 
   // unique ID for a contact
   private String accountID;

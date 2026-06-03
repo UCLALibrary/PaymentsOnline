@@ -15,11 +15,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.String
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AlmaClient
 {
-  private static final Logger LOGGER = Logger.getLogger(AlmaClient.class);
+  private static final Logger LOGGER = LogManager.getLogger(AlmaClient.class);
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -35,7 +36,7 @@ public class AlmaClient
   private String transNo;
   private String uriBase;
   private String userID;
-    
+
 
   public AlmaClient()
   {

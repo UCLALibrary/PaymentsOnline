@@ -3,13 +3,8 @@ package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
-//import edu.ucla.library.libservices.webservices.ecommerce.utility.sftp.SftpClient;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
-//import edu.ucla.library.libservices.webservices.ecommerce.utility.writer.UploadWriter;
-//import edu.ucla.library.libservices.webservices.ecommerce.web.clients.PaymentClient;
-
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
-
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroPaymentClient;
 
 import java.io.IOException;
@@ -21,7 +16,8 @@ import javax.sql.DataSource;
 
 //import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -49,7 +45,7 @@ public class PaymentServlet
   {
     response.setContentType(CONTENT_TYPE);
     Logger log;
-    log = Logger.getLogger(LoggingServlet.class);
+    log = LogManager.getLogger(LoggingServlet.class);
 
     handlePayment(request, log);
   }
@@ -80,10 +76,10 @@ public class PaymentServlet
     AlmaClient payClient;
     String invoiceNo;
     int responseCode;
-    
+
     invoiceNo = StringHandler.extractInvoiceID(request.getParameter("UCLA_REF_NO"));
     log.info("working with invoice " + invoiceNo);
-    
+
     payClient = new AlmaClient();
     payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
     payClient.setFineID(invoiceNo);
@@ -135,7 +131,7 @@ public class PaymentServlet
       double amount = Double.parseDouble( request.getParameter( "amount".concat( String.valueOf( index )) ) );
       total += amount;
     }
-    
+
     return total;
   }
 

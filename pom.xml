@@ -108,12 +108,6 @@
       <version>1.1.1</version>
       <scope>compile</scope>
     </dependency>
-    <!--dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-      <scope>compile</scope>
-    </dependency-->
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
@@ -347,13 +341,13 @@
       <resource>
         <directory>${basedir}/public_html/resources</directory>
         <includes>
-          <include>log4j.properties</include>
+          <include>log4j2.properties</include>
         </includes>
       </resource>
       <resource>
         <directory>classes/</directory>
         <includes>
-          <include>log4j.properties</include>
+          <include>log4j2.properties</include>
         </includes>
       </resource>
     </resources>

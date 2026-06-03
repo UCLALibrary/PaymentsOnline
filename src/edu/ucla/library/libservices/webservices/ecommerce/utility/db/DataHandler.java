@@ -1,17 +1,18 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.db;
 
 import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
-
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+
+import javax.sql.DataSource;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-import org.apache.log4j.Logger;
-
 public class DataHandler
 {
-  private static final Logger LOGGER = Logger.getLogger( DataHandler.class );
+  private static final Logger LOGGER = LogManager.getLogger( DataHandler.class );
 
   private static final String COUNT = "SELECT count(*) FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String DELETE = "DELETE FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
@@ -24,7 +25,7 @@ public class DataHandler
   private static final String SELECT_PATRON =
     "SELECT \"PATRON_ID\" FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String UNPAID =
-    "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid'," 
+    "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid',"
     + "'Deposit Due','Final Payment Due')";
   private static final String OVERDUEFINE = "OVERDUEFINE";
 
@@ -90,7 +91,7 @@ public class DataHandler
     DataSource source = DataSourceFactory.createDataSource(dbName);
     //DataSource source = DataSourceFactory.createVgerSource();
     String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
-    if (new JdbcTemplate(source).queryForInt(COUNT, new Object[] { cleanInvoice }) == 0)
+    if (Integer.valueOf( new JdbcTemplate(source).queryForObject(COUNT, new Object[] { cleanInvoice }, String.class) ) == 0)
     {
       new JdbcTemplate(source).update(INSERT, new Object[] { cleanInvoice, patronID });
     }
@@ -115,11 +116,11 @@ public class DataHandler
   public static String getfeeData(String dbName, String feeType, boolean isLaw, boolean isClicc)
   {
     String query;
-    if ( isLaw && !feeType.equals(OVERDUEFINE) ) 
+    if ( isLaw && !feeType.equals(OVERDUEFINE) )
     {
       query = SELECT_FEE_LAW;
     }
-    else if ( isClicc ) 
+    else if ( isClicc )
     {
       query = SELECT_FEE_CLICC;
     }
@@ -138,6 +139,6 @@ public class DataHandler
   public int getUnpaidCount()
   {
     makeConnection();
-    return new JdbcTemplate(ds).queryForInt(UNPAID, new Object[] { getPatronID() });
+    return Integer.valueOf( new JdbcTemplate(ds).queryForObject(UNPAID, new Object[] { getPatronID() }, String.class) );
   }
 }

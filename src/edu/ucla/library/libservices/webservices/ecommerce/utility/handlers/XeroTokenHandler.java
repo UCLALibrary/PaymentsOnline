@@ -1,18 +1,18 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.handlers;
 
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
-
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTenantClient;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenClient;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class XeroTokenHandler
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroTokenHandler.class);
+  private static final Logger LOGGER = LogManager.getLogger(XeroTokenHandler.class);
   // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
   //properties file with URIs and IDs to access Xero API

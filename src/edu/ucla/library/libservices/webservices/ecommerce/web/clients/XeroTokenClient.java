@@ -8,14 +8,15 @@ import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstant
 
 import java.util.Base64;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Client used to retrieve fresh access/refresh OAuth tokens from Xero token service
  */
 public class XeroTokenClient extends AbstractXeroClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroTokenClient.class);
+  private static final Logger LOGGER = LogManager.getLogger(XeroTokenClient.class);
   //OAuth token used to access Xero tokens service
   private String refreshToken;
 

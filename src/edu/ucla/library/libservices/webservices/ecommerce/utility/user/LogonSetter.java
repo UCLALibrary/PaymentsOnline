@@ -2,7 +2,8 @@ package edu.ucla.library.libservices.webservices.ecommerce.utility.user;
 
 import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LogonSetter
 {
@@ -17,7 +18,7 @@ public class LogonSetter
   public LogonSetter()
   {
     super();
-    log = Logger.getLogger( LogonSetter.class );
+    log = LogManager.getLogger( LogonSetter.class );
   }
 
   public String getUserID()
