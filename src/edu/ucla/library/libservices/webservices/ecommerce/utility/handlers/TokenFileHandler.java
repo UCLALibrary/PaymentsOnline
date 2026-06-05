@@ -16,9 +16,6 @@ import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
