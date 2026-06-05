@@ -1,4 +1,4 @@
-package edu.ucla.library.libservices.invoicing.utiltiy.strings;
+package edu.ucla.library.libservices.invoicing.utility.strings;
 
 public class StringCleaner
 {

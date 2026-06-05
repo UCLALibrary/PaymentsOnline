@@ -14,7 +14,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.Address;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;

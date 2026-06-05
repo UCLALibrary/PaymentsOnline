@@ -1,4 +1,4 @@
-package edu.ucla.library.libservices.invoicing.utiltiy.db;
+package edu.ucla.library.libservices.invoicing.utility.db;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

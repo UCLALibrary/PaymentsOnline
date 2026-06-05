@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.invoicing.webservices.payments.db.procs;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 
 import java.sql.Types;
 

@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.db;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
 import javax.sql.DataSource;

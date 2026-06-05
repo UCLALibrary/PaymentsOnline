@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;

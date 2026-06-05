@@ -4,7 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;

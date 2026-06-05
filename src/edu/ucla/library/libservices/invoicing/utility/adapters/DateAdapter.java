@@ -1,4 +1,4 @@
-package edu.ucla.library.libservices.invoicing.utiltiy.adapters;
+package edu.ucla.library.libservices.invoicing.utility.adapters;
 
 import java.text.DateFormat;
 

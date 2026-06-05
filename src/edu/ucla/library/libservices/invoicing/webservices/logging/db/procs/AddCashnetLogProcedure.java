@@ -1,8 +1,8 @@
 package edu.ucla.library.libservices.invoicing.webservices.logging.db.procs;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
-import edu.ucla.library.libservices.invoicing.utiltiy.adapters.DateAdapter;
+import edu.ucla.library.libservices.invoicing.utility.adapters.DateAdapter;
 
 import java.sql.Types;
 

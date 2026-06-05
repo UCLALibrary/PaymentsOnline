@@ -4,7 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
 import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;

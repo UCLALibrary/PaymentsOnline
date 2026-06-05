@@ -1,6 +1,6 @@
-package edu.ucla.library.libservices.invoicing.utiltiy.testing;
+package edu.ucla.library.libservices.invoicing.utility.testing;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.db.DataSourceFactory;
+import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 
 import java.util.regex.Pattern;
 
@@ -33,7 +33,7 @@ public class ContentTests
                                         String dbName )
   {
     return (
-      Integer.valueOf( new JdbcTemplate( DataSourceFactory.createDataSource( dbName ) //DataSourceFactory.createBillSource()
+      Integer.valueOf( new JdbcTemplate(DataSourceFactory.createDataSource( dbName ) //DataSourceFactory.createBillSource()
                         ).queryForObject(
           GET_INVOICE, new Object[] { invoiceID, uid }, String.class ) ) == 1 );
   }

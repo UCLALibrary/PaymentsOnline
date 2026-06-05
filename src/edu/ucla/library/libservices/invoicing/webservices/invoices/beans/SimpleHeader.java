@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.invoicing.webservices.invoices.beans;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.adapters.DateAdapter;
+import edu.ucla.library.libservices.invoicing.utility.adapters.DateAdapter;
 
 import java.util.Date;
 
