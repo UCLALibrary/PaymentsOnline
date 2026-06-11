@@ -54,6 +54,8 @@
       <version>1.13</version>
       <scope>compile</scope>
     </dependency>
+    <!-- jersey-atom-abdera native xercesImpl dependency is out-of-date, so -->
+    <!-- exclude it here and separetely incude a modern xercesImpl version -->
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-atom-abdera</artifactId>
