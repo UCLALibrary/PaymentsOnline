@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Calls Xero invoice API and retrieves either singular invoice
@@ -26,7 +26,7 @@ import org.apache.logging.log4j.Logger;
 public class XeroInvoiceClient
   extends AbstractXeroClient
 {
-  private static final Logger LOGGER = LogManager.getLogger(XeroInvoiceClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(XeroInvoiceClient.class);
   private static final String UNPAID_QUERY = "?Statuses=AUTHORISED&ContactIds=";
 
   private String contactID;

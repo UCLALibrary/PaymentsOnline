@@ -15,12 +15,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.String
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AlmaClient
 {
-  private static final Logger LOGGER = LogManager.getLogger(AlmaClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -239,7 +239,7 @@ public class AlmaClient
                                               .concat(getTransNo())
                                               .concat("&apikey=")
                                               .concat(getKey()));
-    LOGGER.info(webResource.getURI());
+    LOGGER.info(webResource.getURI().toString());
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();
   }

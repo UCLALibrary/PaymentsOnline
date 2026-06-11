@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggingServlet
   extends HttpServlet
@@ -46,7 +46,7 @@ public class LoggingServlet
     CashnetLog data;
     Logger log;
 
-    log = LogManager.getLogger( LoggingServlet.class );
+    log = LoggerFactory.getLogger( LoggingServlet.class );
 
     log.info( "logging payment result for invoice " +
               request.getParameter( "UCLA_REF_NO" ) + "; result: " +
@@ -118,17 +118,5 @@ public class LoggingServlet
     {
       log.info( "Log-entry creation failed: ".concat( e.getMessage() ) );
     }
-    //LoggingClient client;
-
-    //log("ecommerce.LoggingServlet: logCashnetMessage()");
-
-    /*client = new LoggingClient();
-    client.setCrypt( getServletContext().getInitParameter( "key.two" ) );
-    client.setResourceURI( getServletContext().getInitParameter( "uri.logging" ) );
-    client.setUriBase( getServletContext().getInitParameter( "uri.base" ) );
-    client.setUser( getServletContext().getInitParameter( "key.one" ) );
-    client.setData( data );
-
-    log.info( client.doLogging() );*/
   }
 }

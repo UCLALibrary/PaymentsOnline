@@ -7,12 +7,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroTokenC
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class XeroTokenHandler
 {
-  private static final Logger LOGGER = LogManager.getLogger(XeroTokenHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(XeroTokenHandler.class);
   // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
   //properties file with URIs and IDs to access Xero API

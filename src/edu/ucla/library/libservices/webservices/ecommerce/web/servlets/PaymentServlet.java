@@ -11,13 +11,10 @@ import java.io.IOException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import javax.sql.DataSource;
 
-//import javax.ws.rs.core.Response;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -45,7 +42,7 @@ public class PaymentServlet
   {
     response.setContentType(CONTENT_TYPE);
     Logger log;
-    log = LogManager.getLogger(LoggingServlet.class);
+    log = LoggerFactory.getLogger(LoggingServlet.class);
 
     handlePayment(request, log);
   }
@@ -108,7 +105,7 @@ public class PaymentServlet
     }
     catch (Exception e)
     {
-      log.fatal("Payment failed: ".concat(e.getMessage()));
+      log.error("Payment failed: ".concat(e.getMessage()));
     }
  }
 
@@ -150,7 +147,7 @@ public class PaymentServlet
     }
     catch (Exception e)
     {
-      log.fatal("Payment failed: ".concat(e.getMessage()));
+      log.error("Payment failed: ".concat(e.getMessage()));
     }
   }
 

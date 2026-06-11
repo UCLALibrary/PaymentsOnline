@@ -1,27 +1,25 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.handlers;
 
+import com.google.gson.Gson;
+
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroTokenBean;
 
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.google.gson.Gson;
-
-import java.io.FileNotFoundException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TokenFileHandler
 {
-  private static final Logger LOGGER = LogManager.getLogger(TokenFileHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TokenFileHandler.class);
 
   // Date format: YYYY-MM-DDTHH:mm:SS'
   private static DateTimeFormatter FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;

@@ -12,11 +12,9 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
-//import org.apache.log4j.Logger;
 
 public class ReceiptClient
 {
-  //private static final Logger LOGGER = Logger.getLogger( ReceiptClient.class );
   private ReceiptInfo theReceipt;
   private String resourceURI;
   private String vgerName;
@@ -197,7 +195,6 @@ public class ReceiptClient
     handler.setDbName(getVgerName());
     handler.setInvoiceID(cleanInvoiceNo);
 
-    //LOGGER.info("calling DataHandler.getPatronData");
     patronID = handler.getPatronData();
     handler.setPatronID(patronID);
 
