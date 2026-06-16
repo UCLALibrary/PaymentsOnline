@@ -1,8 +1,9 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.user;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LogonSetter
 {
@@ -17,7 +18,7 @@ public class LogonSetter
   public LogonSetter()
   {
     super();
-    log = Logger.getLogger( LogonSetter.class );
+    log = LoggerFactory.getLogger( LogonSetter.class );
   }
 
   public String getUserID()
@@ -34,7 +35,7 @@ public class LogonSetter
     //otherwise check for UID from IdP
     else if ( !ContentTests.isEmpty( getShibUID() ) &&
               !getShibUID().equalsIgnoreCase( BAD_CREDENTIAL ) &&
-              ContentTests.isUID( getShibUID() ) )
+             ContentTests.isUID( getShibUID() ) )
     {
       log.info( "using shib UID" );
       userID = getShibUID();

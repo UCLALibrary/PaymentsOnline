@@ -2,7 +2,6 @@ package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
 import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
 import edu.ucla.library.libservices.invoicing.webservices.logging.db.procs.AddCashnetLogProcedure;
-//import edu.ucla.library.libservices.webservices.ecommerce.web.clients.LoggingClient;
 
 import java.io.IOException;
 
@@ -12,7 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggingServlet
   extends HttpServlet
@@ -46,7 +46,7 @@ public class LoggingServlet
     CashnetLog data;
     Logger log;
 
-    log = Logger.getLogger( LoggingServlet.class );
+    log = LoggerFactory.getLogger( LoggingServlet.class );
 
     log.info( "logging payment result for invoice " +
               request.getParameter( "UCLA_REF_NO" ) + "; result: " +
@@ -55,7 +55,7 @@ public class LoggingServlet
               ( !request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
                 "Reason:{" + request.getParameter( "respmessage" ) + "}":
                 "" ) );
-    
+
     if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
          ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.two" ) ) ) ||
          ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.three" ) ) ) )
@@ -118,17 +118,5 @@ public class LoggingServlet
     {
       log.info( "Log-entry creation failed: ".concat( e.getMessage() ) );
     }
-    //LoggingClient client;
-
-    //log("ecommerce.LoggingServlet: logCashnetMessage()");
-
-    /*client = new LoggingClient();
-    client.setCrypt( getServletContext().getInitParameter( "key.two" ) );
-    client.setResourceURI( getServletContext().getInitParameter( "uri.logging" ) );
-    client.setUriBase( getServletContext().getInitParameter( "uri.base" ) );
-    client.setUser( getServletContext().getInitParameter( "key.one" ) );
-    client.setData( data );
-
-    log.info( client.doLogging() );*/
   }
 }

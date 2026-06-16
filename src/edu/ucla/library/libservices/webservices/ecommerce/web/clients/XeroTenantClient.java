@@ -9,7 +9,8 @@ import com.sun.jersey.api.client.WebResource;
 
 import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstants;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Client used to retrieve tenant ID from Xero
@@ -18,15 +19,15 @@ import org.apache.log4j.Logger;
  */
 public class XeroTenantClient extends AbstractXeroClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroTenantClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(XeroTenantClient.class);
   private String tenantURL;
-  
+
   public XeroTenantClient()
   {
     super();
     port = 0;
   }
-  
+
   public void setTenantURL(String tenantURL)
   {
     this.tenantURL = tenantURL;

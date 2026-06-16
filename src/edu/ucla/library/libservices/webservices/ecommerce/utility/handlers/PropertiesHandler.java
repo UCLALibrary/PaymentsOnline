@@ -3,17 +3,17 @@ package edu.ucla.library.libservices.webservices.ecommerce.utility.handlers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to centralize retrieval of app properties
  */
 public class PropertiesHandler
 {
-  private static final Logger LOGGER = Logger.getLogger(PropertiesHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesHandler.class);
   private String fileName;
 
   public PropertiesHandler()
@@ -40,7 +40,7 @@ public class PropertiesHandler
     }
     catch (IOException ioe)
     {
-      LOGGER.fatal("problem with props file: " + ioe.getMessage());
+      LOGGER.error("problem with props file: " + ioe.getMessage());
     }
     return secrets;
   }

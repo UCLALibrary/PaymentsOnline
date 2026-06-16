@@ -1,7 +1,7 @@
 package edu.ucla.library.libservices.invoicing.webservices.patrons.beans;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.strings.StringCleaner;
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.strings.StringCleaner;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.SimpleHeader;
 
@@ -54,7 +54,7 @@ public class SimplePatron
   public void setBarcode( String barcode )
   {
     this.barcode =
-        ( !ContentTests.isEmpty( barcode ) ? StringCleaner.removeControlChars( barcode ):
+        ( !ContentTests.isEmpty( barcode )? StringCleaner.removeControlChars( barcode ):
           "" );
   }
 
@@ -66,7 +66,7 @@ public class SimplePatron
   public void setLastName( String lastName )
   {
     this.lastName =
-        ( !ContentTests.isEmpty( lastName ) ? StringCleaner.removeControlChars( lastName ):
+        ( !ContentTests.isEmpty( lastName )? StringCleaner.removeControlChars( lastName ):
           "" );
   }
 
@@ -78,7 +78,7 @@ public class SimplePatron
   public void setFirstName( String firstName )
   {
     this.firstName =
-        ( !ContentTests.isEmpty( firstName ) ? StringCleaner.removeControlChars( firstName ):
+        ( !ContentTests.isEmpty( firstName )? StringCleaner.removeControlChars( firstName ):
           "" );
   }
 
@@ -100,7 +100,7 @@ public class SimplePatron
   public void setEmail( String email )
   {
     this.email =
-        ( !ContentTests.isEmpty( email ) ? StringCleaner.removeControlChars( email ):
+        ( !ContentTests.isEmpty( email )? StringCleaner.removeControlChars( email ):
           "" );
   }
 
@@ -112,7 +112,7 @@ public class SimplePatron
   public void setInstitutionID( String institutionID )
   {
     this.institutionID =
-        ( !ContentTests.isEmpty( institutionID ) ? StringCleaner.removeControlChars( institutionID ):
+        ( !ContentTests.isEmpty( institutionID )? StringCleaner.removeControlChars( institutionID ):
           "" );
   }
 

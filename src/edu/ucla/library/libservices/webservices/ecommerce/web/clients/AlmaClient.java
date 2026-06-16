@@ -4,7 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utiltiy.testing.ContentTests;
+import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
@@ -15,11 +15,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.String
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AlmaClient
 {
-  private static final Logger LOGGER = Logger.getLogger(AlmaClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -35,7 +36,7 @@ public class AlmaClient
   private String transNo;
   private String uriBase;
   private String userID;
-    
+
 
   public AlmaClient()
   {
@@ -238,7 +239,7 @@ public class AlmaClient
                                               .concat(getTransNo())
                                               .concat("&apikey=")
                                               .concat(getKey()));
-    LOGGER.info(webResource.getURI());
+    LOGGER.info(webResource.getURI().toString());
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();
   }

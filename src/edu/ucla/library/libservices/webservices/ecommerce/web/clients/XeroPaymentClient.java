@@ -15,7 +15,8 @@ import edu.ucla.library.libservices.webservices.ecommerce.constants.XeroConstant
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class to handle calls to Xero payment API
@@ -23,7 +24,7 @@ import org.apache.log4j.Logger;
 public class XeroPaymentClient
   extends AbstractXeroClient
 {
-  private static final Logger LOGGER = Logger.getLogger(XeroInvoiceClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(XeroInvoiceClient.class);
 
   private String invoiceNumber;
   // free text field, planning to include payment method (card/echeck) and Transact transaction number
@@ -79,7 +80,7 @@ public class XeroPaymentClient
   }
 
   /**
-   * Build an object that can be submitted to Xero as a payment, for a 
+   * Build an object that can be submitted to Xero as a payment, for a
    * particular invoice/account/amount combo
    * @param accountID The account the payment is associated with
    * @param invoiceID the invoice being paid

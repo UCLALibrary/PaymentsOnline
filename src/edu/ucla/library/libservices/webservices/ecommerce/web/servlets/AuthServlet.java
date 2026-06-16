@@ -43,7 +43,7 @@ public class AuthServlet
     if (theClient.isValidPatron())
     {
       //response.addHeader("SHIBUCLAUNIVERSITYID", request.getParameter("userID"));
-      Cookie authCookie = new Cookie( "almaID", 
+      Cookie authCookie = new Cookie( "almaID",
                                       request.getParameter("userID") );
       authCookie.setHttpOnly(true);
       authCookie.setMaxAge(300);
@@ -53,7 +53,7 @@ public class AuthServlet
     }
     else
     {
-      response.addCookie( new Cookie( "logonError", 
+      response.addCookie( new Cookie( "logonError",
                                       "user name or password not recognized" ) );
       response.sendRedirect("protected/errors.jsp");
     }
