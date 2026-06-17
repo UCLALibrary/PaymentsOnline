@@ -50,7 +50,7 @@
   <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <meta http-equiv="PRAGMA" content="NO-CACHE"> 

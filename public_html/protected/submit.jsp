@@ -5,7 +5,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler" %>
 
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <title>submit</title>

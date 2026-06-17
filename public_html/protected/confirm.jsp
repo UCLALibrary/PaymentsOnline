@@ -28,7 +28,7 @@
 
 <jsp:useBean id="now" class="java.util.Date" scope="page"/>
 
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <meta http-equiv="PRAGMA" content="NO-CACHE"> 
