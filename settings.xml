@@ -57,22 +57,4 @@ under the License.
     <activeProfile>github</activeProfile>
   </activeProfiles>
 
-  <mirrors>
-    <mirror>
-      <id>redirect-jvnet</id>
-      <mirrorOf>jvnet-nexus-snapshots</mirrorOf>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </mirror>
-    <mirror>
-      <id>jboss-repository-http-unblocker</id>
-      <mirrorOf>repository.jboss.org</mirrorOf>
-      <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-    </mirror>  
-    <mirror>
-      <id>eclipse-repository-http-unblocker</id>
-      <mirrorOf>eclipselink.repository</mirrorOf>
-      <url>http://www.eclipse.org/downloads/download.php</url>
-    </mirror>  
-  </mirrors>
-
 </settings>
