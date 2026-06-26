@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.ucla.library</groupId>
   <artifactId>Ecommerce</artifactId>
-  <version>1.5</version>
+  <version>1.5.1</version>
   <description>Project for Ecommerce</description>
   <packaging>war</packaging>
   <properties>
