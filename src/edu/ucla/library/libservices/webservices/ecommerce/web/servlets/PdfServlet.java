@@ -45,7 +45,7 @@ public class PdfServlet
     generator.setInvoiceNumber(request.getParameter("in"));
     generator.setPatronID(request.getParameter("uid"));
     generator.setDbName(getServletContext().getInitParameter("datasource.invoice"));
-    generator.setApiKey(getServletContext().getInitParameter("alma.key"));
+    generator.setSecretsFile(getServletContext().getInitParameter("alma.file"));
     generator.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
     generator.setDomain(getServletContext().getInitParameter("uri.base"));
 
@@ -57,8 +57,8 @@ public class PdfServlet
     }
     catch (DocumentException de)
     {
-      response.sendError(500, de.getMessage());      
+      response.sendError(500, de.getMessage());
     }
-    
+
   }
 }

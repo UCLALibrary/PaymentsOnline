@@ -40,6 +40,7 @@ public class PdfGenerator
   private String dbName;
   private String uriBase;
   private String apiKey;
+  private String secretsFile;
   private Paragraph paragraph;
   private PdfPCell defaultCell;
   private PdfPCell tableCell;
@@ -60,6 +61,16 @@ public class PdfGenerator
   public PdfGenerator()
   {
     super();
+  }
+
+  public void setSecretsFile(String secretsFile)
+  {
+    this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile()
+  {
+    return secretsFile;
   }
 
   public void setInvoiceNumber(String invoiceNumber)
@@ -128,7 +139,7 @@ public class PdfGenerator
     theInvoice = invoiceClient.getTheInvoice();
     thePatron = invoiceClient.getThePatron();
     //System.out.println(thePatron.getPatronID() + "\t" + thePatron.getContactInfo().getAddresses().size());
-    if (!thePatron.getContactInfo().getAddresses().isEmpty()) 
+    if (!thePatron.getContactInfo().getAddresses().isEmpty())
     {
       if ( thePatron.getContactInfo()
                                   .getAddresses()
@@ -144,7 +155,7 @@ public class PdfGenerator
                                     .get();
       }
     }
-    //System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity() 
+    //System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity()
       //                 + "\t" + thePatronAddress.getZipCode());
 
     try
@@ -264,7 +275,7 @@ public class PdfGenerator
   {
     invoiceClient = new AlmaClient();
     invoiceClient.setDbName(getDbName());
-    invoiceClient.setKey(getApiKey());
+    invoiceClient.setSecretsFile(getSecretsFile());
     invoiceClient.setFineID(getInvoiceNumber());
     invoiceClient.setUriBase(getUriBase());
     invoiceClient.setUserID(getPatronID());
@@ -275,7 +286,7 @@ public class PdfGenerator
   {
     Image image;
     StringBuffer url;
-    
+
     url = new StringBuffer();
     url.append(getDomain()).append("/images/Lib_Logo4Invoices.gif");
 

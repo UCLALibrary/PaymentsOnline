@@ -10,10 +10,12 @@ import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 public class AlmaClient
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
+  private static final String ALMA_KEY = "alma.key";
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -36,6 +39,10 @@ public class AlmaClient
   private String transNo;
   private String uriBase;
   private String userID;
+  // collection of values needed to access Xero API
+  private Properties almaSecrets;
+  // path for properties file with URIs and IDs to access Xero API
+  private String secretsFile;
 
 
   public AlmaClient()
@@ -136,15 +143,38 @@ public class AlmaClient
     return dbName;
   }
 
+  public void setSecretsFile(String secretsFile)
+  {
+    this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile()
+  {
+    return secretsFile;
+  }
+
+  /**
+   * utility method to retrieve the properties needed by class
+   */
+  private void loadProperties()
+  {
+    // utility to retrieve properties
+    PropertiesHandler secretGetter;
+    secretGetter = new PropertiesHandler();
+    secretGetter.setFileName(getSecretsFile());
+    almaSecrets = secretGetter.loadProperties();
+  }
+
   public AlmaUser getThePatron()
   {
     if (thePatron == null)
     {
+	  loadProperties();
       ClientResponse response;
       client = Client.create();
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("?apikey=")
-                                                .concat(getKey()));
+                                                .concat(almaSecrets.getProperty(ALMA_KEY)));
       response = webResource.accept("application/json").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
@@ -162,11 +192,12 @@ public class AlmaClient
   {
     if (theFees == null)
     {
+	  loadProperties();
       ClientResponse response;
       client = Client.create();
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat(getResourceURI())
-                                                .concat(getKey()));
+                                                .concat(almaSecrets.getProperty(ALMA_KEY)));
       response = webResource.accept("application/json").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
@@ -184,22 +215,18 @@ public class AlmaClient
   {
     if (theInvoice == null)
     {
+	  loadProperties();
       ClientResponse response;
       CashNetLine theLine;
       List<CashNetLine> lines;
 
       theLine = new CashNetLine();
       client = Client.create();
-      /*System.out.println(getUriBase().concat(getUserID())
-                                                .concat("/fees/")
-                                                .concat(getFineID())
-                                                .concat("?apikey=")
-                                                .concat(getKey()));*/
       webResource = client.resource(getUriBase().concat(getUserID())
                                                 .concat("/fees/")
                                                 .concat(getFineID())
                                                 .concat("?apikey=")
-                                                .concat(getKey()));
+                                                .concat(almaSecrets.getProperty(ALMA_KEY)));
       response = webResource.accept("application/xml").get(ClientResponse.class);
       if (response.getStatus() == 200)
       {
@@ -227,6 +254,8 @@ public class AlmaClient
   public int postPayment()
   {
     ClientResponse response;
+
+	loadProperties();
     client = Client.create();
     webResource = client.resource(getUriBase().concat(getUserID())
                                               .concat("/fees/")
@@ -238,7 +267,7 @@ public class AlmaClient
                                               .concat("&external_transaction_id=")
                                               .concat(getTransNo())
                                               .concat("&apikey=")
-                                              .concat(getKey()));
+                                              .concat(almaSecrets.getProperty(ALMA_KEY)));
     LOGGER.info(webResource.getURI().toString());
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();

@@ -36,13 +36,12 @@ public class AuthServlet
   {
     AuthClient theClient;
     theClient = new AuthClient();
-    theClient.setKey(getServletContext().getInitParameter("alma.key"));
+    theClient.setSecretsFile(getServletContext().getInitParameter("alma.file"));
     theClient.setPassword(request.getParameter("password"));
     theClient.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
     theClient.setUserID(request.getParameter("userID"));
     if (theClient.isValidPatron())
     {
-      //response.addHeader("SHIBUCLAUNIVERSITYID", request.getParameter("userID"));
       Cookie authCookie = new Cookie( "almaID",
                                       request.getParameter("userID") );
       authCookie.setHttpOnly(true);

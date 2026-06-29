@@ -15,14 +15,14 @@
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.ReceiptClient">
   <jsp:setProperty property="invoiceNumber" name="receiptSource" value="${param.UCLA_REF_NO}"/>
   <jsp:setProperty property="almaUriBase" name="receiptSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
-  <jsp:setProperty property="apiKey" name="receiptSource" value='<%= application.getInitParameter("alma.key") %>'/>
+  <jsp:setProperty property="almaSecretsFile" name="receiptSource" value='<%= application.getInitParameter("alma.file") %>'/>
   <jsp:setProperty property="vgerName" name="receiptSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
   <jsp:setProperty property="libBillName" name="receiptSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
   <jsp:setProperty property="uriBase" name="receiptSource" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
   <jsp:setProperty property="user" name="receiptSource" value='<%= application.getInitParameter("key.one") %>'/>
   <jsp:setProperty property="crypt" name="receiptSource" value='<%= application.getInitParameter("key.two") %>'/>
-  <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="xeroSecretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
   <jsp:setProperty property="tokensFile" name="receiptSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
