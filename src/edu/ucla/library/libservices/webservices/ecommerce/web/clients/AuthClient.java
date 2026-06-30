@@ -18,9 +18,9 @@ public class AuthClient
   private String uriBase;
   private String key;
   private WebResource webResource;
-  // collection of values needed to access Xero API
+  // collection of values needed to access Alma API
   private Properties almaSecrets;
-  // path for properties file with URIs and IDs to access Xero API
+  // path for properties file with URIs and IDs to access Alma API
   private String secretsFile;
 
   public AuthClient()
