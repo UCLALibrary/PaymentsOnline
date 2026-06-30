@@ -25,8 +25,10 @@ public class ReceiptClient
   private String user;
   private String crypt;
   private String invoiceNumber;
-  private String secretsFile;
+  private String xeroSecretsFile;
   private String tokensFile;
+  // path for properties file with URIs and IDs to access Alma API
+  private String almaSecretsFile;
 
   public ReceiptClient()
   {
@@ -160,14 +162,24 @@ public class ReceiptClient
     return almaUriBase;
   }
 
-  public void setSecretsFile(String secretsFile)
+  public void setXeroSecretsFile(String xeroSecretsFile)
   {
-    this.secretsFile = secretsFile;
+    this.xeroSecretsFile = xeroSecretsFile;
   }
 
-  public String getSecretsFile()
+  public String getXeroSecretsFile()
   {
-    return secretsFile;
+    return xeroSecretsFile;
+  }
+
+  public void setAlmaSecretsFile(String almaSecretsFile)
+  {
+    this.almaSecretsFile = almaSecretsFile;
+  }
+
+  public String getAlmaSecretsFile()
+  {
+    return almaSecretsFile;
   }
 
   public void setTokensFile(String tokensFile)
@@ -251,7 +263,7 @@ public class ReceiptClient
   {
     theClient.setDbName(getLibBillName());
     theClient.setFineID(invoice);
-    theClient.setKey(getApiKey());
+    theClient.setSecretsFile(getAlmaSecretsFile());
     theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
     theClient.setUriBase(getAlmaUriBase());
     theClient.setUserID(patronID);
@@ -274,12 +286,12 @@ public class ReceiptClient
     cleanInvoiceNo = StringHandler.extractInvoiceID(getInvoiceNumber());
     invoiceClient = new XeroInvoiceClient();
     invoiceClient.setInvoiceID(cleanInvoiceNo);
-    invoiceClient.setSecretsFile(getSecretsFile());
+    invoiceClient.setSecretsFile(getXeroSecretsFile());
     invoiceClient.setTokensFile(getTokensFile());
     theInvoice = invoiceClient.getSingleInvoice();
 
     patronClient = new XeroContactClient();
-    patronClient.setSecretsFile(getSecretsFile());
+    patronClient.setSecretsFile(getXeroSecretsFile());
     patronClient.setTokensFile(getTokensFile());
     if ( theInvoice.getContact().getAccountNumber() != null && theInvoice.getContact().getAccountNumber().length() != 0 )
     {

@@ -68,8 +68,8 @@
     <param-value>/invoicing/invoices/display_invoice/</param-value>
   </context-param>
   <context-param>
-    <param-name>alma.key</param-name>
-    <param-value>l8xx8cb982c2d4b04ef79375f5c776dbae71</param-value>
+    <param-name>alma.file</param-name>
+    <param-value>/usr/local/share/applications/xero/alma.props</param-value>
   </context-param>
   <context-param>
     <param-name>alma.base.fees</param-name>

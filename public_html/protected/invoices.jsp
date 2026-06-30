@@ -32,14 +32,14 @@
   <jsp:setProperty property="userID" name="almaSource" value="${idSource.userID}"/>
   <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
   <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
-  <jsp:setProperty property="key" name="almaSource" value='<%= application.getInitParameter("alma.key") %>'/>
+  <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("alma.file") %>'/>
 </jsp:useBean>
 
 <jsp:useBean id="patronSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.GeneralPatronClient">
   <jsp:setProperty property="userID" name="patronSource" value="${idSource.userID}"/>
   <jsp:setProperty property="uriBase" name="patronSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
-  <jsp:setProperty property="key" name="patronSource" value='<%= application.getInitParameter("alma.key") %>'/>
-  <jsp:setProperty property="secretsFile" name="patronSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="almaSecretsFile" name="patronSource" value='<%= application.getInitParameter("alma.file") %>'/>
+  <jsp:setProperty property="xeroSecretsFile" name="patronSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
   <jsp:setProperty property="tokensFile" name="patronSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 

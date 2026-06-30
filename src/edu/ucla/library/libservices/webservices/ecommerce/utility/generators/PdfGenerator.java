@@ -40,6 +40,7 @@ public class PdfGenerator
   private String dbName;
   private String uriBase;
   private String apiKey;
+  private String secretsFile;
   private Paragraph paragraph;
   private PdfPCell defaultCell;
   private PdfPCell tableCell;
@@ -47,8 +48,6 @@ public class PdfGenerator
   private PdfPTable table;
   private StringBuffer buffer;
   private float[] columnWidths;
-  //private double adjustTotal = 0D;
-  //private boolean didAdjustCalc = false;
 
   private static final SimpleDateFormat DATE_OUTPUT = new SimpleDateFormat("MM/dd/yyyy");
   private static final DecimalFormat MONEY_OUTPUT = new DecimalFormat("$###########0.00");
@@ -60,6 +59,16 @@ public class PdfGenerator
   public PdfGenerator()
   {
     super();
+  }
+
+  public void setSecretsFile(String secretsFile)
+  {
+    this.secretsFile = secretsFile;
+  }
+
+  public String getSecretsFile()
+  {
+    return secretsFile;
   }
 
   public void setInvoiceNumber(String invoiceNumber)
@@ -127,8 +136,7 @@ public class PdfGenerator
     prepAlmaClient();
     theInvoice = invoiceClient.getTheInvoice();
     thePatron = invoiceClient.getThePatron();
-    //System.out.println(thePatron.getPatronID() + "\t" + thePatron.getContactInfo().getAddresses().size());
-    if (!thePatron.getContactInfo().getAddresses().isEmpty()) 
+    if (!thePatron.getContactInfo().getAddresses().isEmpty())
     {
       if ( thePatron.getContactInfo()
                                   .getAddresses()
@@ -144,8 +152,6 @@ public class PdfGenerator
                                     .get();
       }
     }
-    //System.out.println(thePatronAddress.getLine1() + "\t" + thePatronAddress.getCity() 
-      //                 + "\t" + thePatronAddress.getZipCode());
 
     try
     {
@@ -185,12 +191,6 @@ public class PdfGenerator
       numberCell.addElement(paragraph);
       table.addCell(numberCell);
 
-      //buffer = new StringBuffer();
-      //for ( InvoiceNote theNote: theInvoice.getInvoiceNotes() )
-      //{
-      //if ( !theNote.isInternal() )
-      //buffer.append( theNote.getNote().trim() ).append( " " );
-      //}
       tableCell = new PdfPCell();
       tableCell.setBorder(PdfPCell.NO_BORDER);
       tableCell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -212,9 +212,7 @@ public class PdfGenerator
       table.addCell(prepEmptyCell(1));
       table.addCell(new Paragraph("Tax:", NORMAL));
       numberCell = getRightAlignedCell();
-      //MONEY_OUTPUT.format( theInvoice.getHeader().getCountyTax() + theInvoice.getHeader().getStateTax() ),
       paragraph = new Paragraph(MONEY_OUTPUT.format( 0.0D ), NORMAL);
-      //paragraph = new Paragraph(outputTax(), NORMAL);
       paragraph.setAlignment(Element.ALIGN_RIGHT);
       numberCell.addElement(paragraph);
       table.addCell(numberCell);
@@ -264,7 +262,7 @@ public class PdfGenerator
   {
     invoiceClient = new AlmaClient();
     invoiceClient.setDbName(getDbName());
-    invoiceClient.setKey(getApiKey());
+    invoiceClient.setSecretsFile(getSecretsFile());
     invoiceClient.setFineID(getInvoiceNumber());
     invoiceClient.setUriBase(getUriBase());
     invoiceClient.setUserID(getPatronID());
@@ -275,7 +273,7 @@ public class PdfGenerator
   {
     Image image;
     StringBuffer url;
-    
+
     url = new StringBuffer();
     url.append(getDomain()).append("/images/Lib_Logo4Invoices.gif");
 
@@ -337,7 +335,6 @@ public class PdfGenerator
     table.addCell(new Paragraph("Box 951575", NORMAL));
     table.addCell(prepEmptyCell(1));
     table.addCell(new Paragraph("", NORMAL));
-    //table.addCell( new Paragraph( theInvoice.getHeader().getPhoneNumber(), NORMAL ) );
 
     table.addCell(prepEmptyCell(1));
     table.addCell(new Paragraph("Los Angeles, CA  90095-1575", NORMAL));
@@ -373,7 +370,6 @@ public class PdfGenerator
     nestedTable.addCell(new Paragraph("Taxable:", NORMAL));
     numberCell = getRightAlignedCell();
     paragraph = new Paragraph("$0.00", NORMAL);
-    //paragraph = new Paragraph(MONEY_OUTPUT.format(theInvoice.getHeader().getTaxableTotal()), NORMAL);
     paragraph.setAlignment(Element.ALIGN_RIGHT);
     numberCell.addElement(paragraph);
     nestedTable.addCell(numberCell);
@@ -387,9 +383,7 @@ public class PdfGenerator
     defaultNestedCell = prepNestedCell(nestedTable, defaultNestedCell);
     nestedTable.addCell(new Paragraph("Tax:", NORMAL));
     numberCell = getRightAlignedCell();
-    //MONEY_OUTPUT.format( theInvoice.getHeader().getCountyTax() + theInvoice.getHeader().getStateTax() ),
     paragraph = new Paragraph(MONEY_OUTPUT.format( 0.0D ), NORMAL);
-    //paragraph = new Paragraph(outputTax(), NORMAL);
     paragraph.setAlignment(Element.ALIGN_RIGHT);
     numberCell.addElement(paragraph);
     nestedTable.addCell(numberCell);
