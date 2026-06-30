@@ -71,10 +71,6 @@
     <param-name>alma.file</param-name>
     <param-value>/usr/local/share/applications/xero/alma.props</param-value>
   </context-param>
-  <!--context-param>
-    <param-name>alma.key</param-name>
-    <param-value>l8xx8cb982c2d4b04ef79375f5c776dbae71</param-value>
-  </context-param-->
   <context-param>
     <param-name>alma.base.fees</param-name>
     <param-value>https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/</param-value>
