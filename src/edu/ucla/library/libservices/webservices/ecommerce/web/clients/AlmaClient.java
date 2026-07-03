@@ -9,7 +9,7 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
+//import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
@@ -24,6 +24,8 @@ public class AlmaClient
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
   private static final String ALMA_KEY = "alma.key";
+  private static final String LOSTITEMREPLACEMENTFEE = "LOSTITEMREPLACEMENTFEE";
+  private static final String OVERDUEFINE = "OVERDUEFINE";
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -238,7 +240,8 @@ public class AlmaClient
           theInvoice.getOwner().equalsIgnoreCase("CLICC") ||
           (!ContentTests.isEmpty(theInvoice.getTitle()) &&
            theInvoice.getTitle().toUpperCase().contains("CLICC"));
-        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(), isLaw, isClicc));
+        //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(), isLaw, isClicc));
+        theLine.setItemCode(getfeeData(theInvoice.getType().getValue(), isLaw, isClicc));
       }
       else
       {
@@ -271,5 +274,23 @@ public class AlmaClient
     LOGGER.info(webResource.getURI().toString());
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();
+  }
+
+  private String getfeeData(String feeType, boolean isLaw, boolean isClicc)
+  {
+    String feeKey;
+    if ( isLaw && feeType.equals(LOSTITEMREPLACEMENTFEE) )
+    {
+      feeKey = feeType.concat("_LAW");
+    }
+    else if ( isClicc && (feeType.equals(LOSTITEMREPLACEMENTFEE) || feeType.equals(OVERDUEFINE)) )
+    {
+      feeKey = feeType.concat("_CLICC");;
+    }
+    else
+    {
+      feeKey = feeType;
+    }
+    return almaSecrets.getProperty(feeKey);
   }
 }
