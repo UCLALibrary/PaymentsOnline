@@ -61,11 +61,6 @@ public class LoggingServlet
          ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.three" ) ) ) )
     {
       log.info(prepCashnetLog( request ));
-      /*data = new CashnetLog();
-      logCashnetMessage( data, log );
-      log.info( "<p>logged</p>" );*/
-
-      //log.info();
 
       if ( request.getParameter( "result" ).equalsIgnoreCase( "0" ) )
         request.getRequestDispatcher( "paymentservlet" ).forward( request,
@@ -107,23 +102,5 @@ public class LoggingServlet
     return details.toString().length() > 1000 ?
                        details.toString().substring( 0, 1000 ):
                        details.toString();
-  }
-
-  private void logCashnetMessage( CashnetLog data, Logger log )
-  {
-    AddCashnetLogProcedure proc;
-
-    proc = new AddCashnetLogProcedure();
-    proc.setData( data );
-    proc.setDbName( getServletContext().getInitParameter( "datasource.invoice" ) );
-    proc.setUser( getServletContext().getInitParameter( "user.logging.cashnet" ) );
-    try
-    {
-      proc.addLog();
-    }
-    catch ( Exception e )
-    {
-      log.info( "Log-entry creation failed: ".concat( e.getMessage() ) );
-    }
   }
 }
