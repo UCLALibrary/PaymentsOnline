@@ -80,7 +80,7 @@ public class PaymentServlet
     payClient = new AlmaClient();
     payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
     payClient.setFineID(invoiceNo);
-    payClient.setSecretsFile(getServletContext().getInitParameter("alma.file"));
+    payClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
     payClient.setPayMethod(request.getParameter("pmtcode").equalsIgnoreCase("CC")? "CREDIT_CARD": "ONLINE");
     log.info("transaction number " + request.getParameter("tx") );
     payClient.setTransNo(request.getParameter("tx"));

@@ -9,9 +9,9 @@ import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNet
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-//import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class AlmaClient
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
   private static final String ALMA_KEY = "alma.key";
-  private static final String LOSTITEMREPLACEMENTFEE = "LOSTITEMREPLACEMENTFEE";
-  private static final String OVERDUEFINE = "OVERDUEFINE";
+  //private static final String LOST_ITEM_REPLACEMENT_FEE = "LOSTITEMREPLACEMENTFEE";
+  //private static final String OVERDUE_FINE = "OVERDUEFINE";
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -45,7 +45,6 @@ public class AlmaClient
   private Properties almaSecrets;
   // path for properties file with URIs and IDs to access Alma API
   private String secretsFile;
-
 
   public AlmaClient()
   {
@@ -235,13 +234,7 @@ public class AlmaClient
         theInvoice = response.getEntity(AlmaInvoice.class);
         theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
         theLine.setTotalPrice(theInvoice.getBalance());
-        boolean isLaw = theInvoice.getOwner().equalsIgnoreCase("Law");
-        boolean isClicc =
-          theInvoice.getOwner().equalsIgnoreCase("CLICC") ||
-          (!ContentTests.isEmpty(theInvoice.getTitle()) &&
-           theInvoice.getTitle().toUpperCase().contains("CLICC"));
-        //theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(), isLaw, isClicc));
-        theLine.setItemCode(getfeeData(theInvoice.getType().getValue(), isLaw, isClicc));
+        theLine.setItemCode(DataHandler.getAlmaItemCode(getDbName(), theInvoice.getType().getValue(), theInvoice.isLaw(), theInvoice.isClicc()));
       }
       else
       {
@@ -276,7 +269,7 @@ public class AlmaClient
     return response.getClientResponseStatus().getStatusCode();
   }
 
-  private String getfeeData(String feeType, boolean isLaw, boolean isClicc)
+  /*private String getfeeData(String feeType, boolean isLaw, boolean isClicc)
   {
     String feeKey;
     if ( isLaw && feeType.equals(LOSTITEMREPLACEMENTFEE) )
@@ -292,5 +285,5 @@ public class AlmaClient
       feeKey = feeType;
     }
     return almaSecrets.getProperty(feeKey);
-  }
+  }*/
 }

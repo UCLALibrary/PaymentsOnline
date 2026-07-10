@@ -26,8 +26,8 @@
               <jsp:setProperty property="fineID" name="almaSource" param="invoice"/>
               <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
               <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
-              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("alma.file") %>'/>
-              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
+              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
               <%--jsp:setProperty property="feeType" name="almaSource" param="invoice"/--%>
             </jsp:useBean>
             <c:set var="index" value="0"/>

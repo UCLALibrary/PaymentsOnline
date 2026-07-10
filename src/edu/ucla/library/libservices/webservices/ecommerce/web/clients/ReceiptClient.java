@@ -25,10 +25,10 @@ public class ReceiptClient
   private String user;
   private String crypt;
   private String invoiceNumber;
-  private String xeroSecretsFile;
+  private String secretsFile;
   private String tokensFile;
   // path for properties file with URIs and IDs to access Alma API
-  private String almaSecretsFile;
+  //private String almaSecretsFile;
 
   public ReceiptClient()
   {
@@ -162,17 +162,17 @@ public class ReceiptClient
     return almaUriBase;
   }
 
-  public void setXeroSecretsFile(String xeroSecretsFile)
+  public void setSecretsFile(String secretsFile)
   {
-    this.xeroSecretsFile = xeroSecretsFile;
+    this.secretsFile = secretsFile;
   }
 
-  public String getXeroSecretsFile()
+  public String getSecretsFile()
   {
-    return xeroSecretsFile;
+    return secretsFile;
   }
 
-  public void setAlmaSecretsFile(String almaSecretsFile)
+  /*public void setAlmaSecretsFile(String almaSecretsFile)
   {
     this.almaSecretsFile = almaSecretsFile;
   }
@@ -180,7 +180,7 @@ public class ReceiptClient
   public String getAlmaSecretsFile()
   {
     return almaSecretsFile;
-  }
+  }*/
 
   public void setTokensFile(String tokensFile)
   {
@@ -261,9 +261,9 @@ public class ReceiptClient
 
   private void prepAlmaClient(AlmaClient theClient, String patronID, String invoice)
   {
-    theClient.setDbName(getLibBillName());
+    theClient.setDbName(getVgerName());
     theClient.setFineID(invoice);
-    theClient.setSecretsFile(getAlmaSecretsFile());
+    theClient.setSecretsFile(getSecretsFile());
     theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
     theClient.setUriBase(getAlmaUriBase());
     theClient.setUserID(patronID);
@@ -286,12 +286,12 @@ public class ReceiptClient
     cleanInvoiceNo = StringHandler.extractInvoiceID(getInvoiceNumber());
     invoiceClient = new XeroInvoiceClient();
     invoiceClient.setInvoiceID(cleanInvoiceNo);
-    invoiceClient.setSecretsFile(getXeroSecretsFile());
+    invoiceClient.setSecretsFile(getSecretsFile());
     invoiceClient.setTokensFile(getTokensFile());
     theInvoice = invoiceClient.getSingleInvoice();
 
     patronClient = new XeroContactClient();
-    patronClient.setSecretsFile(getXeroSecretsFile());
+    patronClient.setSecretsFile(getSecretsFile());
     patronClient.setTokensFile(getTokensFile());
     if ( theInvoice.getContact().getAccountNumber() != null && theInvoice.getContact().getAccountNumber().length() != 0 )
     {

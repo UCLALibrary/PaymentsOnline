@@ -36,7 +36,7 @@ public class AuthServlet
   {
     AuthClient theClient;
     theClient = new AuthClient();
-    theClient.setSecretsFile(getServletContext().getInitParameter("alma.file"));
+    theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
     theClient.setPassword(request.getParameter("password"));
     theClient.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
     theClient.setUserID(request.getParameter("userID"));

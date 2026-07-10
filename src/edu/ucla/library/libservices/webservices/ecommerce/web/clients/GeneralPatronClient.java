@@ -8,8 +8,8 @@ public class GeneralPatronClient
 {
   private GeneralPatron thePatron;
   private String key;
-  private String xeroSecretsFile;
-  private String almaSecretsFile;
+  private String secretsFile;
+  //private String almaSecretsFile;
   private String tokensFile;
   private String uriBase;
   private String userID;
@@ -37,7 +37,7 @@ public class GeneralPatronClient
       almaClient = new AlmaClient();
       almaClient.setUserID(getUserID());
       almaClient.setUriBase(getUriBase());
-      almaClient.setSecretsFile(getAlmaSecretsFile());
+      almaClient.setSecretsFile(getSecretsFile());
       almaUser = almaClient.getThePatron();
       if (almaUser.getFirstName() != null || almaUser.getFirstName().length() == 0)
       {
@@ -53,7 +53,7 @@ public class GeneralPatronClient
         contactClient = new XeroContactClient();
         contactClient.setUserID(getUserID());
         contactClient.setTokensFile(getTokensFile());
-        contactClient.setSecretsFile(getXeroSecretsFile());
+        contactClient.setSecretsFile(getSecretsFile());
         theContact = contactClient.getTheContact();
         mapXeroToGeneral(theContact, thePatron);
       }
@@ -71,17 +71,17 @@ public class GeneralPatronClient
     return key;
   }
 
-  public void setXeroSecretsFile(String xeroSecretsFile)
+  public void setSecretsFile(String secretsFile)
   {
-    this.xeroSecretsFile = xeroSecretsFile;
+    this.secretsFile = secretsFile;
   }
 
-  public String getXeroSecretsFile()
+  public String getSecretsFile()
   {
-    return xeroSecretsFile;
+    return secretsFile;
   }
 
-  public void setAlmaSecretsFile(String almaSecretsFile)
+  /*public void setAlmaSecretsFile(String almaSecretsFile)
   {
     this.almaSecretsFile = almaSecretsFile;
   }
@@ -89,7 +89,7 @@ public class GeneralPatronClient
   public String getAlmaSecretsFile()
   {
     return almaSecretsFile;
-  }
+  }*/
 
   public void setTokensFile(String tokensFile)
   {
@@ -143,7 +143,7 @@ public class GeneralPatronClient
     contactClient = new XeroContactClient();
     contactClient.setUserID(getUserID());
     contactClient.setTokensFile(getTokensFile());
-    contactClient.setSecretsFile(getXeroSecretsFile());
+    contactClient.setSecretsFile(getSecretsFile());
     theContact = contactClient.getTheContact();
     return theContact.getContactID();
   }
