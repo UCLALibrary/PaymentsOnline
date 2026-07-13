@@ -27,7 +27,7 @@ public class DataHandler
   private static final String INSERT = "INSERT INTO public.\"ALMA_INVOICE_PATRON\"(\"INVOICE_ID\", \"PATRON_ID\") VALUES(?,?)";
   private static String INSERT_LOG =
     "INSERT INTO public.\"cashnet_log\"(\"ucla_ref_no\", \"result_code\"," +
-    " \"cn_trans_no\", \"cn_batch_no\", \"pmt_code\", \"eff_date\", \"cn_details\")" + " VALUES(?, ?, ?, ?, ?, ?, ?)";
+    " \"cn_trans_no\", \"cn_batch_no\", \"pmt_code\", \"eff_date\", \"cn_details\")" + " VALUES(?, ?, ?, ?, ?, to_date(?, 'MM/DD/YYYY'), ?)";
   private static final String SELECT_ALMA_FEE = "SELECT \"item_code\" FROM public.\"alma_itemcodes\" WHERE \"fine_fee_type\" = ?";
   private static final String SELECT_FEE = "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ?";
   private static final String SELECT_FEE_LAW =

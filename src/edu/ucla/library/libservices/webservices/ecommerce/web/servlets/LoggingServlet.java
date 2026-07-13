@@ -54,9 +54,9 @@ public class LoggingServlet
     log.info( "logging payment result for invoice " +
               request.getParameter( "UCLA_REF_NO" ) + "; result: " +
               ( request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
-                "Paid ": "Failed " ) +
+                "Paid ": "Failed " ) + " on " + request.getParameter( "effdate" ) +
               ( !request.getParameter( "result" ).equalsIgnoreCase( "0" ) ?
-                "Reason:{" + request.getParameter( "respmessage" ) + "}":
+                " Reason:{" + request.getParameter( "respmessage" ) + "}":
                 "" ) );
 
     if ( ( request.getRemoteAddr().equalsIgnoreCase( getServletContext().getInitParameter( "cashnet.ip.one" ) ) ) ||
