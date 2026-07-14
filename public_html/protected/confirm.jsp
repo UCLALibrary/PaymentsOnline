@@ -17,12 +17,8 @@
   <jsp:setProperty property="almaUriBase" name="receiptSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
   <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
   <jsp:setProperty property="vgerName" name="receiptSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
-  <jsp:setProperty property="libBillName" name="receiptSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
   <jsp:setProperty property="uriBase" name="receiptSource" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
-  <jsp:setProperty property="user" name="receiptSource" value='<%= application.getInitParameter("key.one") %>'/>
-  <jsp:setProperty property="crypt" name="receiptSource" value='<%= application.getInitParameter("key.two") %>'/>
-  <%--jsp:setProperty property="xeroSecretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/--%>
   <jsp:setProperty property="tokensFile" name="receiptSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
@@ -143,17 +139,15 @@
                 <td>&nbsp;</td>
                 <td>A receipt has also been emailed to the address you entered on the payment screen.</td>
               </tr>
-              <c:if test="${receiptSource.theReceipt.unpaid gt 0 and not noshow}">
-                <tr>
-                  <td>&nbsp;</td>
-                  <td>
-                    <form action="invoices.jsp">
-                      <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
-                      <input type="submit" value="Pay another invoice">
-                    </form>
-                  </td>
-                </tr>
-              </c:if>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <form action="invoices.jsp">
+                    <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
+                    <input type="submit" value="Pay another invoice">
+                  </form>
+                </td>
+              </tr>
             </table>
           </c:when>
           <c:otherwise>
@@ -217,6 +211,15 @@
                 <td>&nbsp;</td>
                 <td>
                   Thank you. 
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <form action="invoices.jsp">
+                    <input id="uid" type="hidden" name="uid" value="${receiptSource.theReceipt.uid}"/>
+                    <input type="submit" value="Pay another invoice">
+                  </form>
                 </td>
               </tr>
             </table>
