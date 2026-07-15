@@ -24,8 +24,6 @@ public class AlmaClient
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(AlmaClient.class);
   private static final String ALMA_KEY = "alma.key";
-  //private static final String LOST_ITEM_REPLACEMENT_FEE = "LOSTITEMREPLACEMENTFEE";
-  //private static final String OVERDUE_FINE = "OVERDUEFINE";
 
   private AlmaFees theFees;
   private AlmaInvoice theInvoice;
@@ -268,22 +266,4 @@ public class AlmaClient
     response = webResource.type("text/xml").post(ClientResponse.class);
     return response.getClientResponseStatus().getStatusCode();
   }
-
-  /*private String getfeeData(String feeType, boolean isLaw, boolean isClicc)
-  {
-    String feeKey;
-    if ( isLaw && feeType.equals(LOSTITEMREPLACEMENTFEE) )
-    {
-      feeKey = feeType.concat("_LAW");
-    }
-    else if ( isClicc && (feeType.equals(LOSTITEMREPLACEMENTFEE) || feeType.equals(OVERDUEFINE)) )
-    {
-      feeKey = feeType.concat("_CLICC");;
-    }
-    else
-    {
-      feeKey = feeType;
-    }
-    return almaSecrets.getProperty(feeKey);
-  }*/
 }

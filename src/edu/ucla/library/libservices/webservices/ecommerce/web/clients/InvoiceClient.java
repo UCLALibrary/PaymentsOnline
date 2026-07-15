@@ -39,16 +39,13 @@ public class InvoiceClient
 
   public SimpleHeader getTheInvoice()
   {
-    //if ( theInvoice == null )
-    {
-      client = Client.create();
-      webResource =
-          client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoiceID() ) );
-      theInvoice =
-          webResource.header( "Authorization",
-                              makeAuthorization( getResourceURI().concat( getInvoiceID() ) ) )
+    client = Client.create();
+    webResource =
+        client.resource( getUriBase().concat( getResourceURI() ).concat( getInvoiceID() ) );
+    theInvoice =
+        webResource.header( "Authorization",
+                            makeAuthorization( getResourceURI().concat( getInvoiceID() ) ) )
         .get( SimpleHeader.class );
-    }
     return theInvoice;
   }
 

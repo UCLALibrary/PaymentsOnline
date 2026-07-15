@@ -9,7 +9,6 @@ public class GeneralPatronClient
   private GeneralPatron thePatron;
   private String key;
   private String secretsFile;
-  //private String almaSecretsFile;
   private String tokensFile;
   private String uriBase;
   private String userID;

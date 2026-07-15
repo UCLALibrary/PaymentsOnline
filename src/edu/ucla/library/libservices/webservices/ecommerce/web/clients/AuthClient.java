@@ -111,7 +111,6 @@ public class AuthClient
     }
     else
     {
-      //System.out.println("status code = " + response.getStatus());
       return false;
     }
   }

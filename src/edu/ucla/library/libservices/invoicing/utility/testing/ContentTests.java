@@ -33,7 +33,7 @@ public class ContentTests
                                         String dbName )
   {
     return (
-      Integer.valueOf( new JdbcTemplate(DataSourceFactory.createDataSource( dbName ) //DataSourceFactory.createBillSource()
+      Integer.valueOf( new JdbcTemplate(DataSourceFactory.createDataSource( dbName )
                         ).queryForObject(
           GET_INVOICE, new Object[] { invoiceID, uid }, String.class ) ) == 1 );
   }

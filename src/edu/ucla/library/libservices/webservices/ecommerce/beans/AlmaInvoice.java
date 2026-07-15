@@ -3,10 +3,8 @@ package edu.ucla.library.libservices.webservices.ecommerce.beans;
 import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
 import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.dates.DateConverter;
-//import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 
 import java.util.List;
-//import java.util.Properties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,9 +15,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AlmaInvoice
 {
-  //private static final String ALMA_KEY = "alma.key";
-  //private static final String LOST_ITEM_REPLACEMENT_FEE = "LOSTITEMREPLACEMENTFEE";
-  //private static final String OVERDUE_FINE = "OVERDUEFINE";
 
   @XmlElement(name = "id")
   private String invoiceNumber;
@@ -31,7 +26,6 @@ public class AlmaInvoice
   private String barcode;
   @XmlElement(name = "type")
   private FeeType type;
-  //private String type;
   @XmlElement(name = "creation_time")
   private String feeDate;
   @XmlElement(name = "owner")
@@ -40,9 +34,6 @@ public class AlmaInvoice
   private String status;
   @XmlElement(name = "lines")
   private List<CashNetLine> lineItems;
-
-  // collection of values needed to access Alma API
-  //private Properties almaProps;
 
   public AlmaInvoice()
   {
@@ -157,17 +148,6 @@ public class AlmaInvoice
     return lineItems;
   }
 
-  /**
-   * utility method to retrieve the properties needed by class
-  private void loadProperties(String propsFile)
-  {
-    // utility to retrieve properties
-    PropertiesHandler propsGetter;
-    propsGetter = new PropertiesHandler();
-    propsGetter.setFileName(getPropsFile());
-    almaProps = secretGetter.loadProperties();
-  }*/
-
   public boolean isClicc()
   {
 	return getOwner().equalsIgnoreCase("CLICC") ||
@@ -179,31 +159,4 @@ public class AlmaInvoice
   {
 	return getOwner().equalsIgnoreCase("Law");
   }
-
-  /*private String getItemCode(String feeType, String propsFile)
-  {
-    String feeKey;
-	boolean isLaw;
-	boolean isClicc;
-
-    loadProperties(propsFile);
-	isLaw = getOwner().equalsIgnoreCase("Law");
-	isClicc = getOwner().equalsIgnoreCase("CLICC") ||
-	           (!ContentTests.isEmpty(getTitle()) &&
-	           getTitle().toUpperCase().contains("CLICC"));
-
-    if ( isLaw && feeType.equals(LOSTITEMREPLACEMENTFEE) )
-    {
-      feeKey = feeType.concat("_LAW");
-    }
-    else if ( isClicc && (feeType.equals(LOSTITEMREPLACEMENTFEE) || feeType.equals(OVERDUEFINE)) )
-    {
-      feeKey = feeType.concat("_CLICC");;
-    }
-    else
-    {
-      feeKey = feeType;
-    }
-    return almaProps.getProperty(feeKey);
-  }*/
 }

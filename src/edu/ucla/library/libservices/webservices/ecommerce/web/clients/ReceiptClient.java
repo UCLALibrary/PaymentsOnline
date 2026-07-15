@@ -27,8 +27,6 @@ public class ReceiptClient
   private String invoiceNumber;
   private String secretsFile;
   private String tokensFile;
-  // path for properties file with URIs and IDs to access Alma API
-  //private String almaSecretsFile;
 
   public ReceiptClient()
   {

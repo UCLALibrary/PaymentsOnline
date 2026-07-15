@@ -1,8 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
-//import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
-//import edu.ucla.library.libservices.invoicing.webservices.logging.db.procs.AddCashnetLogProcedure;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 
 import java.io.IOException;
@@ -104,23 +102,4 @@ public class LoggingServlet
                        details.toString().substring( 0, 1000 ):
                        details.toString() ) );
   }
-
-  /*private void logCashnetMessage( CashnetLog data, Logger log )
-  {
-	DataSource dbSource = DataSourceFactory.createDataSource( getServletContext().getInitParameter( "datasource.ucladb" ) );
-    AddCashnetLogProcedure proc;
-
-    proc = new AddCashnetLogProcedure();
-    proc.setData( data );
-    proc.setDbName( getServletContext().getInitParameter( "datasource.invoice" ) );
-    proc.setUser( getServletContext().getInitParameter( "user.logging.cashnet" ) );
-    try
-    {
-      proc.addLog();
-    }
-    catch ( Exception e )
-    {
-      log.info( "Log-entry creation failed: ".concat( e.getMessage() ) );
-    }
-  }*/
 }

@@ -78,7 +78,7 @@ public class PaymentServlet
     log.info("working with invoice " + invoiceNo);
 
     payClient = new AlmaClient();
-    payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
+    payClient.setAmount(String.valueOf(getPaymentAmount(request)));
     payClient.setFineID(invoiceNo);
     payClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
     payClient.setPayMethod(request.getParameter("pmtcode").equalsIgnoreCase("CC")? "CREDIT_CARD": "ONLINE");

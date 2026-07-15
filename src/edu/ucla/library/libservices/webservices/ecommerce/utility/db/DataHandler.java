@@ -82,26 +82,16 @@ public class DataHandler
     return patronID;
   }
 
-  public void setFeeType(String feeType)
-  {
-    this.feeType = feeType;
-  }
-
-  /*private String getFeeType()
-  {
-    return feeType;
-  }*/
-
   private void makeConnection()
   {
     ds = DataSourceFactory.createDataSource(getDbName());
-    //ds = DataSourceFactory.createBillSource(); //.createVgerSource();
+    // makes local datasource, used in testing
+    //ds = DataSourceFactory.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
   {
     DataSource source = DataSourceFactory.createDataSource(dbName);
-    //DataSource source = DataSourceFactory.createVgerSource();
     String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
     if (Integer.valueOf( new JdbcTemplate(source).queryForObject(COUNT, new Object[] { cleanInvoice }, String.class) ) == 0)
     {
@@ -119,7 +109,6 @@ public class DataHandler
   {
     String theID = null;
     makeConnection();
-    //LOGGER.info(SELECT_PATRON.replace("?", "'" + getInvoiceID() + "'"));
     theID =
       new JdbcTemplate(ds).queryForObject(SELECT_PATRON, new Object[] { getInvoiceID() }, String.class).toString();
     return theID;

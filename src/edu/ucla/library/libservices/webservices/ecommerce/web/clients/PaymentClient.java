@@ -98,8 +98,7 @@ public class PaymentClient
 
     uriWithParams = new StringBuffer( getResourceURI() );
     uriWithParams.append( "/invoice/" ).append( getInvoiceNumber() ).append( "/type/" ).append( getPaymentTypeID() );
-    
-    //System.out.println( "resource = " + getUriBase().concat( uriWithParams.toString() ) );
+
     ClientResponse response;
     client = Client.create();
     webResource =
@@ -111,56 +110,3 @@ public class PaymentClient
   }
 
 }
-  //import java.util.ArrayList;
-  //import java.util.List;
-  //private double amount;
-  //private String userName;
-  /*public void setAmount( double amount )
-  {
-    this.amount = amount;
-  }
-
-  private double getAmount()
-  {
-    return amount;
-  }*/
-  /*private List<String> buildContentList()
-  {
-    List<String> content;
-
-    content = new ArrayList<String>( 6 );
-    content.add( "<payment>" );
-    content.add( "<invoiceNumber>" + getInvoiceNumber() +
-                 "</invoiceNumber>" );
-    content.add( "<amount>" + getAmount() + "</amount>" );
-    content.add( "<createdBy>" + getUser() + "</createdBy>" );
-    content.add( "<paymentTypeID>" + getPaymentTypeID() +
-                 "</paymentTypeID>" );
-    content.add( "</payment>" );
-    return content;
-  }
-
-  private String buildContentString()
-  {
-    StringBuffer content;
-
-    content = new StringBuffer(6);
-    content.append( "<payment>" );
-    content.append( "<invoiceNumber>" + getInvoiceNumber() +
-                 "</invoiceNumber>" );
-    content.append( "<amount>" + getAmount() + "</amount>" );
-    content.append( "<createdBy>" + getUserName() + "</createdBy>" );
-    content.append( "<paymentTypeID>" + getPaymentTypeID() +
-                 "</paymentTypeID>" );
-    content.append( "</payment>" );
-    return content.toString();
-  }*/
-  /*public void setUserName( String userName )
-  {
-    this.userName = userName;
-  }
-
-  private String getUserName()
-  {
-    return userName;
-  }*/
