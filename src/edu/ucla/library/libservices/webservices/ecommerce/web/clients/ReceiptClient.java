@@ -4,9 +4,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
-import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.ReceiptInfo;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
@@ -18,7 +17,6 @@ public class ReceiptClient
   private ReceiptInfo theReceipt;
   private String resourceURI;
   private String vgerName;
-  private String libBillName;
   private String apiKey;
   private String uriBase;
   private String almaUriBase;
@@ -53,21 +51,12 @@ public class ReceiptClient
       {
         theReceipt = buildAlmaReceipt();
       }
-      else if (getInvoiceNumber().contains("-"))
+      else
       {
         theReceipt = buildXeroReceipt();
       }
-      else
-      {
-        theReceipt = buildLibBillReceipt();
-      }
     }
     return theReceipt;
-  }
-
-  private String makeAuthorization(String request)
-  {
-    return SignatureBuilder.computeAuth(SignatureBuilder.buildSimpleSignature("GET", request), getUser(), getCrypt());
   }
 
   public void setResourceURI(String resourceURI)
@@ -130,26 +119,6 @@ public class ReceiptClient
     return vgerName;
   }
 
-  public void setLibBillName(String libBillName)
-  {
-    this.libBillName = libBillName;
-  }
-
-  private String getLibBillName()
-  {
-    return libBillName;
-  }
-
-  public void setApiKey(String apiKey)
-  {
-    this.apiKey = apiKey;
-  }
-
-  private String getApiKey()
-  {
-    return apiKey;
-  }
-
   public void setAlmaUriBase(String almaUriBase)
   {
     this.almaUriBase = almaUriBase;
@@ -169,16 +138,6 @@ public class ReceiptClient
   {
     return secretsFile;
   }
-
-  /*public void setAlmaSecretsFile(String almaSecretsFile)
-  {
-    this.almaSecretsFile = almaSecretsFile;
-  }
-
-  public String getAlmaSecretsFile()
-  {
-    return almaSecretsFile;
-  }*/
 
   public void setTokensFile(String tokensFile)
   {
@@ -216,45 +175,12 @@ public class ReceiptClient
     almaReceipt.setUid(patronID);
     almaReceipt.setStatus(client.getTheInvoice().getStatus());
     almaReceipt.setUserName(user.getFirstName() + " " + user.getLastName());
-    handler.setDbName(getLibBillName());
-    almaReceipt.setUnpaid(client.getTheFees()
+    //handler.setDbName(getLibBillName());
+    /*almaReceipt.setUnpaid(client.getTheFees()
                                 .getFees()
-                                .size() + handler.getUnpaidCount());
+                                .size() + handler.getUnpaidCount());*/
 
     return almaReceipt;
-  }
-
-  private ReceiptInfo buildLibBillReceipt()
-  {
-    AlmaClient almaClient;
-    Client client;
-    ReceiptInfo libBillReceipt;
-    WebResource webResource;
-    ClientResponse response;
-
-    client = Client.create();
-    webResource = client.resource(getUriBase().concat(getResourceURI()).concat(getInvoiceNumber()));
-    response = webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
-                          .type("application/json")
-                          .get(ClientResponse.class);
-    if (response.getStatus() == 200)
-    {
-      libBillReceipt = response.getEntity(ReceiptInfo.class);
-    }
-    else
-    {
-      libBillReceipt = new ReceiptInfo();
-    }
-
-    almaClient = new AlmaClient();
-    //check that invoice number is not empty
-    if (!ContentTests.isEmpty(getInvoiceNumber()))
-    {
-      prepAlmaClient(almaClient, String.valueOf(libBillReceipt.getPatronID()), getInvoiceNumber());
-      libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
-    }
-
-    return libBillReceipt;
   }
 
   private void prepAlmaClient(AlmaClient theClient, String patronID, String invoice)
@@ -308,8 +234,6 @@ public class ReceiptClient
     xeroReceipt.setUserName(thePatron.getFirstName() + " " + thePatron.getLastName());
 
     invoiceClient.setContactID(thePatron.getContactID());
-
-    xeroReceipt.setUnpaid(invoiceClient.getAllUnpaid().size());
 
     return xeroReceipt;
   }

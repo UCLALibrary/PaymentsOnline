@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
-import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.CashnetLog;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 
 import java.io.IOException;

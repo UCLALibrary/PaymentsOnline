@@ -1,7 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
-import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.dates.DateConverter;
 
 import java.util.List;

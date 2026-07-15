@@ -1,7 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.db;
 
-import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
-import edu.ucla.library.libservices.invoicing.webservices.logging.beans.CashnetLog;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.CashnetLog;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 
 import java.sql.Connection;
@@ -29,17 +28,7 @@ public class DataHandler
     "INSERT INTO public.\"cashnet_log\"(\"ucla_ref_no\", \"result_code\"," +
     " \"cn_trans_no\", \"cn_batch_no\", \"pmt_code\", \"eff_date\", \"cn_details\")" + " VALUES(?, ?, ?, ?, ?, to_date(?, 'MM/DD/YYYY'), ?)";
   private static final String SELECT_ALMA_FEE = "SELECT \"item_code\" FROM public.\"alma_itemcodes\" WHERE \"fine_fee_type\" = ?";
-  private static final String SELECT_FEE = "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ?";
-  private static final String SELECT_FEE_LAW =
-    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' LAW'";
-  private static final String SELECT_FEE_CLICC =
-    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' CLICC'";
   private static final String SELECT_PATRON =
-    "SELECT \"PATRON_ID\" FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
-  private static final String UNPAID =
-    "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid',"
-    + "'Deposit Due','Final Payment Due')";
-  private static final String OVERDUEFINE = "OVERDUEFINE";
 
   private DataSource ds;
   private String dbName;
@@ -148,12 +137,6 @@ public class DataHandler
       itemCode= null;
     }
     return itemCode;
-  }
-
-  public int getUnpaidCount()
-  {
-    makeConnection();
-    return Integer.valueOf( new JdbcTemplate(ds).queryForObject(UNPAID, new Object[] { getPatronID() }, String.class) );
   }
 
   public static void logCashnetMessage(CashnetLog data, String dbName)

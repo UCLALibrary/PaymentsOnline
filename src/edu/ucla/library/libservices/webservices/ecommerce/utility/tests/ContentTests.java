@@ -8,10 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class ContentTests
 {
-  private static final String GET_INVOICE =
-    "SELECT COUNT(ivw.invoice_number) FROM invoice_vw ivw WHERE ivw.invoice_number"
-    + " = ? and ivw.patron_id = ?";
-
   public ContentTests()
   {
     super();
@@ -27,15 +23,6 @@ public class ContentTests
   {
     return ( value == null || value.toString().equalsIgnoreCase( "" ) ||
              value.toString().length() == 0 );
-  }
-
-  public static boolean isLegitInvoice( String invoiceID, String uid,
-                                        String dbName )
-  {
-    return (
-      Integer.valueOf( new JdbcTemplate(DataSourceFactory.createDataSource( dbName )
-                        ).queryForObject(
-          GET_INVOICE, new Object[] { invoiceID, uid }, String.class ) ) == 1 );
   }
 
   public static boolean isUID(String value)

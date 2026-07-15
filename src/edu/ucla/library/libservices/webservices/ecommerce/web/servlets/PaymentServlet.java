@@ -1,7 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
-import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
-import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
@@ -48,7 +47,7 @@ public class PaymentServlet
   }
 
   /**
-   * Record a payment in Alma/LibBill/Xero
+   * Record a payment in Alma/Xero
    * @param request HTTP request, holding parameters defining the payment
    * @param log logger passed to subsidiary methods
    */
@@ -58,13 +57,9 @@ public class PaymentServlet
     {
       doAlmaPayment(request, log);
     }
-    else if (request.getParameter("UCLA_REF_NO").contains("-"))
-    {
-      doXeroPayment(request, log);
-    }
     else
     {
-      doLibBillPayment(request, log);
+      doXeroPayment(request, log);
     }
   }
 
@@ -89,25 +84,6 @@ public class PaymentServlet
     responseCode = payClient.postPayment();
     log.info("payment POST response = " + responseCode);
   }
-
-  private void doLibBillPayment(HttpServletRequest request, Logger log)
-  {
-    ApplyFullPaymentProcedure proc;
-
-    proc = new ApplyFullPaymentProcedure();
-    proc.setDbName(getServletContext().getInitParameter("datasource.invoice"));
-    proc.setUserName(getServletContext().getInitParameter("user.logging.cashnet"));
-    proc.setInvoiceNumber(request.getParameter("UCLA_REF_NO"));
-    proc.setPaymentType(request.getParameter("pmtcode").equalsIgnoreCase("CC")? 3: 2);
-    try
-    {
-      proc.addPayment();
-    }
-    catch (Exception e)
-    {
-      log.error("Payment failed: ".concat(e.getMessage()));
-    }
- }
 
   private String getUser(String fine, Logger log)
   {
