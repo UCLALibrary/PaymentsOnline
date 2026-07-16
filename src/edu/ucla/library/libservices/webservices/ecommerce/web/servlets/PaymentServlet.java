@@ -15,8 +15,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 public class PaymentServlet
   extends HttpServlet
 {

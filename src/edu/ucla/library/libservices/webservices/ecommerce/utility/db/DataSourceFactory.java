@@ -4,9 +4,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import java.sql.Connection;
 import javax.sql.DataSource;
-
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class DataSourceFactory
 {
@@ -15,9 +14,12 @@ public class DataSourceFactory
     super();
   }
 
-  public static DriverManagerDataSource createVgerSource()
+  /*
+  	* TODO: rewrite this to use plain jdbc
+  */
+  public static Connection createVgerSource()
   {
-    DriverManagerDataSource ds;
+    /*DriverManagerDataSource ds;
 
     ds = new DriverManagerDataSource();
     ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
@@ -25,20 +27,8 @@ public class DataSourceFactory
     ds.setUsername( "catalog_user" );
     ds.setPassword( "pwd" );
 
-    return ds;
-  }
-
-  public static DriverManagerDataSource createBillSource()
-  {
-    DriverManagerDataSource ds;
-
-    ds = new DriverManagerDataSource();
-    ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-    ds.setUrl( "bill_url" );
-    ds.setUsername( "bill_user" );
-    ds.setPassword( "bill_pwd" );
-
-    return ds;
+    return ds;*/
+    return null;
   }
 
   public static DataSource createDataSource( String name )

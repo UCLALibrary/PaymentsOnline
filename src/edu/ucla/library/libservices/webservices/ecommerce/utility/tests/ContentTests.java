@@ -1,10 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.tests;
 
-import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataSourceFactory;
-
 import java.util.regex.Pattern;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class ContentTests
 {
