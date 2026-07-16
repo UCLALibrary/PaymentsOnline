@@ -39,7 +39,7 @@ public class ReceiptClient
    * amounts but no account can't be submitted to Transact, since there's no way to retrieve the Trasact item code.
    * Such lines should be caught before an invoice is submitted to Transact, but possible thrown exception is noted here
    * for completeness and Java language rules.
-   * Buusiness logic for LibBill and Alma invoices prevents the creation of line items without amounts/link to Transact
+   * Buusiness logic for Alma invoices prevents the creation of line items without amounts/link to Transact
    * item code.
    */
   public ReceiptInfo getTheReceipt()
@@ -175,10 +175,6 @@ public class ReceiptClient
     almaReceipt.setUid(patronID);
     almaReceipt.setStatus(client.getTheInvoice().getStatus());
     almaReceipt.setUserName(user.getFirstName() + " " + user.getLastName());
-    //handler.setDbName(getLibBillName());
-    /*almaReceipt.setUnpaid(client.getTheFees()
-                                .getFees()
-                                .size() + handler.getUnpaidCount());*/
 
     return almaReceipt;
   }

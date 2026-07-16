@@ -13,15 +13,13 @@ import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 public class DataHandler
 {
   private static final Logger LOGGER = LogManager.getLogger( DataHandler.class );
   private static final String LOST_ITEM_REPLACEMENT_FEE = "LOSTITEMREPLACEMENTFEE";
   private static final String OVERDUE_FINE = "OVERDUEFINE";
 
-  private static final String COUNT = "SELECT count(*) FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
+  private static final String COUNT = "SELECT count(*) AS invoices FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String DELETE = "DELETE FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String INSERT = "INSERT INTO public.\"ALMA_INVOICE_PATRON\"(\"INVOICE_ID\", \"PATRON_ID\") VALUES(?,?)";
   private static String INSERT_LOG =
@@ -29,6 +27,7 @@ public class DataHandler
     " \"cn_trans_no\", \"cn_batch_no\", \"pmt_code\", \"eff_date\", \"cn_details\")" + " VALUES(?, ?, ?, ?, ?, to_date(?, 'MM/DD/YYYY'), ?)";
   private static final String SELECT_ALMA_FEE = "SELECT \"item_code\" FROM public.\"alma_itemcodes\" WHERE \"fine_fee_type\" = ?";
   private static final String SELECT_PATRON =
+    "SELECT \"PATRON_ID\" FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
 
   private DataSource ds;
   private String dbName;
@@ -80,32 +79,78 @@ public class DataHandler
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
   {
-    DataSource source = DataSourceFactory.createDataSource(dbName);
     String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
-    if (Integer.valueOf( new JdbcTemplate(source).queryForObject(COUNT, new Object[] { cleanInvoice }, String.class) ) == 0)
+    try (Connection con = DataSourceFactory.createDataSource(dbName).getConnection())
     {
-      new JdbcTemplate(source).update(INSERT, new Object[] { cleanInvoice, patronID });
+      PreparedStatement pstmt;
+      ResultSet rs;
+      int count;
+      pstmt = con.prepareStatement(COUNT);
+      pstmt.setString(1, cleanInvoice);
+      rs = pstmt.executeQuery();
+      rs.next();
+      count = rs.getInt("invoices");
+
+      if (count == 0)
+      {
+	    pstmt = con.prepareStatement(INSERT);
+        pstmt.setString(1, cleanInvoice);
+        pstmt.setString(2, patronID);
+        rs = pstmt.executeQuery();
+        pstmt.executeUpdate();
+      }
+	}
+    catch (SQLException sqle)
+    {
+      sqle.printStackTrace();
     }
   }
 
   public void deleteInvoiceData()
   {
     makeConnection();
-    new JdbcTemplate(ds).update(DELETE, new Object[] { getInvoiceID() });
+    try (Connection con = ds.getConnection())
+    {
+      PreparedStatement pstmt;
+      con.setAutoCommit(false);
+      pstmt = con.prepareStatement(DELETE);
+      pstmt.setString(1, getInvoiceID());
+      pstmt.executeUpdate();
+
+      con.commit();
+      pstmt.close();
+
+    }
+    catch (SQLException sqle)
+    {
+      sqle.printStackTrace();
+    }
   }
 
   public String getPatronData()
   {
     String theID = null;
     makeConnection();
-    theID =
-      new JdbcTemplate(ds).queryForObject(SELECT_PATRON, new Object[] { getInvoiceID() }, String.class).toString();
+    try (Connection con = ds.getConnection())
+    {
+      PreparedStatement pstmt;
+      ResultSet rs;
+      pstmt = con.prepareStatement(SELECT_PATRON);
+      pstmt.setString(1, getInvoiceID());
+      rs = pstmt.executeQuery();
+      rs.next();
+      theID = rs.getString("PATRON_ID");
+	}
+    catch (SQLException sqle)
+    {
+      sqle.printStackTrace();
+    }
+
     return theID;
   }
 
   public static String getAlmaItemCode(String dbName, String feeType, boolean isLaw, boolean isClicc)
   {
-    String query;
     String fineFeeName;
     String itemCode;
     if ( isLaw && feeType.equals(LOST_ITEM_REPLACEMENT_FEE) )
@@ -124,7 +169,6 @@ public class DataHandler
     {
       PreparedStatement pstmt;
       ResultSet rs;
-      con.setAutoCommit(false);
       pstmt = con.prepareStatement(SELECT_ALMA_FEE);
       pstmt.setString(1, fineFeeName);
       rs = pstmt.executeQuery();
