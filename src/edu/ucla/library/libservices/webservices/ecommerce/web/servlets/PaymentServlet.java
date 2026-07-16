@@ -75,7 +75,7 @@ public class PaymentServlet
     payClient = new AlmaClient();
     payClient.setAmount(String.valueOf(getPaymentAmount(request)));
     payClient.setFineID(invoiceNo);
-    payClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
+    payClient.setSecretsFile(getServletContext().getInitParameter("lpo.secrets"));
     payClient.setPayMethod(request.getParameter("pmtcode").equalsIgnoreCase("CC")? "CREDIT_CARD": "ONLINE");
     log.info("transaction number " + request.getParameter("tx") );
     payClient.setTransNo(request.getParameter("tx"));
@@ -89,7 +89,7 @@ public class PaymentServlet
   {
     log.info("in getUser with invoice number " + fine);
     DataHandler handler = new DataHandler();
-    handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
+    handler.setDbName(getServletContext().getInitParameter("datasource.almadb"));
     handler.setInvoiceID(fine);
     return handler.getPatronData();
   }
@@ -115,7 +115,7 @@ public class PaymentServlet
     theClient.setInvoiceNumber(request.getParameter("UCLA_REF_NO").replace("~fromxero", ""));
     theClient.setPort(0);
     theClient.setReference(buildReference(request));
-    theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
+    theClient.setSecretsFile(getServletContext().getInitParameter("lpo.secrets"));
     theClient.setTokensFile(getServletContext().getInitParameter("xero.tokens"));
     try
     {

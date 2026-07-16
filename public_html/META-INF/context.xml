@@ -2,10 +2,7 @@
 <Context>
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
-    <ResourceLink name="jdbc/billDS"
-                 global="jdbc/billDS"
-                  type="javax.sql.DataSource" />
-    <ResourceLink name="jdbc/uclaDS"
-                 global="jdbc/uclaDS"
+    <ResourceLink name="jdbc/almaDS"
+                 global="jdbc/almaDS"
                   type="javax.sql.DataSource" />
 </Context>

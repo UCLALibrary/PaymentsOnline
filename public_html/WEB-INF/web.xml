@@ -56,52 +56,12 @@
     <param-value>https://%DOMAIN%.library.ucla.edu</param-value>
   </context-param>
   <context-param>
-    <param-name>uri.patron</param-name>
-    <param-value>/invoicing/patrons/by_uid/</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.invoice</param-name>
-    <param-value>/invoicing/invoices/unpaid_invoices/</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.pdf</param-name>
-    <param-value>/invoicing/invoices/display_invoice/</param-value>
-  </context-param>
-  <context-param>
-    <param-name>alma.file</param-name>
-    <param-value>/usr/local/share/applications/xero/alma.props</param-value>
-  </context-param>
-  <context-param>
     <param-name>alma.base.fees</param-name>
     <param-value>https://api-na.hosted.exlibrisgroup.com/almaws/v1/users/</param-value>
   </context-param>
   <context-param>
     <param-name>alma.resource.fees</param-name>
     <param-value>/fees?status=ACTIVE&amp;apikey=</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.cashnet</param-name>
-    <param-value>/invoicing/invoices/cashnet_invoice/</param-value>
-  </context-param>
-  <context-param>
-    <param-name>key.one</param-name>
-    <param-value>5535A0BC14</param-value>
-  </context-param>
-  <context-param>
-    <param-name>key.two</param-name>
-    <param-value>D55CDF30293C5EDCBD9A</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.logging</param-name>
-    <param-value>/invoicing/logging/add_log</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.payment</param-name>
-    <param-value>/invoicing/payments/full_payment</param-value>
-  </context-param>
-  <context-param>
-    <param-name>uri.receipt</param-name>
-    <param-value>/invoicing/payments/receipt/</param-value>
   </context-param>
   <context-param>
     <param-name>cashnet.ip.one</param-name>
@@ -120,32 +80,8 @@
     <param-value>40.90.247.249</param-value>
   </context-param>
   <context-param>
-    <param-name>datasource.invoice</param-name>
-    <param-value>jdbc/billDS</param-value>
-  </context-param>
-  <context-param>
-    <param-name>datasource.ucladb</param-name>
-    <param-value>jdbc/uclaDS</param-value>
-  </context-param>
-  <context-param>
-    <param-name>upload.local</param-name>
-    <param-value>upload</param-value>
-  </context-param>
-  <context-param>
-    <param-name>upload.remote</param-name>
-    <param-value>payments</param-value>
-  </context-param>
-  <context-param>
-    <param-name>keyfile.path</param-name>
-    <param-value>upload/aeon-private-dsa.ppk</param-value>
-  </context-param>
-  <context-param>
-    <param-name>sftp.host</param-name>
-    <param-value>aeon-sftp.library.ucla.edu</param-value>
-  </context-param>
-  <context-param>
-    <param-name>sftp.user</param-name>
-    <param-value>aeon</param-value>
+    <param-name>datasource.almadb</param-name>
+    <param-value>jdbc/almaDS</param-value>
   </context-param>
   <context-param>
     <param-name>user.logging.cashnet</param-name>
@@ -156,8 +92,8 @@
     <param-value>/usr/local/share/applications/xero/secrets.txt</param-value>
   </context-param>
   <context-param>
-    <param-name>xero.secrets</param-name>
-    <param-value>/usr/local/share/applications/xero/xero.props</param-value>
+    <param-name>lpo.secrets</param-name>
+    <param-value>/usr/local/share/applications/xero/lpo.props</param-value>
   </context-param>
   <servlet-mapping>
     <servlet-name>TestServlet</servlet-name>
@@ -177,13 +113,7 @@
   </servlet-mapping>
   <resource-ref>
     <description>DB Connection</description>
-    <res-ref-name>jdbc/billDS</res-ref-name>
-    <res-type>javax.sql.DataSource</res-type>
-    <res-auth>Container</res-auth>
-  </resource-ref>
-  <resource-ref>
-    <description>DB Connection</description>
-    <res-ref-name>jdbc/uclaDS</res-ref-name>
+    <res-ref-name>jdbc/almaDS</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>

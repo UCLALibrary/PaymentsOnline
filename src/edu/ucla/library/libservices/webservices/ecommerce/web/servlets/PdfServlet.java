@@ -45,7 +45,7 @@ public class PdfServlet
     generator.setInvoiceNumber(request.getParameter("in"));
     generator.setPatronID(request.getParameter("uid"));
     generator.setDbName(getServletContext().getInitParameter("datasource.invoice"));
-    generator.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
+    generator.setSecretsFile(getServletContext().getInitParameter("lpo.secrets"));
     generator.setUriBase(getServletContext().getInitParameter("alma.base.fees"));
     generator.setDomain(getServletContext().getInitParameter("uri.base"));
 

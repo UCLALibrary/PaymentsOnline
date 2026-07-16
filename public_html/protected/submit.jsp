@@ -26,8 +26,8 @@
               <jsp:setProperty property="fineID" name="almaSource" param="invoice"/>
               <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
               <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
-              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
-              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
+              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
+              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.almadb") %>'/>
             </jsp:useBean>
             <c:set var="index" value="0"/>
             <c:forEach var="theLine" items="${almaSource.theInvoice.lineItems}">
@@ -41,7 +41,7 @@
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${almaSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.ucladb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
+            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.almadb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
           <c:otherwise>
             <c:choose>
@@ -54,7 +54,7 @@
             </c:choose>
             <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
               <jsp:setProperty property="invoiceID" name="xeroSource" value="${invNumber}"/>
-              <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+              <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
               <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
             </jsp:useBean>
             <c:set var="index" value="0"/>

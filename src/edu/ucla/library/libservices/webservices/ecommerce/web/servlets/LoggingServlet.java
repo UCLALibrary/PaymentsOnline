@@ -63,7 +63,7 @@ public class LoggingServlet
     {
       data = new CashnetLog();
       prepCashnetLog( request, data );
-      DataHandler.logCashnetMessage( data, getServletContext().getInitParameter( "datasource.ucladb" ) );
+      DataHandler.logCashnetMessage( data, getServletContext().getInitParameter( "datasource.almadb" ) );
       log.info( "<p>logged</p>" );
 
       if ( request.getParameter( "result" ).equalsIgnoreCase( "0" ) )

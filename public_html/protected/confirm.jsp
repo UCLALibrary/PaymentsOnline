@@ -15,8 +15,8 @@
              class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.ReceiptClient">
   <jsp:setProperty property="invoiceNumber" name="receiptSource" value="${param.UCLA_REF_NO}"/>
   <jsp:setProperty property="almaUriBase" name="receiptSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
-  <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
-  <jsp:setProperty property="vgerName" name="receiptSource" value='<%= application.getInitParameter("datasource.ucladb") %>'/>
+  <jsp:setProperty property="secretsFile" name="receiptSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
+  <jsp:setProperty property="vgerName" name="receiptSource" value='<%= application.getInitParameter("datasource.almadb") %>'/>
   <jsp:setProperty property="uriBase" name="receiptSource" value='<%= application.getInitParameter("uri.base") %>'/>
   <jsp:setProperty property="resourceURI" name="receiptSource" value='<%= application.getInitParameter("uri.receipt") %>'/>
   <jsp:setProperty property="tokensFile" name="receiptSource" value='<%= application.getInitParameter("xero.tokens") %>'/>

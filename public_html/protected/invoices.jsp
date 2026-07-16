@@ -23,20 +23,20 @@
   <jsp:setProperty property="userID" name="almaSource" value="${idSource.userID}"/>
   <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
   <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
-  <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
 </jsp:useBean>
 
 <jsp:useBean id="patronSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.GeneralPatronClient">
   <jsp:setProperty property="userID" name="patronSource" value="${idSource.userID}"/>
   <jsp:setProperty property="uriBase" name="patronSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
-  <jsp:setProperty property="secretsFile" name="patronSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="secretsFile" name="patronSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
   <jsp:setProperty property="tokensFile" name="patronSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
 <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
   <jsp:setProperty property="contactID" name="xeroSource" value="${patronSource.thePatron.xeroID}"/>
   <jsp:setProperty property="port" name="xeroSource" value="0"/>
-  <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+  <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
   <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
