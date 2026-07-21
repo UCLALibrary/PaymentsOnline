@@ -1,33 +1,33 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.db;
 
-import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.CashnetLog;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 public class DataHandler
 {
   private static final Logger LOGGER = LogManager.getLogger( DataHandler.class );
+  private static final String LOST_ITEM_REPLACEMENT_FEE = "LOSTITEMREPLACEMENTFEE";
+  private static final String OVERDUE_FINE = "OVERDUEFINE";
 
-  private static final String COUNT = "SELECT count(*) FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
+  private static final String COUNT = "SELECT count(*) AS invoices FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String DELETE = "DELETE FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
   private static final String INSERT = "INSERT INTO public.\"ALMA_INVOICE_PATRON\"(\"INVOICE_ID\", \"PATRON_ID\") VALUES(?,?)";
-  private static final String SELECT_FEE = "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ?";
-  private static final String SELECT_FEE_LAW =
-    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' LAW'";
-  private static final String SELECT_FEE_CLICC =
-    "SELECT item_code FROM invoice_owner.location_service_vw WHERE service_name = ? || ' CLICC'";
+  private static String INSERT_LOG =
+    "INSERT INTO public.\"cashnet_log\"(\"ucla_ref_no\", \"result_code\"," +
+    " \"cn_trans_no\", \"cn_batch_no\", \"pmt_code\", \"eff_date\", \"cn_details\")" + " VALUES(?, ?, ?, ?, ?, to_date(?, 'MM/DD/YYYY'), ?)";
+  private static final String SELECT_ALMA_FEE = "SELECT \"item_code\" FROM public.\"alma_itemcodes\" WHERE \"fine_fee_type\" = ?";
   private static final String SELECT_PATRON =
     "SELECT \"PATRON_ID\" FROM public.\"ALMA_INVOICE_PATRON\" WHERE \"INVOICE_ID\" = ?";
-  private static final String UNPAID =
-    "SELECT COUNT(invoice_number) FROM invoice_vw WHERE patron_id = ? AND status IN ('Partially Paid','Unpaid',"
-    + "'Deposit Due','Final Payment Due')";
-  private static final String OVERDUEFINE = "OVERDUEFINE";
 
   private DataSource ds;
   private String dbName;
@@ -70,75 +70,140 @@ public class DataHandler
     return patronID;
   }
 
-  public void setFeeType(String feeType)
-  {
-    this.feeType = feeType;
-  }
-
-  /*private String getFeeType()
-  {
-    return feeType;
-  }*/
-
   private void makeConnection()
   {
     ds = DataSourceFactory.createDataSource(getDbName());
-    //ds = DataSourceFactory.createBillSource(); //.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
   {
-    DataSource source = DataSourceFactory.createDataSource(dbName);
-    //DataSource source = DataSourceFactory.createVgerSource();
     String cleanInvoice = StringHandler.extractInvoiceID(invoiceID);
-    if (Integer.valueOf( new JdbcTemplate(source).queryForObject(COUNT, new Object[] { cleanInvoice }, String.class) ) == 0)
+    try (Connection con = DataSourceFactory.createDataSource(dbName).getConnection())
     {
-      new JdbcTemplate(source).update(INSERT, new Object[] { cleanInvoice, patronID });
+      PreparedStatement pstmt;
+      ResultSet rs;
+      int count;
+      pstmt = con.prepareStatement(COUNT);
+      pstmt.setString(1, cleanInvoice);
+      rs = pstmt.executeQuery();
+      rs.next();
+      count = rs.getInt("invoices");
+
+      if (count == 0)
+      {
+	    pstmt = con.prepareStatement(INSERT);
+        pstmt.setString(1, cleanInvoice);
+        pstmt.setString(2, patronID);
+        rs = pstmt.executeQuery();
+        pstmt.executeUpdate();
+      }
+	}
+    catch (SQLException sqle)
+    {
+      LOGGER.error("error saving Alma patron/invoice pair: "  + sqle.getMessage());
     }
   }
 
   public void deleteInvoiceData()
   {
     makeConnection();
-    new JdbcTemplate(ds).update(DELETE, new Object[] { getInvoiceID() });
+    try (Connection con = ds.getConnection())
+    {
+      PreparedStatement pstmt;
+      con.setAutoCommit(false);
+      pstmt = con.prepareStatement(DELETE);
+      pstmt.setString(1, getInvoiceID());
+      pstmt.executeUpdate();
+
+      con.commit();
+      pstmt.close();
+
+    }
+    catch (SQLException sqle)
+    {
+      LOGGER.error("error deleting Alma patron/invoice pair: "  + sqle.getMessage());
+    }
   }
 
   public String getPatronData()
   {
     String theID = null;
     makeConnection();
-    //LOGGER.info(SELECT_PATRON.replace("?", "'" + getInvoiceID() + "'"));
-    theID =
-      new JdbcTemplate(ds).queryForObject(SELECT_PATRON, new Object[] { getInvoiceID() }, String.class).toString();
+    try (Connection con = ds.getConnection())
+    {
+      PreparedStatement pstmt;
+      ResultSet rs;
+      pstmt = con.prepareStatement(SELECT_PATRON);
+      pstmt.setString(1, getInvoiceID());
+      rs = pstmt.executeQuery();
+      rs.next();
+      theID = rs.getString("PATRON_ID");
+	}
+    catch (SQLException sqle)
+    {
+      LOGGER.error("error retrieving Alma patron/invoice pair: "  + sqle.getMessage());
+    }
+
     return theID;
   }
 
-  public static String getfeeData(String dbName, String feeType, boolean isLaw, boolean isClicc)
+  public static String getAlmaItemCode(String dbName, String feeType, boolean isLaw, boolean isClicc)
   {
-    String query;
-    if ( isLaw && !feeType.equals(OVERDUEFINE) )
+    String fineFeeName;
+    String itemCode;
+    if ( isLaw && feeType.equals(LOST_ITEM_REPLACEMENT_FEE) )
     {
-      query = SELECT_FEE_LAW;
+      fineFeeName = feeType.concat("_LAW");
     }
-    else if ( isClicc )
+    else if ( isClicc && (feeType.equals(LOST_ITEM_REPLACEMENT_FEE) || feeType.equals(OVERDUE_FINE)) )
     {
-      query = SELECT_FEE_CLICC;
+      fineFeeName = feeType.concat("_CLICC");;
     }
     else
     {
-      query = SELECT_FEE;
+      fineFeeName = feeType;
     }
-    //String query = ( isLaw && !feeType.equals(OVERDUEFINE) ? SELECT_FEE_LAW : SELECT_FEE );
-    DataSource source = DataSourceFactory.createDataSource(dbName);
-    //DataSource source = DataSourceFactory.createBillSource();
-    //LOGGER.info(query.replace("?", feeType));
-    //System.out.println(query.replace("?", feeType));
-    return new JdbcTemplate(source).queryForObject(query, new Object[] { feeType }, String.class).toString();
+    try (Connection con = DataSourceFactory.createDataSource(dbName).getConnection())
+    {
+      PreparedStatement pstmt;
+      ResultSet rs;
+      pstmt = con.prepareStatement(SELECT_ALMA_FEE);
+      pstmt.setString(1, fineFeeName);
+      rs = pstmt.executeQuery();
+      rs.next();
+      itemCode = rs.getString("item_code");
+	}
+    catch (SQLException sqle)
+    {
+      LOGGER.error("error retrieving Alma item code: "  + sqle.getMessage());
+      itemCode= null;
+    }
+    return itemCode;
   }
 
-  public int getUnpaidCount()
+  public static void logCashnetMessage(CashnetLog data, String dbName)
   {
-    makeConnection();
-    return Integer.valueOf( new JdbcTemplate(ds).queryForObject(UNPAID, new Object[] { getPatronID() }, String.class) );
+    try (Connection con = DataSourceFactory.createDataSource(dbName).getConnection())
+    {
+      PreparedStatement pstmt;
+      con.setAutoCommit(false);
+      pstmt = con.prepareStatement(INSERT_LOG);
+      pstmt.setString(1, data.getRefNumber());
+      pstmt.setString(2, data.getResultCode());
+      pstmt.setString(3, data.getTransNumber());
+      pstmt.setString(4, data.getBatchNumber());
+      pstmt.setString(5, data.getPmtCode());
+      pstmt.setString(6, data.getEffDate());
+      pstmt.setString(7, data.getDetails());
+      pstmt.executeUpdate();
+
+      con.commit();
+      pstmt.close();
+
+    }
+    catch (SQLException sqle)
+    {
+      LOGGER.error("error saving payment log: "  + sqle.getMessage());
+    }
   }
 }

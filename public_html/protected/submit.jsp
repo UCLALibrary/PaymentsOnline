@@ -26,9 +26,8 @@
               <jsp:setProperty property="fineID" name="almaSource" param="invoice"/>
               <jsp:setProperty property="uriBase" name="almaSource" value='<%= application.getInitParameter("alma.base.fees") %>'/>
               <jsp:setProperty property="resourceURI" name="almaSource" value='<%= application.getInitParameter("alma.resource.fees") %>'/>
-              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("alma.file") %>'/>
-              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.invoice") %>'/>
-              <%--jsp:setProperty property="feeType" name="almaSource" param="invoice"/--%>
+              <jsp:setProperty property="secretsFile" name="almaSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
+              <jsp:setProperty property="dbName" name="almaSource" value='<%= application.getInitParameter("datasource.almadb") %>'/>
             </jsp:useBean>
             <c:set var="index" value="0"/>
             <c:forEach var="theLine" items="${almaSource.theInvoice.lineItems}">
@@ -42,9 +41,9 @@
             </c:if>
             <input id="Hidden" type="hidden" name="ucla_ref_no" value="alma${almaSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.ucladb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
+            <% DataHandler.saveInvoiceData(application.getInitParameter("datasource.almadb"), request.getParameter("invoice"), request.getParameter("patronID")); %>
           </c:when>
-          <c:when test="${fn:contains(param.invoice, '-') or not empty param.invoiceNo}">
+          <c:otherwise>
             <c:choose>
               <c:when test="${not empty param.invoiceNo}">
                 <c:set var="invNumber" value="${param.invoiceNo}"/>
@@ -55,7 +54,7 @@
             </c:choose>
             <jsp:useBean id="xeroSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.XeroInvoiceClient">
               <jsp:setProperty property="invoiceID" name="xeroSource" value="${invNumber}"/>
-              <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("xero.secrets") %>'/>
+              <jsp:setProperty property="secretsFile" name="xeroSource" value='<%= application.getInitParameter("lpo.secrets") %>'/>
               <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
             </jsp:useBean>
             <c:set var="index" value="0"/>
@@ -76,27 +75,6 @@
                 <input id="Hidden" type="hidden" name="ucla_ref_no" value="${xeroSource.singleInvoice.invoiceNumber}"/>
               </c:otherwise>
             </c:choose>
-            <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
-          </c:when>
-          <c:otherwise>
-            <jsp:useBean id="libBillSource" class="edu.ucla.library.libservices.webservices.ecommerce.web.clients.CashNetClient">
-              <jsp:setProperty property="uriBase" name="libBillSource" value='<%= application.getInitParameter("uri.base") %>'/>
-              <jsp:setProperty property="resourceURI" name="libBillSource" value='<%= application.getInitParameter("uri.cashnet") %>'/>
-              <jsp:setProperty property="user" name="libBillSource" value='<%= application.getInitParameter("key.one") %>'/>
-              <jsp:setProperty property="crypt" name="libBillSource" value='<%= application.getInitParameter("key.two") %>'/>
-              <jsp:setProperty property="invoiceID" name="libBillSource" param="invoice"/>
-            </jsp:useBean>
-            <c:set var="index" value="0"/>
-            <c:forEach var="theLine" items="${libBillSource.theInvoice.lineItems}">
-              <c:set var="index" value="${index + 1}"/>
-              <input id="Hidden" type="hidden" name="itemcode${index}" value="${theLine.itemCode}"/>
-              <input id="Hidden" type="hidden" name="amount${index}" value="${theLine.totalPrice}"/>
-              <input id="Hidden" type="hidden" name="desc${index}" value="${theLine.invoiceNumber}-${theLine.itemCode}"/>
-            </c:forEach>
-            <c:if test="${index gt 1}">
-              <input id="Hidden" type="hidden" name="itemcnt" value="${index}"/>
-            </c:if>
-            <input id="Hidden" type="hidden" name="ucla_ref_no" value="${libBillSource.theInvoice.invoiceNumber}"/>
             <input id="Hidden" type="hidden" name="signoutURL" value="https://%DOMAIN%.library.ucla.edu/lpo/protected/confirm.jsp"/>
           </c:otherwise>
         </c:choose>

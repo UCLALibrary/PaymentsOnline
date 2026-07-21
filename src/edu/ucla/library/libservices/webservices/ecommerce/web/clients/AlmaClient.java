@@ -4,14 +4,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
-import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.CashNetLine;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaFees;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.handlers.PropertiesHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,6 @@ public class AlmaClient
   private Properties almaSecrets;
   // path for properties file with URIs and IDs to access Alma API
   private String secretsFile;
-
 
   public AlmaClient()
   {
@@ -233,12 +232,7 @@ public class AlmaClient
         theInvoice = response.getEntity(AlmaInvoice.class);
         theLine.setInvoiceNumber(theInvoice.getInvoiceNumber());
         theLine.setTotalPrice(theInvoice.getBalance());
-        boolean isLaw = theInvoice.getOwner().equalsIgnoreCase("Law");
-        boolean isClicc =
-          theInvoice.getOwner().equalsIgnoreCase("CLICC") ||
-          (!ContentTests.isEmpty(theInvoice.getTitle()) &&
-           theInvoice.getTitle().toUpperCase().contains("CLICC"));
-        theLine.setItemCode(DataHandler.getfeeData(getDbName(), theInvoice.getType().getValue(), isLaw, isClicc));
+        theLine.setItemCode(DataHandler.getAlmaItemCode(getDbName(), theInvoice.getType().getValue(), theInvoice.isLaw(), theInvoice.isClicc()));
       }
       else
       {

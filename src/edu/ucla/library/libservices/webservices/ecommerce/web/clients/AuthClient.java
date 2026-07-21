@@ -101,7 +101,7 @@ public class AuthClient
 	loadProperties();
     client = Client.create();
     webResource = client.resource(getUriBase().concat(getUserID())
-                                              .concat("??op=auth&apikey=")
+                                              .concat("?op=auth&apikey=")
                                               .concat(almaSecrets.getProperty(ALMA_KEY)));
     response = webResource.header("Exl-User-Pw", getPassword())
                           .post(ClientResponse.class);
@@ -111,7 +111,6 @@ public class AuthClient
     }
     else
     {
-      //System.out.println("status code = " + response.getStatus());
       return false;
     }
   }

@@ -1,7 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.web.servlets;
 
-import edu.ucla.library.libservices.invoicing.utility.db.DataSourceFactory;
-import edu.ucla.library.libservices.invoicing.webservices.payments.db.procs.ApplyFullPaymentProcedure;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataSourceFactory;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.db.DataHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.strings.StringHandler;
 import edu.ucla.library.libservices.webservices.ecommerce.web.clients.AlmaClient;
@@ -15,8 +14,6 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class PaymentServlet
   extends HttpServlet
@@ -48,7 +45,7 @@ public class PaymentServlet
   }
 
   /**
-   * Record a payment in Alma/LibBill/Xero
+   * Record a payment in Alma/Xero
    * @param request HTTP request, holding parameters defining the payment
    * @param log logger passed to subsidiary methods
    */
@@ -58,13 +55,9 @@ public class PaymentServlet
     {
       doAlmaPayment(request, log);
     }
-    else if (request.getParameter("UCLA_REF_NO").contains("-"))
-    {
-      doXeroPayment(request, log);
-    }
     else
     {
-      doLibBillPayment(request, log);
+      doXeroPayment(request, log);
     }
   }
 
@@ -78,9 +71,9 @@ public class PaymentServlet
     log.info("working with invoice " + invoiceNo);
 
     payClient = new AlmaClient();
-    payClient.setAmount(String.valueOf(getPaymentAmount(request))); //.getParameter("amount0"));
+    payClient.setAmount(String.valueOf(getPaymentAmount(request)));
     payClient.setFineID(invoiceNo);
-    payClient.setSecretsFile(getServletContext().getInitParameter("alma.file"));
+    payClient.setSecretsFile(getServletContext().getInitParameter("lpo.secrets"));
     payClient.setPayMethod(request.getParameter("pmtcode").equalsIgnoreCase("CC")? "CREDIT_CARD": "ONLINE");
     log.info("transaction number " + request.getParameter("tx") );
     payClient.setTransNo(request.getParameter("tx"));
@@ -90,30 +83,11 @@ public class PaymentServlet
     log.info("payment POST response = " + responseCode);
   }
 
-  private void doLibBillPayment(HttpServletRequest request, Logger log)
-  {
-    ApplyFullPaymentProcedure proc;
-
-    proc = new ApplyFullPaymentProcedure();
-    proc.setDbName(getServletContext().getInitParameter("datasource.invoice"));
-    proc.setUserName(getServletContext().getInitParameter("user.logging.cashnet"));
-    proc.setInvoiceNumber(request.getParameter("UCLA_REF_NO"));
-    proc.setPaymentType(request.getParameter("pmtcode").equalsIgnoreCase("CC")? 3: 2);
-    try
-    {
-      proc.addPayment();
-    }
-    catch (Exception e)
-    {
-      log.error("Payment failed: ".concat(e.getMessage()));
-    }
- }
-
   private String getUser(String fine, Logger log)
   {
     log.info("in getUser with invoice number " + fine);
     DataHandler handler = new DataHandler();
-    handler.setDbName(getServletContext().getInitParameter("datasource.ucladb"));
+    handler.setDbName(getServletContext().getInitParameter("datasource.almadb"));
     handler.setInvoiceID(fine);
     return handler.getPatronData();
   }
@@ -139,7 +113,7 @@ public class PaymentServlet
     theClient.setInvoiceNumber(request.getParameter("UCLA_REF_NO").replace("~fromxero", ""));
     theClient.setPort(0);
     theClient.setReference(buildReference(request));
-    theClient.setSecretsFile(getServletContext().getInitParameter("xero.secrets"));
+    theClient.setSecretsFile(getServletContext().getInitParameter("lpo.secrets"));
     theClient.setTokensFile(getServletContext().getInitParameter("xero.tokens"));
     try
     {

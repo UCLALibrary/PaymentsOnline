@@ -14,7 +14,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.Address;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaInvoice;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
@@ -28,8 +28,13 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class PdfGenerator
 {
+  private static final Logger LOGGER = LogManager.getLogger( PdfGenerator.class );
+
   private AlmaClient invoiceClient;
   private AlmaInvoice theInvoice;
   private AlmaUser thePatron;
@@ -243,17 +248,17 @@ public class PdfGenerator
     }
     catch (DocumentException de)
     {
-      de.printStackTrace();
+      LOGGER.error("error building PDF document: "  + de.getMessage());
       document = null;
     }
     catch (MalformedURLException mue)
     {
-      mue.printStackTrace();
+      LOGGER.error("URL error building PDF document: "  + mue.getMessage());
       document = null;
     }
     catch (IOException ioe)
     {
-      ioe.printStackTrace();
+      LOGGER.error("I/O error building PDF document: "  + ioe.getMessage());
       document = null;
     }
   }

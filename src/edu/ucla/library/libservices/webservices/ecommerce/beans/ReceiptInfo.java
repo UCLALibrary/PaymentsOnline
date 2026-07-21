@@ -1,4 +1,4 @@
-package edu.ucla.library.libservices.invoicing.webservices.payments.beans;
+package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

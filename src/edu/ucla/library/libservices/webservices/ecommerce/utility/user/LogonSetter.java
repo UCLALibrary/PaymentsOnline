@@ -1,6 +1,6 @@
 package edu.ucla.library.libservices.webservices.ecommerce.utility.user;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

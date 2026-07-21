@@ -1,7 +1,7 @@
 package edu.ucla.library.libservices.webservices.ecommerce.beans;
 
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
 import edu.ucla.library.libservices.webservices.ecommerce.utility.dates.DateConverter;
-import edu.ucla.library.libservices.invoicing.webservices.invoices.beans.CashNetLine;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AlmaInvoice
 {
+
   @XmlElement(name = "id")
   private String invoiceNumber;
   @XmlElement(name = "balance")
@@ -24,7 +25,6 @@ public class AlmaInvoice
   private String barcode;
   @XmlElement(name = "type")
   private FeeType type;
-  //private String type;
   @XmlElement(name = "creation_time")
   private String feeDate;
   @XmlElement(name = "owner")
@@ -145,5 +145,17 @@ public class AlmaInvoice
   public List<CashNetLine> getLineItems()
   {
     return lineItems;
+  }
+
+  public boolean isClicc()
+  {
+	return getOwner().equalsIgnoreCase("CLICC") ||
+	           (!ContentTests.isEmpty(getTitle()) &&
+	           getTitle().toUpperCase().contains("CLICC"));
+  }
+
+  public boolean isLaw()
+  {
+	return getOwner().equalsIgnoreCase("Law");
   }
 }

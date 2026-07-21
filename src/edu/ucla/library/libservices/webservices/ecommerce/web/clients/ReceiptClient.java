@@ -4,9 +4,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import edu.ucla.library.libservices.invoicing.utility.testing.ContentTests;
-import edu.ucla.library.libservices.webservices.ecommerce.utility.signatures.SignatureBuilder;
-import edu.ucla.library.libservices.invoicing.webservices.payments.beans.ReceiptInfo;
+import edu.ucla.library.libservices.webservices.ecommerce.utility.tests.ContentTests;
+import edu.ucla.library.libservices.webservices.ecommerce.beans.ReceiptInfo;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.AlmaUser;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroContact;
 import edu.ucla.library.libservices.webservices.ecommerce.beans.XeroInvoice;
@@ -18,17 +17,14 @@ public class ReceiptClient
   private ReceiptInfo theReceipt;
   private String resourceURI;
   private String vgerName;
-  private String libBillName;
   private String apiKey;
   private String uriBase;
   private String almaUriBase;
   private String user;
   private String crypt;
   private String invoiceNumber;
-  private String xeroSecretsFile;
+  private String secretsFile;
   private String tokensFile;
-  // path for properties file with URIs and IDs to access Alma API
-  private String almaSecretsFile;
 
   public ReceiptClient()
   {
@@ -43,7 +39,7 @@ public class ReceiptClient
    * amounts but no account can't be submitted to Transact, since there's no way to retrieve the Trasact item code.
    * Such lines should be caught before an invoice is submitted to Transact, but possible thrown exception is noted here
    * for completeness and Java language rules.
-   * Buusiness logic for LibBill and Alma invoices prevents the creation of line items without amounts/link to Transact
+   * Buusiness logic for Alma invoices prevents the creation of line items without amounts/link to Transact
    * item code.
    */
   public ReceiptInfo getTheReceipt()
@@ -55,21 +51,12 @@ public class ReceiptClient
       {
         theReceipt = buildAlmaReceipt();
       }
-      else if (getInvoiceNumber().contains("-"))
+      else
       {
         theReceipt = buildXeroReceipt();
       }
-      else
-      {
-        theReceipt = buildLibBillReceipt();
-      }
     }
     return theReceipt;
-  }
-
-  private String makeAuthorization(String request)
-  {
-    return SignatureBuilder.computeAuth(SignatureBuilder.buildSimpleSignature("GET", request), getUser(), getCrypt());
   }
 
   public void setResourceURI(String resourceURI)
@@ -132,26 +119,6 @@ public class ReceiptClient
     return vgerName;
   }
 
-  public void setLibBillName(String libBillName)
-  {
-    this.libBillName = libBillName;
-  }
-
-  private String getLibBillName()
-  {
-    return libBillName;
-  }
-
-  public void setApiKey(String apiKey)
-  {
-    this.apiKey = apiKey;
-  }
-
-  private String getApiKey()
-  {
-    return apiKey;
-  }
-
   public void setAlmaUriBase(String almaUriBase)
   {
     this.almaUriBase = almaUriBase;
@@ -162,24 +129,14 @@ public class ReceiptClient
     return almaUriBase;
   }
 
-  public void setXeroSecretsFile(String xeroSecretsFile)
+  public void setSecretsFile(String secretsFile)
   {
-    this.xeroSecretsFile = xeroSecretsFile;
+    this.secretsFile = secretsFile;
   }
 
-  public String getXeroSecretsFile()
+  public String getSecretsFile()
   {
-    return xeroSecretsFile;
-  }
-
-  public void setAlmaSecretsFile(String almaSecretsFile)
-  {
-    this.almaSecretsFile = almaSecretsFile;
-  }
-
-  public String getAlmaSecretsFile()
-  {
-    return almaSecretsFile;
+    return secretsFile;
   }
 
   public void setTokensFile(String tokensFile)
@@ -218,52 +175,15 @@ public class ReceiptClient
     almaReceipt.setUid(patronID);
     almaReceipt.setStatus(client.getTheInvoice().getStatus());
     almaReceipt.setUserName(user.getFirstName() + " " + user.getLastName());
-    handler.setDbName(getLibBillName());
-    almaReceipt.setUnpaid(client.getTheFees()
-                                .getFees()
-                                .size() + handler.getUnpaidCount());
 
     return almaReceipt;
   }
 
-  private ReceiptInfo buildLibBillReceipt()
-  {
-    AlmaClient almaClient;
-    Client client;
-    ReceiptInfo libBillReceipt;
-    WebResource webResource;
-    ClientResponse response;
-
-    client = Client.create();
-    webResource = client.resource(getUriBase().concat(getResourceURI()).concat(getInvoiceNumber()));
-    response = webResource.header("Authorization", makeAuthorization(getResourceURI().concat(getInvoiceNumber())))
-                          .type("application/json")
-                          .get(ClientResponse.class);
-    if (response.getStatus() == 200)
-    {
-      libBillReceipt = response.getEntity(ReceiptInfo.class);
-    }
-    else
-    {
-      libBillReceipt = new ReceiptInfo();
-    }
-
-    almaClient = new AlmaClient();
-    //check that invoice number is not empty
-    if (!ContentTests.isEmpty(getInvoiceNumber()))
-    {
-      prepAlmaClient(almaClient, String.valueOf(libBillReceipt.getPatronID()), getInvoiceNumber());
-      libBillReceipt.setUnpaid(libBillReceipt.getUnpaid() + almaClient.getTheFees().getRecordCount());
-    }
-
-    return libBillReceipt;
-  }
-
   private void prepAlmaClient(AlmaClient theClient, String patronID, String invoice)
   {
-    theClient.setDbName(getLibBillName());
+    theClient.setDbName(getVgerName());
     theClient.setFineID(invoice);
-    theClient.setSecretsFile(getAlmaSecretsFile());
+    theClient.setSecretsFile(getSecretsFile());
     theClient.setResourceURI("/fees?status=ACTIVE&apikey=");
     theClient.setUriBase(getAlmaUriBase());
     theClient.setUserID(patronID);
@@ -286,12 +206,12 @@ public class ReceiptClient
     cleanInvoiceNo = StringHandler.extractInvoiceID(getInvoiceNumber());
     invoiceClient = new XeroInvoiceClient();
     invoiceClient.setInvoiceID(cleanInvoiceNo);
-    invoiceClient.setSecretsFile(getXeroSecretsFile());
+    invoiceClient.setSecretsFile(getSecretsFile());
     invoiceClient.setTokensFile(getTokensFile());
     theInvoice = invoiceClient.getSingleInvoice();
 
     patronClient = new XeroContactClient();
-    patronClient.setSecretsFile(getXeroSecretsFile());
+    patronClient.setSecretsFile(getSecretsFile());
     patronClient.setTokensFile(getTokensFile());
     if ( theInvoice.getContact().getAccountNumber() != null && theInvoice.getContact().getAccountNumber().length() != 0 )
     {
@@ -310,8 +230,6 @@ public class ReceiptClient
     xeroReceipt.setUserName(thePatron.getFirstName() + " " + thePatron.getLastName());
 
     invoiceClient.setContactID(thePatron.getContactID());
-
-    xeroReceipt.setUnpaid(invoiceClient.getAllUnpaid().size());
 
     return xeroReceipt;
   }
