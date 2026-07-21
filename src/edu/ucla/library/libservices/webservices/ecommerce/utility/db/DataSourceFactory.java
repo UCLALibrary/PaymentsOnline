@@ -7,28 +7,16 @@ import javax.naming.NamingException;
 import java.sql.Connection;
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DataSourceFactory
 {
+  private static final Logger LOGGER = LogManager.getLogger( DataSourceFactory.class );
+
   public DataSourceFactory()
   {
     super();
-  }
-
-  /*
-  	* TODO: rewrite this to use plain jdbc
-  */
-  public static Connection createVgerSource()
-  {
-    /*DriverManagerDataSource ds;
-
-    ds = new DriverManagerDataSource();
-    ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-    ds.setUrl( "oracle_url" );
-    ds.setUsername( "catalog_user" );
-    ds.setPassword( "pwd" );
-
-    return ds;*/
-    return null;
   }
 
   public static DataSource createDataSource( String name )
@@ -43,9 +31,9 @@ public class DataSourceFactory
       envContext = (Context) context.lookup("java:/comp/env");
       connection = (DataSource) envContext.lookup(name);
     }
-    catch (NamingException e)
+    catch (NamingException ne)
     {
-      e.printStackTrace();
+      LOGGER.error("error retrieving pooled db connection: "  + ne.getMessage());
       connection = null;
     }
 

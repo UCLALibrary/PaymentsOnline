@@ -73,8 +73,6 @@ public class DataHandler
   private void makeConnection()
   {
     ds = DataSourceFactory.createDataSource(getDbName());
-    // makes local datasource, used in testing
-    //ds = DataSourceFactory.createVgerSource();
   }
 
   public static void saveInvoiceData(String dbName, String invoiceID, String patronID)
@@ -102,7 +100,7 @@ public class DataHandler
 	}
     catch (SQLException sqle)
     {
-      sqle.printStackTrace();
+      LOGGER.error("error saving Alma patron/invoice pair: "  + sqle.getMessage());
     }
   }
 
@@ -123,7 +121,7 @@ public class DataHandler
     }
     catch (SQLException sqle)
     {
-      sqle.printStackTrace();
+      LOGGER.error("error deleting Alma patron/invoice pair: "  + sqle.getMessage());
     }
   }
 
@@ -143,7 +141,7 @@ public class DataHandler
 	}
     catch (SQLException sqle)
     {
-      sqle.printStackTrace();
+      LOGGER.error("error retrieving Alma patron/invoice pair: "  + sqle.getMessage());
     }
 
     return theID;
@@ -177,7 +175,7 @@ public class DataHandler
 	}
     catch (SQLException sqle)
     {
-      sqle.printStackTrace();
+      LOGGER.error("error retrieving Alma item code: "  + sqle.getMessage());
       itemCode= null;
     }
     return itemCode;
@@ -205,7 +203,7 @@ public class DataHandler
     }
     catch (SQLException sqle)
     {
-      sqle.printStackTrace();
+      LOGGER.error("error saving payment log: "  + sqle.getMessage());
     }
   }
 }
