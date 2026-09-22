@@ -58,6 +58,7 @@
 
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">
     <div id="authportalFrame">
+    <header?
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
@@ -71,7 +72,9 @@
         </td>
       </tr>
     </table>
-
+    </header>
+    
+    <main>
     <c:choose>
       <c:when test="${empty patronSource.thePatron.lastName}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -200,6 +203,7 @@
         </table>
       </c:otherwise>
     </c:choose>
+    </main>
     </div>
   </body>
 </html>

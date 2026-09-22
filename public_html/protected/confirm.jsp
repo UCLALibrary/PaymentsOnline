@@ -35,6 +35,7 @@
     <title>UCLA Library Payments Online</title>
   </head>
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">
+    <header>
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
@@ -48,6 +49,8 @@
         </td>
       </tr>
     </table>
+    <header>
+    <main>
     <c:choose>
       <c:when test="${empty param.UCLA_REF_NO}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -227,5 +230,6 @@
         </c:choose>
       </c:otherwise>
     </c:choose>
+    </main>
   </body>
 </html>
