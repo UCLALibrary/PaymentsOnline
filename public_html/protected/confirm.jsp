@@ -31,6 +31,7 @@
     <meta http-equiv="cache-control" content="NO-CACHE"> 
     <meta http-equiv="cache-control" content="NO-STORE"> 
     <meta http-equiv="cache-control" content="PRIVATE"> 
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <link href="http://www.library.ucla.edu/css/wht.css" rel="stylesheet" type="text/css">
     <title>UCLA Library Payments Online</title>
   </head>
