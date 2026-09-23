@@ -58,7 +58,7 @@
 
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">
     <div id="authportalFrame">
-    <header?
+    <header>
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
