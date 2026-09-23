@@ -9,8 +9,8 @@
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <title>Errors Have Occurred</title>
   </head>
-  <main>
   <body>
+  <main>
     An error occured:<br/>
     <pre>
     We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
@@ -38,6 +38,7 @@
     You can report this error via the <a href="https://jira.library.ucla.edu/servicedesk/customer/portals">Service Portal</a>, 
     or by email to <a href="mailto:techhelp@library.ucla.edu">techhelp@library.ucla.edu</a>
     </pre>
+    </main>
     <footer>
     To leave Payments Online, click here: 
     <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
