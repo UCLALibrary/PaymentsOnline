@@ -24,7 +24,7 @@
 
 <jsp:useBean id="now" class="java.util.Date" scope="page"/>
 
-<html>
+<html lang="en-US">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <meta http-equiv="PRAGMA" content="NO-CACHE"> 
@@ -32,7 +32,9 @@
     <meta http-equiv="cache-control" content="NO-STORE"> 
     <meta http-equiv="cache-control" content="PRIVATE"> 
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <link href="http://www.library.ucla.edu/css/wht.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/mobile.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="../css/print.css" media="print"/>
     <title>UCLA Library Payments Online</title>
   </head>
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">

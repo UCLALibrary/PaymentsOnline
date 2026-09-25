@@ -40,7 +40,7 @@
   <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
-<html>
+<html lang="en-US">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <meta http-equiv="PRAGMA" content="NO-CACHE"> 
@@ -136,7 +136,8 @@
             <c:forEach var="theAlmaInvoice" items="${almaSource.theFees.fees}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
+                  <input type="radio" name="invoice" id="invoice${index}" aria-label="${theAlmaInvoice.invoiceNumber}" value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>
+                  &nbsp;${theAlmaInvoice.invoiceNumber}
                 </td>
                 <td>
                   ${theAlmaInvoice.feeDate}
@@ -156,7 +157,8 @@
             <c:forEach var="theXeroInvoice" items="${xeroSource.allUnpaid}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.invoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theXeroInvoice.invoiceNumber}
+                  <input type="radio" name="invoice" id="invoice${index}" aria-label="${theXeroInvoice.invoiceID}"  value="${theXeroInvoice.invoiceID}" <c:if test="${first}">checked</c:if>>
+                  &nbsp;${theXeroInvoice.invoiceNumber}
                 </td>
                 <td>
                   ${theXeroInvoice.date}
