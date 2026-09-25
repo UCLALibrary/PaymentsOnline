@@ -3,12 +3,16 @@
 <%@ page contentType="text/html;charset=utf-8" isErrorPage="true"
          import="java.io.CharArrayWriter, java.io.PrintWriter"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html>
+<htm lang="en-US"l>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <title>Errors Have Occurred</title>
   </head>
-  <body>An error occured:<br/><pre>
+  <body>
+  <main>
+    An error occured:<br/>
+    <pre>
     We're sorry: an error has occurred and Library Payments Online is unable to process your request. Please contact 
     the Library Help Desk for assistance; please report when you accessed Payments Online and what you were attempting to do (e.g., 
     logging in, viewing an invoice, submitting payment) when the error occurred.
@@ -34,10 +38,13 @@
     You can report this error via the <a href="https://jira.library.ucla.edu/servicedesk/customer/portals">Service Portal</a>, 
     or by email to <a href="mailto:techhelp@library.ucla.edu">techhelp@library.ucla.edu</a>
     </pre>
+    </main>
+    <footer>
     To leave Payments Online, click here: 
     <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
       <input type="hidden" name="return" value="https://shb.ais.ucla.edu/shibboleth-idp/Logout"/>
       <input type="submit" value="Logout">
     </form>
+    </footer>
   </body>
 </html>
