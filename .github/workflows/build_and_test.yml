@@ -25,5 +25,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
         REPO_SERVER: ${{ secrets.REPO_SERVER }}
         REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
-=      run: |
+      run: |
         mvn -ntp test 
