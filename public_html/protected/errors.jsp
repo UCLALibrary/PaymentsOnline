@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=utf-8" isErrorPage="true"
          import="java.io.CharArrayWriter, java.io.PrintWriter"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<htm lang="en-US">
+<html lang="en-US">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
