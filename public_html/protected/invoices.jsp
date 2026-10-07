@@ -83,7 +83,7 @@
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr>
             <td colspan="2">
-              <h3>No patron information found</h3>
+              <h1>No patron information found</h1>
             </td>
           </tr>
           <tr>
@@ -100,7 +100,7 @@
           <tr><td></td><td>&nbsp;</td></tr>
           <tr>
             <td>
-              <h3>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h3>
+              <h1>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h1>
             </td>
             <td align="right">
               <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
