@@ -1,0 +1,32 @@
+---
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# The app uses a hard-coded path for log file, which leads to known errors during the "Build with Maven" stage like:
+# "2026-10-08T17:02:32.847Z main ERROR Unable to create file /usr/local/lpo/webapps/lpo/payments.log"
+# These errors are not relevant to building and testing the app for pull-request code verification
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Build and Test with Maven
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+    - name: Set up JDK 8
+      uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+      with:
+        java-version: '8'
+        distribution: 'corretto'
+        cache: maven
+    - name: Build with Maven
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        REPO_SERVER: ${{ secrets.REPO_SERVER }}
+        REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+      run: |
+        mvn -ntp test 
