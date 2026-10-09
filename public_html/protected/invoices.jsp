@@ -40,7 +40,7 @@
   <jsp:setProperty property="tokensFile" name="xeroSource" value='<%= application.getInitParameter("xero.tokens") %>'/>
 </jsp:useBean>
 
-<html>
+<html lang="en-US">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
     <meta http-equiv="PRAGMA" content="NO-CACHE"> 
@@ -53,11 +53,14 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="../css/mobile.css" media="screen"/>
     <link rel="stylesheet" type="text/css" href="../css/print.css" media="print"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCLA Library Payments Online</title>
   </head>
 
   <body bgcolor="#FFFFFF" topmargin="0" marginheight="0" marginwidth="0" leftmargin="0" width="960">
+    <div id="skip"><a href="#maincontent">Skip to main content</a></div>
     <div id="authportalFrame">
+    <header>
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
@@ -65,20 +68,22 @@
                    alt="UCLA Library Logo"/>
         </td>
         <td bgcolor="#536895" align="center">
-          <font color="#ffffff" class="body"><b>Library Payments Online</b></font>
+          <b>Library Payments Online</b>
         </td>
         <td  width="155" bgcolor="#536895">
         </td>
       </tr>
     </table>
-
+    </header>
+    
+    <main id="maincontent">
     <c:choose>
       <c:when test="${empty patronSource.thePatron.lastName}">
         <table width="960" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr><td colspan="2">&nbsp;</td></tr>
           <tr>
             <td colspan="2">
-              <h3>No patron information found</h3>
+              <h1>No patron information found</h1>
             </td>
           </tr>
           <tr>
@@ -95,7 +100,7 @@
           <tr><td></td><td>&nbsp;</td></tr>
           <tr>
             <td>
-              <h3>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h3>
+              <h1>${patronSource.thePatron.firstName}&nbsp;${patronSource.thePatron.lastName}</h1>
             </td>
             <td align="right">
               <form method="POST" action="https://%DOMAIN%.library.ucla.edu/Shibboleth.sso/Logout">
@@ -131,7 +136,8 @@
             <c:forEach var="theAlmaInvoice" items="${almaSource.theFees.fees}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>&nbsp;${theAlmaInvoice.invoiceNumber}<!--invoiceSource.-->
+                  <input type="radio" name="invoice" id="invoice${index}" aria-label="${theAlmaInvoice.invoiceNumber}" value="alma${theAlmaInvoice.invoiceNumber}" <c:if test="${first}">checked</c:if>>
+                  &nbsp;${theAlmaInvoice.invoiceNumber}
                 </td>
                 <td>
                   ${theAlmaInvoice.feeDate}
@@ -151,7 +157,8 @@
             <c:forEach var="theXeroInvoice" items="${xeroSource.allUnpaid}">
               <tr>
                 <td>
-                  <input type="radio" name="invoice" id='invoice' value="${theXeroInvoice.invoiceID}" <c:if test="${first}">checked</c:if>>&nbsp;${theXeroInvoice.invoiceNumber}
+                  <input type="radio" name="invoice" id="invoice${index}" aria-label="${theXeroInvoice.invoiceID}"  value="${theXeroInvoice.invoiceID}" <c:if test="${first}">checked</c:if>>
+                  &nbsp;${theXeroInvoice.invoiceNumber}
                 </td>
                 <td>
                   ${theXeroInvoice.date}
@@ -200,6 +207,7 @@
         </table>
       </c:otherwise>
     </c:choose>
+    </main>
     </div>
   </body>
 </html>

@@ -44,3 +44,19 @@ table {font-size: 9pt;margin: 0 0 1em;border-collapse:collapse}
 	.table1 th.sub2 {background: #bbb;color:#000}
 	.table1 td ul li {background: #fff}
 
+#skip a
+{
+position:absolute;
+left:-10000px;
+top:auto;
+width:1px;
+height:1px;
+overflow:hidden;
+}
+ 
+#skip a:focus
+{
+position:static;
+width:auto;
+height:auto;
+}

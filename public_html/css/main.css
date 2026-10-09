@@ -1444,7 +1444,7 @@ a:hover {
   font-size: 0.875rem;
   line-height: 19px;
   color: #666;
-  font-style: italic;
+  //font-style: italic;
 }
 
 @media all and (max-width: 767px) {
@@ -2370,6 +2370,22 @@ a.toplink {
 }
 .button:hover a {
   color: #005587 !important;
+}
+
+
+#skip a {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+ 
+#skip a:focus {
+  position:static;
+  width:auto;
+  height:auto;
 }
 
 /*
