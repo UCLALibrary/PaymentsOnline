@@ -43,17 +43,17 @@
     <table width="960" cellpadding="0" cellspacing="0" align="center">
       <tr>
         <td width="165" bgcolor="#536895" align="center">
-          <img src="http://www.library.ucla.edu/images/logo_blu_nobar.gif" alt="UCLA">
-          <!--img src="../images/UCLAbanner22535.png"-->
+          <img src="../images/ucla_library_logo_wht.svg"
+                   alt="UCLA Library Logo"/>
         </td>
         <td bgcolor="#536895" align="center">
-          <b>Library Payments Online</b>
+          <b id="white-text">Library Payments Online</b>
         </td>
         <td  width="155" bgcolor="#536895">
         </td>
       </tr>
     </table>
-    <header>
+    </header>
     <main id="maincontent">
     <c:choose>
       <c:when test="${empty param.UCLA_REF_NO}">
