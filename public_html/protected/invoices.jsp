@@ -68,7 +68,7 @@
                    alt="UCLA Library Logo"/>
         </td>
         <td bgcolor="#536895" align="center">
-          <b>Library Payments Online</b>
+          <b id="white-text">Library Payments Online</b>
         </td>
         <td  width="155" bgcolor="#536895">
         </td>

@@ -2372,6 +2372,9 @@ a.toplink {
   color: #005587 !important;
 }
 
+#white-text {
+  color: #FFFFFF
+}
 
 #skip a {
   position:absolute;
