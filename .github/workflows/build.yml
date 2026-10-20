@@ -63,4 +63,4 @@ jobs:
         CI_JENKINS_TOMCAT_HOST: ${{ secrets.CI_JENKINS_TOMCAT_HOST }}
         CI_JENKINS_USER_CREDS: ${{ secrets.CI_JENKINS_USER_CREDS }}
         CI_WEBAPP_NAME: ${{ secrets.CI_WEBAPP_NAME }}
-      run: sh scripts/deploy.sh
+      # run: sh scripts/deploy.sh
