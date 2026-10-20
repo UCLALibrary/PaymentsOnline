@@ -55,12 +55,12 @@ jobs:
         DEPLOY_STORETYPE: ${{ inputs.STORE_TYPE }}
       run: |
         mvn -ntp package -Dwebservices.base="$DEPLOY_DOMAIN" -Dtransact.type="$DEPLOY_STORETYPE" -Dtransact.store="$DEPLOY_STORENAME" 
-    - name: Deploy with Jenkins
-      env:
-        CI_WS_SSH_PRIV_KEY: ${{ secrets.CI_WS_SSH_PRIV_KEY }}
-        CI_JENKINS_DEPLOY_TOKEN: ${{ secrets.CI_JENKINS_DEPLOY_TOKEN }}
-        CI_JENKINS_JOB_URI: ${{ secrets.CI_JENKINS_JOB_URI }}
-        CI_JENKINS_TOMCAT_HOST: ${{ secrets.CI_JENKINS_TOMCAT_HOST }}
-        CI_JENKINS_USER_CREDS: ${{ secrets.CI_JENKINS_USER_CREDS }}
-        CI_WEBAPP_NAME: ${{ secrets.CI_WEBAPP_NAME }}
-      # run: sh scripts/deploy.sh
+#   - name: Deploy with Jenkins
+#     env:
+#       CI_WS_SSH_PRIV_KEY: ${{ secrets.CI_WS_SSH_PRIV_KEY }}
+#       CI_JENKINS_DEPLOY_TOKEN: ${{ secrets.CI_JENKINS_DEPLOY_TOKEN }}
+#       CI_JENKINS_JOB_URI: ${{ secrets.CI_JENKINS_JOB_URI }}
+#       CI_JENKINS_TOMCAT_HOST: ${{ secrets.CI_JENKINS_TOMCAT_HOST }}
+#       CI_JENKINS_USER_CREDS: ${{ secrets.CI_JENKINS_USER_CREDS }}
+#       CI_WEBAPP_NAME: ${{ secrets.CI_WEBAPP_NAME }}
+#     run: sh scripts/deploy.sh
