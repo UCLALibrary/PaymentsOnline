@@ -10,39 +10,49 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      DOMAIN_NAME:
-        description: 'URL domain passed from Jenkins'
-        required: true
-        type: string
-      STORE_NAME:
-        description: 'Transact store name passed from Jenkins'
-        required: true
-        type: string
-      STORE_TYPE:
-        description: 'Transact store type passed from Jenkins'
-        required: true
-        type: string
+      environment:
+        DOMAIN_NAME:
+          description: 'URL domain'
+          required: true
+          type: choice
+          options:
+            - webservices-test
+            - webservices
+        STORE_NAME:
+          description: 'Transact store name'
+          required: true
+          type: choice
+          options:
+            - UCLALIBRARYTEST
+            - UCLALIBRARY
+        STORE_TYPE:
+          description: 'Transact store type'
+          required: true
+          type: choice
+          options:
+            - train
+            - commerce
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f # v2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
     - name: Set up JDK 8
-      uses: actions/setup-java@8764a52df183aa0ccea74521dfd9d506ffc7a19a # v2
+      uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
       with:
         java-version: '8'
-        distribution: 'adopt'
+        distribution: 'corretto'
         cache: maven
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
         REPO_SERVER: ${{ secrets.REPO_SERVER }}
         REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
-        DEPLOY_DOMAIN: ${{ github.event.inputs.DOMAIN_NAME }}
-        DEPLOY_STORENAME: ${{ github.event.inputs.STORE_NAME }}
-        DEPLOY_STORETYPE: ${{ github.event.inputs.STORE_TYPE }}
+        DEPLOY_DOMAIN: ${{ inputs.DOMAIN_NAME }}
+        DEPLOY_STORENAME: ${{ inputs.STORE_NAME }}
+        DEPLOY_STORETYPE: ${{ inputs.STORE_TYPE }}
       run: |
         mvn -ntp package -Dwebservices.base="$DEPLOY_DOMAIN" -Dtransact.type="$DEPLOY_STORETYPE" -Dtransact.store="$DEPLOY_STORENAME" 
     - name: Deploy with Jenkins
